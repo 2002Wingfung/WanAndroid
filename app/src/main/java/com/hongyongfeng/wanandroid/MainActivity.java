@@ -14,8 +14,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setStatusBarFullTransparent();
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_home);
+        //setStatusBarFullTransparent();
     }
     protected void setStatusBarFullTransparent() {
         //21表示5.0
