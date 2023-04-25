@@ -18,15 +18,18 @@
 
     <EditText
         android:id="@+id/edt_title"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:hint="@string/query_enter_keyword"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_back"
+        app:layout_constraintEnd_toStartOf="@id/tv_clear"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="#e5e7e6"
+        android:gravity="center"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColorHint="#e0e5e7e6"
         android:background="@drawable/bg_query_edt"
 

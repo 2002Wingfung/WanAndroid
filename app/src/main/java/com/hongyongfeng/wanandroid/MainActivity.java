@@ -15,9 +15,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_home);
+        StatusBarUtils.setWindowStatusBarColor(this,R.color.blue);
+        setContentView(R.layout.activity_query);
         //setStatusBarFullTransparent();
     }
+
     protected void setStatusBarFullTransparent() {
         //21表示5.0
         Window window = getWindow();
