@@ -1,4 +1,4 @@
-package com.hongyongfeng.wanandroid;
+package com.hongyongfeng.wanandroid.util;
 
 import android.app.Activity;
 import android.app.Dialog;
