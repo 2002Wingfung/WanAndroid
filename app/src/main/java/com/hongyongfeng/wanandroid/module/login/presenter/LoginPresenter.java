@@ -39,28 +39,4 @@ public class LoginPresenter extends BasePresenter<LoginModel, LoginActivity,ILog
             }
         };
     }
-
-//    @Override
-//    public void requestLogin(String name, String pwd) {
-//        //核验请求的信息，进行逻辑处理
-//        //调用model层
-//        try {
-//            mModel.requestLogin(name,pwd);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            //异常的处理
-//            //保存到日志
-//            //一系列的异常处理
-//            //...
-//
-//        }
-//
-//    }
-//
-//    @Override
-//    public void responseLoginResult(boolean loginStatusResult) {
-//
-//        //真实开发过程中，是要解析数据的
-//        mView.responseLoginResult(loginStatusResult);
-//    }
 }

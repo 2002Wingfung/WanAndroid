@@ -1,10 +1,16 @@
 package com.hongyongfeng.wanandroid.base;
 
+import android.app.UiModeManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.hongyongfeng.wanandroid.R;
+import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
 public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends AppCompatActivity implements View.OnClickListener {
 
@@ -13,6 +19,15 @@ public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends App
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        //判断是否处于深色模式
+        //深色模式的值为:0x21
+        //浅色模式的值为:0x11
+        if (this.getApplicationContext().getResources().getConfiguration().uiMode == 0x21) {
+            StatusBarUtils.setWindowStatusBarColor(this, R.color.black);
+        }else {
+            StatusBarUtils.setWindowStatusBarColor(this, R.color.blue);
+        }
         setContentView(getContentViewId());
         initView();
         initListener();

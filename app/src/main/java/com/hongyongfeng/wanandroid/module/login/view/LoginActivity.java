@@ -1,9 +1,12 @@
 package com.hongyongfeng.wanandroid.module.login.view;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
@@ -16,17 +19,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         return new ILogin.VP() {
             @Override
             public void requestLoginVP(String name, String pwd) {
-                //mPresenter.requestLogin(name,pwd);
-                System.out.println("login"+System.currentTimeMillis());
                 mPresenter.getContract().requestLoginVP(name,pwd);
-                System.out.println(name);
-                System.out.println(pwd);
             }
 
             @Override
             public void responseLoginResult(boolean loginStatusResult) {
-                System.out.println(System.currentTimeMillis());
-                System.out.println(loginStatusResult);
                 Toast.makeText(LoginActivity.this, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
             }
         };
@@ -36,6 +33,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     public void initListener() {
         btnLogin.setOnClickListener(this);
     }
+
+
 
     @Override
     public void initData() {
@@ -49,7 +48,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
     @Override
     public int getContentViewId() {
-//        return 0;
         return R.layout.activity_login;
     }
 
@@ -87,13 +85,4 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         getContract().requestLoginVP(name,pwd);
     }
 
-//    @Override
-//    public void requestLogin(String name, String pwd) {
-//        mPresenter.requestLogin(name,pwd);
-//    }
-//
-//    @Override
-//    public void responseLoginResult(boolean loginStatusResult) {
-//        Toast.makeText(this, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
-//    }
 }
