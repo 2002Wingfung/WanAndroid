@@ -17,7 +17,7 @@
         android:background="@drawable/ic_action_bar_query_back" />
 
     <EditText
-        android:id="@+id/edt_title"
+        android:id="@+id/edt_keyword"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -44,6 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
         android:background="@drawable/ic_action_bar_query_clear"  />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
