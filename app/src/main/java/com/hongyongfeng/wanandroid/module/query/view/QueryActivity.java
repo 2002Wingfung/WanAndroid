@@ -1,6 +1,10 @@
 package com.hongyongfeng.wanandroid.module.query.view;
 
+import android.os.Bundle;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
@@ -34,6 +38,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> {
         return R.layout.activity_query;
     }
 
+
     @Override
     public QueryPresenter getPresenterInstance() {
         return new QueryPresenter();
@@ -47,6 +52,11 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> {
     @Override
     public void initView() {
 
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

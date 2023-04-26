@@ -1,13 +1,9 @@
 package com.hongyongfeng.wanandroid.module.login.view;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.login.interfaces.ILogin;
@@ -50,6 +46,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     public int getContentViewId() {
         return R.layout.activity_login;
     }
+
 
     @Override
     public LoginPresenter getPresenterInstance() {

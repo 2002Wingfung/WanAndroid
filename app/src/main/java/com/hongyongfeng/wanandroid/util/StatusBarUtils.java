@@ -25,6 +25,7 @@ public class StatusBarUtils {
         }
     }
 
+
     //设置Dialog对应的顶部状态栏的颜色
     public static void setWindowStatusBarColor(Dialog dialog, int colorResId) {
         try {
