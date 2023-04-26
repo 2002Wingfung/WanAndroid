@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.login.presenter.LoginPresenter;
@@ -48,8 +49,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
     @Override
     public int getContentViewId() {
-        return 0;
-//        return R.layout.activity_login;
+//        return 0;
+        return R.layout.activity_login;
     }
 
     @Override
@@ -68,9 +69,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
     @Override
     public void initView() {
-//        etName=findViewById(R.id.et_name);
-//        etPwd=findViewById(R.id.et_pwd);
-//        btnLogin=findViewById(R.id.btn_login);
+        etName=findViewById(R.id.login_user_name);
+        etPwd=findViewById(R.id.login_password);
+        btnLogin=findViewById(R.id.login);
 
     }
 
