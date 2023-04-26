@@ -30,6 +30,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:singleLine="true"
+        android:imeOptions="actionSearch"
         android:textColorHint="#e0e5e7e6"
         android:background="@drawable/bg_query_edt"
 
