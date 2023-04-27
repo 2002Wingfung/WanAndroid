@@ -4,6 +4,7 @@
     android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/title_bar"
+    android:fitsSystemWindows="true"
     android:background="#4282f4">
     <TextView
         android:id="@+id/tv_menu"

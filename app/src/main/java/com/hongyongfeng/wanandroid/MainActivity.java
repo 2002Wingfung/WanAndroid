@@ -1,10 +1,14 @@
 package com.hongyongfeng.wanandroid;
 
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -12,21 +16,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView textView_topTitle;
-    private FrameLayout content;
-    private NavigationView nav_view;
-    private ImageButton btn_nva;
-    private DrawerLayout drawer_layout;
-
+    TextView tvTitle;
+    FrameLayout content;
+    private DrawerLayout drawer;
+    public static void makeStatusBarTransparent(Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        Window window = activity.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            int option = window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            window.getDecorView().setSystemUiVisibility(option);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,20 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         para.height=height1;//修改高度
         drawerLayout.setLayoutParams(para); //设置修改后的布局。
 
-//        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer_layout, android.R.string.yes, android.R.string.cancel) {
-//
-//            @Override
-//            public void onDrawerSlide(View drawerView, float slideOffset) {
-//                super.onDrawerSlide(drawerView, slideOffset);
-//                float slideX = drawerView.getWidth() * slideOffset;
-//                contentView.setTranslationX(slideX);
-//            }
-//        };
+        //makeStatusBarTransparent(this);
 
-        drawer_layout.addDrawerListener(new DrawerLayout.DrawerListener() {
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
             }
 
             @Override
@@ -74,18 +81,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+
     private void initView() {
-        textView_topTitle = (TextView) findViewById(R.id.textView_topTitle);//标题
-        content = (FrameLayout) findViewById(R.id.content);//Fragment碎片布局
+        tvTitle = findViewById(R.id.textView_topTitle);//标题
+        content = findViewById(R.id.content);//Fragment碎片布局
         //左侧隐藏的NavigationView布局
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
-        nav_view.setNavigationItemSelectedListener(this);//nva菜单的Item点击事件钮监听
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);//nva菜单的Item点击事件钮监听
         //左上角导航按钮
-        btn_nva = (ImageButton) findViewById(R.id.btn_nva);
-        btn_nva.setOnClickListener(this);//监听是否按下导航按钮
+        ImageButton btnNavigation = findViewById(R.id.btn_nva);
+        btnNavigation.setOnClickListener(this);//监听是否按下导航按钮
         //activity_main文件内最外层布局
-        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer_layout.setOnClickListener(this);
+        drawer = findViewById(R.id.drawer_layout);
+        drawer.setOnClickListener(this);
 
     }
 
@@ -93,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_nva://左上角导航按钮
-                drawer_layout.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
+                drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
+                StatusBarUtils.setWindowStatusBarColor(MainActivity.this, R.color.transparent);
                 break;
         }
     }
@@ -108,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "界面1", Toast.LENGTH_SHORT).show();
                 //加载碎片
                 //getSupportFragmentManager().beginTransaction().replace(R.id.content,new Fragment_05()).commit();
-                drawer_layout.closeDrawer(GravityCompat.START);//关闭侧滑栏
+                drawer.closeDrawer(GravityCompat.START);//关闭侧滑栏
                 break;
             case R.id.fragment_06:
                 Toast.makeText(MainActivity.this, "界面2", Toast.LENGTH_SHORT).show();
