@@ -120,7 +120,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         int height1 = wm.getDefaultDisplay().getHeight();
         NavigationView drawerLayout=findViewById(R.id.nav_view);
         ViewGroup.LayoutParams para= drawerLayout.getLayoutParams();//获取drawerlayout的布局
-        para.width=width1/4*3;//修改宽度
+        para.width=width1/7*5;//修改宽度
         para.height=height1;//修改高度
         drawerLayout.setLayoutParams(para); //设置修改后的布局。
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
