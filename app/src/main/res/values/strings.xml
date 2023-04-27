@@ -2,4 +2,6 @@
     <string name="app_name">WanAndroid</string>
     <string name="app_name_zh_cn">玩Android</string>
     <string name="query_enter_keyword">请输入关键词</string>
+    <string name="login">去登录</string>
+    <string name="user_name">玩安卓</string>
 </resources>

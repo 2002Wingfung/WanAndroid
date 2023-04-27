@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.home.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -91,7 +92,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.blue);
+//                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.blue);
             }
 
             @Override
@@ -176,7 +177,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         navMenu = findViewById(R.id.tv_menu);
         //activity_main文件内最外层布局
         drawer = findViewById(R.id.drawer_layout);
-        //header=findViewById(R.layout.nav_header);
     }
 
     public void headerOnClick(View v) {
@@ -184,6 +184,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         startActivity(intent);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         System.out.println(v.getId());
@@ -201,6 +202,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){

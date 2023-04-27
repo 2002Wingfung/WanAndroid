@@ -5,6 +5,7 @@
     android:padding="10dp"
     android:onClick="headerOnClick"
     android:clickable="true"
+    android:id="@+id/header"
     android:background="@color/blue"
     android:focusable="true">
 
@@ -17,26 +18,26 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/icon_image"
         android:gravity="center"
         android:layout_marginTop="10dp"
-        android:text="用户名"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:text="@string/login"
+        android:textColor="@android:color/white"
+        android:textSize="19sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/mail"
+        android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/username"
+        android:layout_below="@id/login"
         android:layout_margin="10dp"
         android:gravity="center"
-        android:text="***@qq.com"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"/>
+        android:text="@string/user_name"
+        android:textSize="21sp"
+        android:textColor="@android:color/white"/>
 
 </RelativeLayout>

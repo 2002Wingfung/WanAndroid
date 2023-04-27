@@ -5,11 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
@@ -29,8 +31,14 @@ public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends App
         if (this.getApplicationContext().getResources().getConfiguration().uiMode == 0x21) {
             StatusBarUtils.setWindowStatusBarColor(this, R.color.transparent);
             ConstraintLayout layout=findViewById(R.id.include);
+            NavigationView navigationView=findViewById(R.id.nav_view);
+
             if (layout!=null){
                 layout.setBackgroundColor(getResources().getColor(R.color.transparent));
+            }
+            if (navigationView!=null){
+                View headView=navigationView.getHeaderView(0);
+                headView.setBackgroundColor(getResources().getColor(R.color.transparent));
             }
         }else {
             StatusBarUtils.setWindowStatusBarColor(this, R.color.blue);
