@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         para.width=width1/4*3;//修改宽度
         para.height=height1;//修改高度
         drawerLayout.setLayoutParams(para); //设置修改后的布局。
-
+        StatusBarUtils.setWindowStatusBarColor(MainActivity.this, R.color.transparent);
         //makeStatusBarTransparent(this);
 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {

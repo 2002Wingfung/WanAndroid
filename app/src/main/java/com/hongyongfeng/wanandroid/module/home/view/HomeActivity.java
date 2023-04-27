@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.home.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
@@ -29,13 +29,31 @@ import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
     TextView tvQuery;
+    float percent1 =1.0F;
+    float percent0 =0.0F;
     TextView tvTitle;
     TextView navMenu;
+    View header;
     FrameLayout content;
     private DrawerLayout drawer;
     @Override
     public Home.VP getContract() {
         return null;
+    }
+    public static void makeStatusBarTransparent(Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        Window window = activity.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            int option = window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            window.getDecorView().setSystemUiVisibility(option);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     @Override
@@ -47,12 +65,23 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+//                if (slideOffset>percent0){
+//                    percent0=slideOffset;
+//                    StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
+//
+//                }
+//                if (slideOffset< percent0){
+//                    StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.blue);
+//                    percent0 =slideOffset;
+//
+//                }
             }
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
 //                ConstraintLayout layout=findViewById(R.id.include);
 
+                //makeStatusBarTransparent(HomeActivity.this);
 
 //                WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
 //                localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
@@ -61,7 +90,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-
+                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.blue);
             }
 
             @Override
@@ -115,6 +144,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 //                window.setAttributes(attributes);
 //            }
 //        }
+        //StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
+
     }
 
     @Override
@@ -144,6 +175,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         navMenu = findViewById(R.id.tv_menu);
         //activity_main文件内最外层布局
         drawer = findViewById(R.id.drawer_layout);
+        //header=findViewById(R.layout.nav_header);
     }
 
     @Override
@@ -155,8 +187,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
                 startActivity(intent);
                 break;
             case R.id.tv_menu://左上角导航按钮
-                //StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
                 drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
+//                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
                 break;
             default:
                 break;
