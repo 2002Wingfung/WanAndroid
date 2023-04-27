@@ -22,6 +22,7 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.home.interfaces.Home;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomePresenter;
+import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
@@ -176,6 +177,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         //activity_main文件内最外层布局
         drawer = findViewById(R.id.drawer_layout);
         //header=findViewById(R.layout.nav_header);
+    }
+
+    public void headerOnClick(View v) {
+        Intent intent=new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
