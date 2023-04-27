@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
@@ -112,12 +114,11 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                     Toast.makeText(QueryActivity.this, edtKeyWords.getText().toString(), Toast.LENGTH_SHORT).show();
                     // 在这里写搜索的操作,一般都是网络请求数据
                 }
-                //点击搜索的时候隐藏软键盘
+                //点击搜索的时候隐藏软键盘·
                 return false;
             }
         });
     }
-
 
     @SuppressLint("NonConstantResourceId")
     @Override
