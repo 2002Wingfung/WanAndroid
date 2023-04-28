@@ -93,15 +93,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
         edtKeyWords=findViewById(R.id.edt_keyword);
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {//获取当前获得焦点的View
-            View view = getCurrentFocus();
-            //调用方法判断是否需要隐藏键盘
-            KeyboardUtils.hideKeyboard(ev, view, this);
-        }
-        return super.dispatchTouchEvent(ev);
-    }
+    
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

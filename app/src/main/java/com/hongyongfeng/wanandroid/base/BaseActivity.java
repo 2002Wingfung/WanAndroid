@@ -3,6 +3,7 @@ package com.hongyongfeng.wanandroid.base;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
@@ -13,12 +14,25 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
+import com.hongyongfeng.wanandroid.util.KeyboardUtils;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
 public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends AppCompatActivity implements View.OnClickListener {
 
     public abstract CONTRACT getContract();
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                //获取当前获得焦点的View
+                View view = getCurrentFocus();
+                //调用方法判断是否需要隐藏键盘
+                KeyboardUtils.hideKeyboard(ev, view, this);
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
