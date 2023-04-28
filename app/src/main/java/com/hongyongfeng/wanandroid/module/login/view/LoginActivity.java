@@ -39,6 +39,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
     public void initListener() {
         btnLogin.setOnClickListener(this);
+        tvBack.setOnClickListener(this);
         edtPwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -145,6 +146,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     private TextView tvVisibility;
     TextView tvLogin;
     TextView tvRegister;
+    TextView tvBack;
 
     final int[] count = {0};
 
@@ -156,7 +158,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         btnLogin=findViewById(R.id.login);
         imgAccount=findViewById(R.id.account);
         layout=findViewById(R.id.include);
-
+        tvBack=layout.findViewById(R.id.tv_back);
         tvLogin=layout.findViewById(R.id.tv_login);
         tvRegister=layout.findViewById(R.id.tv_register);
         //tvTitle.setText("登录");
@@ -187,6 +189,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
                 }
                 count[0]++;
+                break;
+            case R.id.tv_back:
+                finish();
                 break;
             default:
                 break;
