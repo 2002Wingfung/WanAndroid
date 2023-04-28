@@ -130,6 +130,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        imgAccount.setColorFilter(0xff838383);
+
     }
 
     private int name=0;
@@ -145,6 +146,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     TextView tvLogin;
     TextView tvRegister;
 
+    final int[] count = {0};
+
     @Override
     public void initView() {
         tvVisibility=findViewById(R.id.password_visibility);
@@ -159,6 +162,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         //tvTitle.setText("登录");
         tvAccount=findViewById(R.id.account_warning);
         tvPwd=findViewById(R.id.password_warning);
+        edtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -166,18 +171,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     public void onClick(View v) {
         String name= edtName.getText().toString();
         String pwd= edtPwd.getText().toString();
-        final int[] count = {0};
-        int num2=2;
-        int num0=0;
+
+        int num2 = 2;
+        int num0 = 0;
         switch (v.getId()){
             case R.id.password_visibility:
-                if (count[0] %num2==num0){
-                    edtPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                if (count[0] % num2 == num0){
                     tvVisibility.setBackground(getResources().getDrawable(R.drawable.ic_visible));
+                    edtPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+
                 }
                 else {
-                    edtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     tvVisibility.setBackground(getResources().getDrawable(R.drawable.ic_invisible));
+                    edtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
                 }
                 count[0]++;
                 break;
