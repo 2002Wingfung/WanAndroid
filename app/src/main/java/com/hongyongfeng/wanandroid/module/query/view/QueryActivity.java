@@ -93,7 +93,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
         edtKeyWords=findViewById(R.id.edt_keyword);
     }
 
-    
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

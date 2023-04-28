@@ -23,7 +23,7 @@
 
             android:background="@drawable/ic_action_bar_back"/>
         <TextView
-            android:id="@+id/tv_login"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
@@ -32,6 +32,9 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:layout_toEndOf="@id/tv_back"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:layout_toStartOf="@id/tv_likes"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
@@ -43,7 +46,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="15dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_likes" />
+            android:background="@drawable/ic_likes_none" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
