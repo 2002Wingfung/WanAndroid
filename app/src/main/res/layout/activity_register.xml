@@ -15,7 +15,7 @@
 <!--        app:tint="@color/white" />-->
     <include
         android:id="@+id/include"
-        layout="@layout/action_bar_default" />
+        layout="@layout/action_bar_login_and_register" />
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
