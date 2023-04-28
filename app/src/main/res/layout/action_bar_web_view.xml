@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/title_bar"
+    android:background="#4282f4">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="9dp"
+
+            android:background="@drawable/ic_action_bar_back"/>
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="5dp"
+            android:text="@string/str_webview_title"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_toEndOf="@id/tv_back"
+            android:layout_toStartOf="@id/tv_likes"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_likes"
+            android:layout_width="28dp"
+            android:layout_height="26dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_likes" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,5 +18,6 @@
     <string name="btn_register">注册</string>
     <string name="str_no_pwd">还没输入密码喔~</string>
     <string name="str_no_account">还没输入用户名喔~</string>
+    <string name="str_webview_title">网页标题</string>
 
 </resources>
