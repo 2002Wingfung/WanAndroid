@@ -142,6 +142,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     private ConstraintLayout layout;
     private ImageView imgAccount;
     private TextView tvVisibility;
+    TextView tvLogin;
+    TextView tvRegister;
+
     @Override
     public void initView() {
         tvVisibility=findViewById(R.id.password_visibility);
@@ -150,9 +153,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         btnLogin=findViewById(R.id.login);
         imgAccount=findViewById(R.id.account);
         layout=findViewById(R.id.include);
-        layout.findViewById(R.id.tv_menu).setVisibility(View.INVISIBLE);
-        layout.findViewById(R.id.tv_query).setVisibility(View.INVISIBLE);
-        TextView tvTitle=layout.findViewById(R.id.tv_title);
+
+        tvLogin=layout.findViewById(R.id.tv_login);
+        tvRegister=layout.findViewById(R.id.tv_register);
         //tvTitle.setText("登录");
         tvAccount=findViewById(R.id.account_warning);
         tvPwd=findViewById(R.id.password_warning);

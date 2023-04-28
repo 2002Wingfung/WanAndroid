@@ -18,14 +18,11 @@
             android:id="@+id/tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_marginEnd="15dp"
             android:text="@string/btn_login"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_blanks" />
+
         <TextView
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"
@@ -34,7 +31,5 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp" />
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
