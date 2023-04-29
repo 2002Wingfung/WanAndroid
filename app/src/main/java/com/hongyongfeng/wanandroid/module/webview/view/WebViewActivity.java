@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.webview.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,24 +13,20 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
-
 import com.hongyongfeng.wanandroid.R;
+import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
+import com.hongyongfeng.wanandroid.module.webview.presenter.WebViewPresenter;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,11 +34,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 /**
  * @author Wingfung Hung
  */
-public class WebViewActivity extends AppCompatActivity implements View.OnClickListener{
+public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyongfeng.wanandroid.module.webview.interfaces.WebView.VP> {
 
     TextView responseText;
     ConstraintLayout layout;
@@ -49,21 +45,36 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     WebView webView;
     TextView tvTitle;
     TextView tvLikes;
+    TextView tvBack;
     int count=0;
+    String url;
+    @Override
+    public com.hongyongfeng.wanandroid.module.webview.interfaces.WebView.VP getContract() {
+        return new com.hongyongfeng.wanandroid.module.webview.interfaces.WebView.VP() {
+            @Override
+            public void requestWebViewVP(String name, String pwd) {
+
+            }
+
+            @Override
+            public void responseWebViewResult(boolean loginStatusResult) {
+
+            }
+        };
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
-        webView=findViewById(R.id.web_view);
-        layout=findViewById(R.id.include);
-        tvTitle=layout.findViewById(R.id.tv_title);
-        tvLikes=layout.findViewById(R.id.tv_likes);
-        tvLikes.setOnClickListener(this);
-        progressBar=findViewById(R.id.progressBar);
+        Intent intent = getIntent();
+        if(intent != null){
+            //获取intent中的参数
+            url = intent.getStringExtra("url");
+
+        }
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
-        //webView.setWebViewClient(new WebViewClient());
         webView.loadUrl("https://www.baidu.com");
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -103,11 +114,49 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
-        TextView tvBack=layout.findViewById(R.id.tv_back);
+
+    }
+
+    @Override
+    public void initListener() {
+        tvLikes.setOnClickListener(this);
         tvBack.setOnClickListener(this);
-//        Button sendRequest=findViewById(R.id.send_request);
-//        responseText =findViewById(R.id.response_text);
-//        sendRequest.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_webview;
+    }
+
+    @Override
+    public WebViewPresenter getPresenterInstance() {
+        return new WebViewPresenter();
+    }
+
+    @Override
+    public <ERROR> void responseError(ERROR error, Throwable throwable) {
+
+    }
+
+    @Override
+    public void initView() {
+        webView=findViewById(R.id.web_view);
+        layout=findViewById(R.id.include);
+        tvTitle=layout.findViewById(R.id.tv_title);
+        tvLikes=layout.findViewById(R.id.tv_likes);
+        tvBack=layout.findViewById(R.id.tv_back);
+        progressBar=findViewById(R.id.progressBar);
     }
 
     @Override
@@ -240,6 +289,4 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
-
-
 }
