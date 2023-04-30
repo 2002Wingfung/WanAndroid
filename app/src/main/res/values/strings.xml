@@ -19,5 +19,8 @@
     <string name="str_no_pwd">还没输入密码喔~</string>
     <string name="str_no_account">还没输入用户名喔~</string>
     <string name="str_webview_title">网页标题</string>
+    <string name="str_home">首页文章</string>
+    <string name="str_knowledge_system">知识体系</string>
+    <string name="str_project">项目</string>
 
 </resources>
