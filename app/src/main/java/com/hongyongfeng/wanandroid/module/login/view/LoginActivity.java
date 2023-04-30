@@ -27,6 +27,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
             @Override
             public void requestLoginVP(String name, String pwd) {
                 mPresenter.getContract().requestLoginVP(name,pwd);
+                System.out.println("iname"+name);
+                System.out.println("ipwd"+pwd);
+
             }
 
             @Override
@@ -171,9 +174,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        String name= edtName.getText().toString();
-        String pwd= edtPwd.getText().toString();
-
         int num2 = 2;
         int num0 = 0;
         switch (v.getId()){
@@ -193,15 +193,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
             case R.id.tv_back:
                 finish();
                 break;
+            case R.id.login:
+                String name= edtName.getText().toString().replaceAll(" ","");
+                String pwd= edtPwd.getText().toString().replaceAll(" ","");
+                System.out.println("name"+name);
+                System.out.println("pwd"+pwd);
+                //面向接口
+                getContract().requestLoginVP(name,pwd);
             default:
                 break;
         }
-        //第一种方式：面向具体方法
-
-        //requestLogin(name,pwd);
-
-        //第二种方式：面向接口
-        //getContract().requestLoginVP(name,pwd);
     }
-
 }
