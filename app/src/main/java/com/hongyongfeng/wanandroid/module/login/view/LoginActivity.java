@@ -51,6 +51,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().contains(" ")){
+                    String[] str = s.toString().split(" ");
+                    StringBuilder content = new StringBuilder();
+                    for (String value : str) {
+                        content.append(value);
+                    }
+                    edtPwd.setText(content.toString());
+                    edtPwd.setSelection(start);
+                }
             }
 
             @Override
@@ -79,6 +88,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().contains(" ")){
+                    String[] str = s.toString().split(" ");
+                    StringBuilder content = new StringBuilder();
+                    for (String value : str) {
+                        content.append(value);
+                    }
+                    edtName.setText(content.toString());
+                    edtName.setSelection(start);
+                }
             }
 
             @Override
