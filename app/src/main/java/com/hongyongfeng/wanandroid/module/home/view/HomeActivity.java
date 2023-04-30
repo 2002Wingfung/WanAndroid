@@ -57,6 +57,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     private TextView tvProject;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    TestNavFragment fragment;
     //以上为底部导航栏所需的成员变量
 
     @Override
@@ -178,14 +179,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     private void initEvent() {
         //添加Fragment
         //设置默认是首页
-        fragmentManager=getSupportFragmentManager();
-        fragmentTransaction=fragmentManager.beginTransaction();
-        TestNavFragment fragment=TestNavFragment.newInstance("这是首页","");
+        loadFragment();
+        fragment=TestNavFragment.newInstance("这是首页","");
         //这里可以传递两个参数
         fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
-        imgHome.setSelected(true);
-        tvHome.setTextColor(getResources().getColor(R.color.blue));
+        setBottomItemSelected(R.id.ll_home);
 
+    }
+    private void loadFragment(){
+        fragmentManager=getSupportFragmentManager();
+        fragmentTransaction=fragmentManager.beginTransaction();
     }
 
     private void initBottomNavigationView() {
@@ -209,6 +212,23 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         tvKnowledge.setTextColor(getResources().getColor(R.color.gray));
         imgProject.setSelected(false);
         tvProject.setTextColor(getResources().getColor(R.color.gray));
+    }
+    @SuppressLint("NonConstantResourceId")
+    private void setBottomItemSelected(int id){
+        switch (id){
+            case R.id.ll_home:
+                imgHome.setSelected(true);
+                tvHome.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case R.id.ll_knowledge:
+                imgKnowledge.setSelected(true);
+                tvKnowledge.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case R.id.ll_project:
+                imgProject.setSelected(true);
+                tvProject.setTextColor(getResources().getColor(R.color.blue));
+                break;
+        }
     }
 
     @Override
@@ -250,11 +270,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        boolean navBottom=(v.getId()==R.id.ll_home||v.getId()==R.id.ll_knowledge||v.getId()==R.id.ll_project);
+        int id=v.getId();
+        boolean navBottom=(id==R.id.ll_home||id==R.id.ll_knowledge||id==R.id.ll_project);
         if (navBottom){
+            loadFragment();
             resetBottomState();
+            setBottomItemSelected(id);
         }
-        switch (v.getId()){
+        switch (id){
             case R.id.tv_query:
                 Intent intent=new Intent(HomeActivity.this, QueryActivity.class);
                 startActivity(intent);
@@ -264,28 +287,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 //                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
                 break;
             case R.id.ll_home:
-                fragmentManager=getSupportFragmentManager();
-                fragmentTransaction=fragmentManager.beginTransaction();
-                TestNavFragment fragmentHome=TestNavFragment.newInstance("这是首页文章","");
-                fragmentTransaction.replace(R.id.fragment_01,fragmentHome).commit();
-                imgHome.setSelected(true);
-                tvHome.setTextColor(getResources().getColor(R.color.blue));
+                fragment=TestNavFragment.newInstance("这是首页文章","");
+                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 break;
             case R.id.ll_knowledge:
-                fragmentManager=getSupportFragmentManager();
-                fragmentTransaction=fragmentManager.beginTransaction();
-                TestNavFragment fragmentKnowledge=TestNavFragment.newInstance("这是知识体系","");
-                fragmentTransaction.replace(R.id.fragment_01,fragmentKnowledge).commit();
-                imgKnowledge.setSelected(true);
-                tvKnowledge.setTextColor(getResources().getColor(R.color.blue));
+                fragment=TestNavFragment.newInstance("这是知识体系","");
+                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 break;
             case R.id.ll_project:
-                fragmentManager=getSupportFragmentManager();
-                fragmentTransaction=fragmentManager.beginTransaction();
-                TestNavFragment fragmentProject=TestNavFragment.newInstance("这是项目","");
-                fragmentTransaction.replace(R.id.fragment_01,fragmentProject).commit();
-                imgProject.setSelected(true);
-                tvProject.setTextColor(getResources().getColor(R.color.blue));
+                fragment=TestNavFragment.newInstance("这是项目","");
+                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 break;
             default:
                 break;
