@@ -12,12 +12,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
@@ -25,6 +30,7 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.Home;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomePresenter;
 import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
+import com.hongyongfeng.wanandroid.test.TestNavFragment;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
 
@@ -38,6 +44,21 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     View header;
     FrameLayout content;
     private DrawerLayout drawer;
+
+    //以下为底部导航栏所需的成员变量
+    private LinearLayout home;
+    private LinearLayout knowledge;
+    private LinearLayout project;
+    private ImageView imgHome;
+    private ImageView imgKnowledge;
+    private ImageView imgProject;
+    private TextView tvHome;
+    private TextView tvKnowledge;
+    private TextView tvProject;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+    //以上为底部导航栏所需的成员变量
+
     @Override
     public Home.VP getContract() {
         return null;
@@ -64,6 +85,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         navigationView.setNavigationItemSelectedListener(this);//nva菜单的Item点击事件钮监听
         navMenu.setOnClickListener(this);//监听是否按下导航按钮
         drawer.setOnClickListener(this);
+        home.setOnClickListener(this);
+        knowledge.setOnClickListener(this);
+        project.setOnClickListener(this);
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -123,6 +147,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         para.width=width1/7*5;//修改宽度
         para.height=height1;//修改高度
         drawerLayout.setLayoutParams(para); //设置修改后的布局。
+        initEvent();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
@@ -148,6 +173,42 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 //        }
         //StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
 
+    }
+
+    private void initEvent() {
+        //添加Fragment
+        //设置默认是首页
+        fragmentManager=getSupportFragmentManager();
+        fragmentTransaction=fragmentManager.beginTransaction();
+        TestNavFragment fragment=TestNavFragment.newInstance("这是首页","");
+        //这里可以传递两个参数
+        fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+        imgHome.setSelected(true);
+        tvHome.setTextColor(getResources().getColor(R.color.blue));
+
+    }
+
+    private void initBottomNavigationView() {
+        home =findViewById(R.id.ll_home);
+        knowledge=findViewById(R.id.ll_knowledge);
+        project =findViewById(R.id.ll_project);
+
+        imgHome =findViewById(R.id.img_home);
+        imgKnowledge=findViewById(R.id.img_knowledge);
+        imgProject =findViewById(R.id.img_project);
+
+        tvHome =findViewById(R.id.tv_home);
+        tvKnowledge=findViewById(R.id.tv_knowledge);
+        tvProject =findViewById(R.id.tv_project);
+    }
+    private void resetBottomState(){
+        //重置底部导航栏的按钮颜色以及文字的颜色
+        imgHome.setSelected(false);
+        tvHome.setTextColor(getResources().getColor(R.color.gray));
+        imgKnowledge.setSelected(false);
+        tvKnowledge.setTextColor(getResources().getColor(R.color.gray));
+        imgProject.setSelected(false);
+        tvProject.setTextColor(getResources().getColor(R.color.gray));
     }
 
     @Override
@@ -177,6 +238,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         navMenu = findViewById(R.id.tv_menu);
         //activity_main文件内最外层布局
         drawer = findViewById(R.id.drawer_layout);
+        initBottomNavigationView();
+
     }
 
     public void headerOnClick(View v) {
@@ -187,7 +250,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        System.out.println(v.getId());
+        boolean navBottom=(v.getId()==R.id.ll_home||v.getId()==R.id.ll_knowledge||v.getId()==R.id.ll_project);
+        if (navBottom){
+            resetBottomState();
+        }
         switch (v.getId()){
             case R.id.tv_query:
                 Intent intent=new Intent(HomeActivity.this, QueryActivity.class);
@@ -196,6 +262,30 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
             case R.id.tv_menu://左上角导航按钮
                 drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
 //                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
+                break;
+            case R.id.ll_home:
+                fragmentManager=getSupportFragmentManager();
+                fragmentTransaction=fragmentManager.beginTransaction();
+                TestNavFragment fragmentHome=TestNavFragment.newInstance("这是首页文章","");
+                fragmentTransaction.replace(R.id.fragment_01,fragmentHome).commit();
+                imgHome.setSelected(true);
+                tvHome.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case R.id.ll_knowledge:
+                fragmentManager=getSupportFragmentManager();
+                fragmentTransaction=fragmentManager.beginTransaction();
+                TestNavFragment fragmentKnowledge=TestNavFragment.newInstance("这是知识体系","");
+                fragmentTransaction.replace(R.id.fragment_01,fragmentKnowledge).commit();
+                imgKnowledge.setSelected(true);
+                tvKnowledge.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case R.id.ll_project:
+                fragmentManager=getSupportFragmentManager();
+                fragmentTransaction=fragmentManager.beginTransaction();
+                TestNavFragment fragmentProject=TestNavFragment.newInstance("这是项目","");
+                fragmentTransaction.replace(R.id.fragment_01,fragmentProject).commit();
+                imgProject.setSelected(true);
+                tvProject.setTextColor(getResources().getColor(R.color.blue));
                 break;
             default:
                 break;
