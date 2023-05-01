@@ -28,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
+import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
@@ -47,7 +48,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     float percent0 =0.0F;
     TextView tvTitle;
     TextView navMenu;
-    View header;
     FrameLayout content;
     private DrawerLayout drawer;
 
@@ -71,7 +71,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     private int stateStart=0;
     //以上为底部导航栏所需的成员变量
 
-    boolean left;
     private int count=0;
     @Override
     public MainInterface.VP getContract() {
@@ -201,10 +200,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     @Override
     public void initData() {
         fragmentList=new ArrayList<>();
-        VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
+        //VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
+
         VPFragment fragmentKnowledge=VPFragment.newInstance("知识体系","");
         VPFragment fragmentProject=VPFragment.newInstance("项目","");
-        fragmentList.add(fragmentHome);
+        fragmentList.add(new HomeFragment());
         fragmentList.add(fragmentKnowledge);
         fragmentList.add(fragmentProject);
 
@@ -228,6 +228,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         initEvent();
         adapter=new FragmentVPAdapter(getSupportFragmentManager(),fragmentList);
         viewPager.setAdapter(adapter);
+
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
