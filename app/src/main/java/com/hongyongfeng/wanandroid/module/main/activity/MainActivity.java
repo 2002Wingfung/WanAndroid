@@ -1,4 +1,4 @@
-package com.hongyongfeng.wanandroid.module.home.view;
+package com.hongyongfeng.wanandroid.module.main.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,21 +28,19 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
-import com.hongyongfeng.wanandroid.module.home.interfaces.Home;
-import com.hongyongfeng.wanandroid.module.home.presenter.HomePresenter;
+import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
+import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.TestNavFragment;
-import com.hongyongfeng.wanandroid.test.TestViewPagerActivity;
 import com.hongyongfeng.wanandroid.test.VPFragment;
-import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
     TextView tvQuery;
     float percent1 =1.0F;
@@ -74,7 +72,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     //以上为底部导航栏所需的成员变量
 
     @Override
-    public Home.VP getContract() {
+    public MainInterface.VP getContract() {
         return null;
     }
     public static void makeStatusBarTransparent(Activity activity) {
@@ -303,8 +301,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 
 
     @Override
-    public HomePresenter getPresenterInstance() {
-        return new HomePresenter();
+    public MainPresenter getPresenterInstance() {
+        return new MainPresenter();
     }
 
     @Override
@@ -329,7 +327,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     }
 
     public void headerOnClick(View v) {
-        Intent intent=new Intent(HomeActivity.this, LoginActivity.class);
+        Intent intent=new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -345,7 +343,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         }
         switch (id){
             case R.id.tv_query:
-                Intent intent=new Intent(HomeActivity.this, QueryActivity.class);
+                Intent intent=new Intent(MainActivity.this, QueryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.tv_menu://左上角导航按钮
@@ -377,25 +375,25 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.fragment_05:
-                Toast.makeText(HomeActivity.this, "界面1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "界面1", Toast.LENGTH_SHORT).show();
                 //加载碎片
                 //getSupportFragmentManager().beginTransaction().replace(R.id.content,new Fragment_05()).commit();
                 drawer.closeDrawer(GravityCompat.START);//关闭侧滑栏
                 break;
             case R.id.fragment_06:
-                Toast.makeText(HomeActivity.this, "界面2", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "界面2", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fragment_07:
-                Toast.makeText(HomeActivity.this, "界面3", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "界面3", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fragment_08:
-                Toast.makeText(HomeActivity.this, "界面4", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "界面4", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fragment_09:
-                Toast.makeText(HomeActivity.this, "界面5", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "界面5", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fragment_10:
-                Toast.makeText(HomeActivity.this, "界面6", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "界面6", Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

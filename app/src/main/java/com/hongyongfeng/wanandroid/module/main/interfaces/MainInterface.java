@@ -1,6 +1,6 @@
-package com.hongyongfeng.wanandroid.module.home.interfaces;
+package com.hongyongfeng.wanandroid.module.main.interfaces;
 
-public interface Home {
+public interface MainInterface {
     interface M{
         void requestM(String name, String pwd)throws Exception;
     }

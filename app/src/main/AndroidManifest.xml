@@ -23,7 +23,7 @@
 <!--            </intent-filter>-->
         </activity>
         <activity
-            android:name=".module.home.view.HomeActivity"
+            android:name=".module.main.activity.MainActivity"
             android:exported="true">
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
