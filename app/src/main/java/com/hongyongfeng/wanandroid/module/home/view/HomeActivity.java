@@ -107,7 +107,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
                 if (position==0&&positionOffsetPixels==0&&stateDefault==1&&stateStart==0){
-                    Toast.makeText(HomeActivity.this, "第一页往左滑动", Toast.LENGTH_SHORT).show();
                     drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
                     stateStart=1;
                 }
@@ -115,6 +114,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 
             @Override
             public void onPageSelected(int position) {
+                onViewPagerSelected(position);
 
             }
 
@@ -162,6 +162,22 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 
             }
         });
+    }
+
+    private void onViewPagerSelected(int position) {
+        loadFragment();
+        if (position==0){
+            resetBottomState();
+            setBottomItemSelected(R.id.ll_home);
+        } else if (position==1) {
+            resetBottomState();
+            setBottomItemSelected(R.id.ll_knowledge);
+
+        }else {
+            resetBottomState();
+            setBottomItemSelected(R.id.ll_project);
+
+        }
     }
 
     @Override
