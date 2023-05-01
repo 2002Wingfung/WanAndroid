@@ -126,6 +126,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
                 }
             }
         });
+        //默认进入选中首页
+        onViewPagerSelected(0);
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -166,17 +168,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 
     private void onViewPagerSelected(int position) {
         loadFragment();
+        resetBottomState();
         if (position==0){
-            resetBottomState();
             setBottomItemSelected(R.id.ll_home);
         } else if (position==1) {
-            resetBottomState();
             setBottomItemSelected(R.id.ll_knowledge);
 
         }else {
-            resetBottomState();
             setBottomItemSelected(R.id.ll_project);
-
         }
     }
 
@@ -356,14 +355,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
             case R.id.ll_home:
                 fragment=TestNavFragment.newInstance("这是首页文章","");
                 fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+                viewPager.setCurrentItem(0);
                 break;
             case R.id.ll_knowledge:
                 fragment=TestNavFragment.newInstance("这是知识体系","");
                 fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+                viewPager.setCurrentItem(1);
                 break;
             case R.id.ll_project:
                 fragment=TestNavFragment.newInstance("这是项目","");
                 fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+                viewPager.setCurrentItem(2);
                 break;
             default:
                 break;
