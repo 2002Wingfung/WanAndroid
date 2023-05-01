@@ -143,7 +143,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                     stateStart=0;
                     count=0;
                 }
-
             }
         });
         //默认进入选中首页
@@ -261,9 +260,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         //添加Fragment
         //设置默认是首页
         loadFragment();
-        fragment=TestNavFragment.newInstance("这是首页","");
+        //fragment=TestNavFragment.newInstance("这是首页","");
         //这里可以传递两个参数
-        fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+        //fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
         setBottomItemSelected(R.id.ll_home);
         tvTitle.setText("首页文章");
     }
@@ -372,18 +371,18 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 //                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
                 break;
             case R.id.ll_home:
-                fragment=TestNavFragment.newInstance("这是首页文章","");
-                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+//                fragment=TestNavFragment.newInstance("这是首页文章","");
+//                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 viewPager.setCurrentItem(0);
                 break;
             case R.id.ll_knowledge:
-                fragment=TestNavFragment.newInstance("这是知识体系","");
-                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+//                fragment=TestNavFragment.newInstance("这是知识体系","");
+//                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 viewPager.setCurrentItem(1);
                 break;
             case R.id.ll_project:
-                fragment=TestNavFragment.newInstance("这是项目","");
-                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
+//                fragment=TestNavFragment.newInstance("这是项目","");
+//                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 viewPager.setCurrentItem(2);
                 break;
             default:
