@@ -71,6 +71,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     private int stateStart=0;
     //以上为底部导航栏所需的成员变量
 
+    boolean left;
+    private int count=0;
     @Override
     public MainInterface.VP getContract() {
         return null;
@@ -104,10 +106,28 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                if (position==0&&positionOffsetPixels==0&&stateDefault==1&&stateStart==0){
-                    drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
-                    stateStart=1;
+//                if (position==0&&positionOffsetPixels==0&&stateDefault==1&&stateStart==0){
+//                    drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
+//                    stateStart=1;
+//                }
+                if (position==0&&positionOffsetPixels==0){
+                    count++;
+                    System.out.println(count);
+                }else {
+                    count=0;
                 }
+                if (count>=30){
+                    drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
+                    count=0;
+                }
+//                if (position==0&&positionOffsetPixels==0&&stateStart==0){
+//                    //drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
+//                    left=true;
+//                    stateStart=1;
+//                    System.out.println("dui");
+//                }else{
+//                    left=false;
+//                }
             }
 
             @Override
@@ -121,7 +141,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                 stateDefault=state;
                 if (state==0){
                     stateStart=0;
+                    count=0;
                 }
+
             }
         });
         //默认进入选中首页
@@ -191,7 +213,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 
     @Override
     public void destroy() {
-
     }
 
     @Override
