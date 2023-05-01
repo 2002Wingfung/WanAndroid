@@ -20,8 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
@@ -30,8 +32,13 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.Home;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomePresenter;
 import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
+import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.TestNavFragment;
+import com.hongyongfeng.wanandroid.test.VPFragment;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implements NavigationView.OnNavigationItemSelectedListener{
@@ -58,6 +65,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     TestNavFragment fragment;
+    private ViewPager viewPager;
+    private FragmentVPAdapter adapter;
+    private List<Fragment> fragmentList;
     //以上为底部导航栏所需的成员变量
 
     @Override
@@ -129,6 +139,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
 
     @Override
     public void initData() {
+        fragmentList=new ArrayList<>();
+        VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
+        VPFragment fragmentKnowledge=VPFragment.newInstance("知识体系","");
+        VPFragment fragmentProject=VPFragment.newInstance("项目","");
+        fragmentList.add(fragmentHome);
+        fragmentList.add(fragmentKnowledge);
+        fragmentList.add(fragmentProject);
 
     }
 
@@ -149,6 +166,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         para.height=height1;//修改高度
         drawerLayout.setLayoutParams(para); //设置修改后的布局。
         initEvent();
+        adapter=new FragmentVPAdapter(getSupportFragmentManager(),fragmentList);
+        viewPager.setAdapter(adapter);
+
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
@@ -184,7 +204,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         //这里可以传递两个参数
         fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
         setBottomItemSelected(R.id.ll_home);
-
+        tvTitle.setText("首页文章");
     }
     private void loadFragment(){
         fragmentManager=getSupportFragmentManager();
@@ -219,14 +239,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
             case R.id.ll_home:
                 imgHome.setSelected(true);
                 tvHome.setTextColor(getResources().getColor(R.color.blue));
+                tvTitle.setText("首页文章");
                 break;
             case R.id.ll_knowledge:
                 imgKnowledge.setSelected(true);
                 tvKnowledge.setTextColor(getResources().getColor(R.color.blue));
+                tvTitle.setText("知识体系");
                 break;
             case R.id.ll_project:
                 imgProject.setSelected(true);
                 tvProject.setTextColor(getResources().getColor(R.color.blue));
+                tvTitle.setText("项目");
                 break;
         }
     }
@@ -258,6 +281,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         navMenu = findViewById(R.id.tv_menu);
         //activity_main文件内最外层布局
         drawer = findViewById(R.id.drawer_layout);
+        viewPager=findViewById(R.id.vp);
         initBottomNavigationView();
 
     }
