@@ -34,6 +34,7 @@ import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.TestNavFragment;
+import com.hongyongfeng.wanandroid.test.TestViewPagerActivity;
 import com.hongyongfeng.wanandroid.test.VPFragment;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
@@ -68,6 +69,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
     private ViewPager viewPager;
     private FragmentVPAdapter adapter;
     private List<Fragment> fragmentList;
+    private int stateDefault;
+    private int stateStart=0;
     //以上为底部导航栏所需的成员变量
 
     @Override
@@ -99,6 +102,30 @@ public class HomeActivity extends BaseActivity<HomePresenter, Home.VP> implement
         home.setOnClickListener(this);
         knowledge.setOnClickListener(this);
         project.setOnClickListener(this);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                if (position==0&&positionOffsetPixels==0&&stateDefault==1&&stateStart==0){
+                    Toast.makeText(HomeActivity.this, "第一页往左滑动", Toast.LENGTH_SHORT).show();
+                    drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
+                    stateStart=1;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                stateDefault=state;
+                if (state==0){
+                    stateStart=0;
+                }
+            }
+        });
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
