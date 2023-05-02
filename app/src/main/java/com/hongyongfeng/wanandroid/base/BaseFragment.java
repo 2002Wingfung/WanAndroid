@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public abstract class BaseFragment <P extends BasePresenter,CONTRACT> extends Fragment implements View.OnClickListener{
+public abstract class BaseFragment <P extends BaseFragmentPresenter,CONTRACT> extends Fragment implements View.OnClickListener{
 
     public abstract CONTRACT getContract();
     public P mPresenter;
@@ -16,21 +16,37 @@ public abstract class BaseFragment <P extends BasePresenter,CONTRACT> extends Fr
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initView();
-        initListener();
-        initData();
+
         mPresenter=getPresenterInstance();
-        //mPresenter.bindView(this);
+        mPresenter.bindView(this);
         return inflater.inflate(getFragmentView(), container, false);
     }
 
-    public abstract void initView();
-    public abstract void initListener();
-    public abstract void initData();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView();
+        initListener();
+        initData();
+    }
 
-    public abstract P getPresenterInstance();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        destroy();
+
+    }
+
+    protected abstract void destroy();
+
+    protected abstract void initView();
+    protected abstract void initListener();
+    protected abstract void initData();
+
+    protected abstract P getPresenterInstance();
+    protected abstract <ERROR> void responseError(ERROR error, Throwable throwable);
 
 
-    public abstract int getFragmentView();
+    protected abstract int getFragmentView();
 
 }

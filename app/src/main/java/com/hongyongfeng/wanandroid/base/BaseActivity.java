@@ -72,13 +72,13 @@ public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends App
         destroy();
     }
 
-    public abstract void initListener();
-    public abstract void initData();
-    public abstract void destroy();
-    public abstract int getContentViewId();
+    protected abstract void initListener();
+    protected abstract void initData();
+    protected abstract void destroy();
+    protected abstract int getContentViewId();
 
-    public abstract P getPresenterInstance();
+    protected abstract P getPresenterInstance();
     //处理 ，响应错误信息
-    public abstract <ERROR extends Object> void responseError(ERROR error, Throwable throwable);
-    public abstract void initView();
+    protected abstract <ERROR extends Object> void responseError(ERROR error, Throwable throwable);
+    protected abstract void initView();
 }

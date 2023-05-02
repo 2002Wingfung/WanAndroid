@@ -33,31 +33,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        adapter.setOnItemClickListener(new HomeArticleAdapter.OnItemClickListener() {
-            @Override
-            public void onLikesClicked(View view, int position, TextView likes, int[] count) {
-                //String merchantId=orderLists.get(position).getMerchantId();
-                int number2=2;
-                int number0=0;
-                if (count[0]%number2==number0){
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes,null));
-                    Toast.makeText(activity, "点赞成功", Toast.LENGTH_SHORT).show();
-                    //UpdateLikes.updateLikesPlus(activity,merchantId);
-                }else {
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes_gray,null));
-                    //likes.setBackgroundTintList(new ColorStateList());
-                    Toast.makeText(activity, "取消点赞", Toast.LENGTH_SHORT).show();
-                    //UpdateLikes.updateLikesDecrease(merchantId,activity);
-                }
-                count[0]++;
-            }
 
-            @Override
-            public void onArticleClicked(View view, int position) {
-                Toast.makeText(activity, "点击了view", Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
@@ -83,7 +59,27 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+        adapter.setOnItemClickListener(new HomeArticleAdapter.OnItemClickListener() {
+            @Override
+            public void onLikesClicked(View view, int position, TextView likes, int[] count) {
+                int number2=2;
+                int number0=0;
+                if (count[0]%number2==number0){
+                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes,null));
+                    Toast.makeText(activity, "点赞成功", Toast.LENGTH_SHORT).show();
+                }else {
+                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes_gray,null));
+                    Toast.makeText(activity, "取消点赞", Toast.LENGTH_SHORT).show();
+                }
+                count[0]++;
+            }
 
+            @Override
+            public void onArticleClicked(View view, int position) {
+                Toast.makeText(activity, "点击了view", Toast.LENGTH_SHORT).show();
+
+            }
+        });
         initData();
         //根据id获取RecycleView的实例
         RecyclerView recyclerView= activity.findViewById(R.id.rv_article);
