@@ -101,7 +101,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     }
 
     @Override
-    protected void initView() {
+    protected void initView(View view) {
         layout= fragmentActivity.findViewById(R.id.fragment_home);
         scrollView=layout.findViewById(R.id.scroll_view_home);
         //根据id获取RecycleView的实例
@@ -144,9 +144,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
     protected void initData() {
-        for (int i =0;i<100;i++){
-            articleList.add(new ArticleBean(i));
+        if (articleList.size()==0){
+            for (int i =0;i<100;i++){
+                articleList.add(new ArticleBean(i));
+            }
         }
+
     }
 
     @Override

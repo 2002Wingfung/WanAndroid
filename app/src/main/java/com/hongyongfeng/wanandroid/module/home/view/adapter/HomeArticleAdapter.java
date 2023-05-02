@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @author Wingfung Hung
  */
-public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHolder>  implements Serializable {
+public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHolder>  {
 
     /**
      * 存储DishesInformation对象的List集合

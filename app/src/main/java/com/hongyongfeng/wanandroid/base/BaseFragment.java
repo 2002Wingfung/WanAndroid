@@ -18,6 +18,7 @@ public abstract class BaseFragment <P extends BaseFragmentPresenter,CONTRACT> ex
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mPresenter=getPresenterInstance();
+
         mPresenter.bindView(this);
         return inflater.inflate(getFragmentView(), container, false);
     }
@@ -25,8 +26,9 @@ public abstract class BaseFragment <P extends BaseFragmentPresenter,CONTRACT> ex
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
+        initView(view);
         initListener();
+
         initData();
     }
 
@@ -39,7 +41,7 @@ public abstract class BaseFragment <P extends BaseFragmentPresenter,CONTRACT> ex
 
     protected abstract void destroy();
 
-    protected abstract void initView();
+    protected abstract void initView(View view);
     protected abstract void initListener();
     protected abstract void initData();
 

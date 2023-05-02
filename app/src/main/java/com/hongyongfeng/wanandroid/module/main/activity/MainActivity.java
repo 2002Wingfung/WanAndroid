@@ -32,6 +32,7 @@ import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
+import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.TestNavFragment;
@@ -206,7 +207,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         VPFragment fragmentProject=VPFragment.newInstance("项目","");
         fragmentList.add(new HomeFragment());
         fragmentList.add(fragmentKnowledge);
-        fragmentList.add(fragmentProject);
+        fragmentList.add(new ProjectFragment());
 
     }
 
@@ -342,7 +343,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         navMenu = findViewById(R.id.tv_menu);
         //activity_main文件内最外层布局
         drawer = findViewById(R.id.drawer_layout);
-        viewPager=findViewById(R.id.vp);
+        viewPager=findViewById(R.id.vp_main);
         initBottomNavigationView();
 
     }
