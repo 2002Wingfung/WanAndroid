@@ -22,7 +22,7 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHold
     /**
      * 存储DishesInformation对象的List集合
      */
-    public List<ArticleBean> articleList=new ArrayList<>();
+    public List<ArticleBean> articleList;
 
     public interface OnItemClickListener {
         void onLikesClicked(View view, int position, TextView likes, int[] count);

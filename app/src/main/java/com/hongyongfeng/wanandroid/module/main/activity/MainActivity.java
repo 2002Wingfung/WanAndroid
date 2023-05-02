@@ -205,8 +205,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 
         VPFragment fragmentKnowledge=VPFragment.newInstance("知识体系","");
         VPFragment fragmentProject=VPFragment.newInstance("项目","");
-        //fragmentList.add(new HomeFragment());
-        fragmentList.add(fragmentHome);
+        fragmentList.add(new HomeFragment());
+//        fragmentList.add(fragmentHome);
         fragmentList.add(fragmentKnowledge);
 //        fragmentList.add(fragmentProject);
         fragmentList.add(new ProjectFragment());

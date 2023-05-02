@@ -13,6 +13,7 @@ import java.util.List;
 public class FragmentVPAdapter extends FragmentStatePagerAdapter {
     public FragmentVPAdapter(@NonNull FragmentManager fm, List<Fragment> fragmentList) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        //super(fm);
         this.fragmentList=fragmentList;
     }
 

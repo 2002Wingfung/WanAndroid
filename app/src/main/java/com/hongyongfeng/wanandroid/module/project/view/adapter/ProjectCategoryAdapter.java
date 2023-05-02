@@ -15,6 +15,7 @@ public class ProjectCategoryAdapter extends FragmentStatePagerAdapter {
     public ProjectCategoryAdapter(@NonNull FragmentManager fm,
                                   List<Fragment> fragmentList,
                                   List<String> categoryList) {
+        //super(fm);
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         //懒加载
         this.fragmentList=fragmentList;
