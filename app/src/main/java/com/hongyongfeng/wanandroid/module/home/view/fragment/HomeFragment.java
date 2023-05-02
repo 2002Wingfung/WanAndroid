@@ -118,6 +118,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 }
             }
         });
+
         adapter.setOnItemClickListener(new HomeArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {

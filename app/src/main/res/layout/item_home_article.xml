@@ -60,7 +60,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/title"
         android:text="题目12311111111111231231111111111111111111111111"
-        android:textColor="#000000"
         android:maxLines="1"
         android:singleLine="true"
         android:ellipsize="end"

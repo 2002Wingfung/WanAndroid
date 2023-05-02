@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.test;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,7 +43,11 @@ public class FragmentVPAdapter extends FragmentStatePagerAdapter {
         return fragmentList.size();
     }
 
-//    @NonNull
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        //super.destroyItem(container, position, object);
+    }
+    //    @NonNull
 //    @Override
 //    public Fragment createFragment(int position) {
 //        return fragmentList==null?null:fragmentList.get(position);

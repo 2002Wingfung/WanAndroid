@@ -23,11 +23,13 @@ public class HomeArticleViewHolder extends RecyclerView.ViewHolder{
     public TextView tvTitle;
     public TextView tvLikes;
 
+
     public HomeArticleViewHolder(@NonNull View itemView, final HomeArticleAdapter.OnItemClickListener onClickListener) {
         super(itemView);
         articleView=itemView;
         tvTitle=itemView.findViewById(R.id.tv_title);
         tvLikes=itemView.findViewById(R.id.likes);
+
         final int[] count={0};
         tvLikes.setOnClickListener(view -> {
             if (onClickListener != null) {
