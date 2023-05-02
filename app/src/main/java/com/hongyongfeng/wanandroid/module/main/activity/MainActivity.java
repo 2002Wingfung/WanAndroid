@@ -201,12 +201,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     @Override
     public void initData() {
         fragmentList=new ArrayList<>();
-        //VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
+        VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
 
         VPFragment fragmentKnowledge=VPFragment.newInstance("知识体系","");
         VPFragment fragmentProject=VPFragment.newInstance("项目","");
-        fragmentList.add(new HomeFragment());
+        //fragmentList.add(new HomeFragment());
+        fragmentList.add(fragmentHome);
         fragmentList.add(fragmentKnowledge);
+//        fragmentList.add(fragmentProject);
         fragmentList.add(new ProjectFragment());
 
     }

@@ -1,9 +1,7 @@
 package com.hongyongfeng.wanandroid.module.project.view.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
@@ -11,11 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
-import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ProjectFragmentPresenter;
+import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectCategoryAdapter;
 import com.hongyongfeng.wanandroid.test.VPFragment;
 
 import java.util.ArrayList;
@@ -29,8 +28,10 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     private String mParam1;
     private String mParam2;
     private ViewPager viewPager;
-    private TableLayout tableLayout;
+    private TabLayout tabLayout;
     private List<Fragment> fragmentList;
+    private ProjectCategoryAdapter adapter;
+    private List<String> categoryList;
     public static ProjectFragment newInstance(String param1, String param2) {
         ProjectFragment fragment = new ProjectFragment();
         Bundle args = new Bundle();
@@ -61,6 +62,16 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
 //        //待修改
 //    }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
+                fragmentList,categoryList);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
     @Override
     protected void destroy() {
 
@@ -69,7 +80,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     @Override
     protected void initView(View view) {
         viewPager=view.findViewById(R.id.vp_project);
-        tableLayout=view.findViewById(R.id.tab_layout);
+        tabLayout=view.findViewById(R.id.tab_layout);
     }
 
     @Override
@@ -80,6 +91,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     @Override
     protected void initData() {
         fragmentList=new ArrayList<>();
+        categoryList=new ArrayList<>();
         VPFragment fragment1=VPFragment.newInstance("推荐","");
         VPFragment fragment2=VPFragment.newInstance("关注","");
         VPFragment fragment3=VPFragment.newInstance("娱乐","");
@@ -94,6 +106,13 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         fragmentList.add(fragment5);
         fragmentList.add(fragment6);
         fragmentList.add(fragment7);
+        categoryList.add("推荐");
+        categoryList.add("关注");
+        categoryList.add("娱乐");
+        categoryList.add("时政");
+        categoryList.add("汽车");
+        categoryList.add("历史");
+        categoryList.add("地理");
     }
 
     @Override

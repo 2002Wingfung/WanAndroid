@@ -4,12 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.List;
 
-public class FragmentVPAdapter extends FragmentPagerAdapter {
+public class FragmentVPAdapter extends FragmentStatePagerAdapter {
     public FragmentVPAdapter(@NonNull FragmentManager fm, List<Fragment> fragmentList) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.fragmentList=fragmentList;
