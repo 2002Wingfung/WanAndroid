@@ -6,7 +6,7 @@
     android:onClick="headerOnClick"
     android:clickable="true"
     android:id="@+id/header"
-    android:background="@color/blue"
+    android:background="@color/blue_layout"
     android:focusable="true">
 
     <ImageView

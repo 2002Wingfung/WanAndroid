@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     @Override
     public void initListener() {
         tvQuery.setOnClickListener(this);
-        navigationView.setNavigationItemSelectedListener(this);//nva菜单的Item点击事件钮监听
+        //navigationView.setNavigationItemSelectedListener(this);//nva菜单的Item点击事件钮监听
         navMenu.setOnClickListener(this);//监听是否按下导航按钮
         drawer.setOnClickListener(this);
         home.setOnClickListener(this);
@@ -223,7 +223,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         WindowManager wm = this.getWindowManager();//获取屏幕宽高
         int width1 = wm.getDefaultDisplay().getWidth();
         int height1 = wm.getDefaultDisplay().getHeight();
-        NavigationView drawerLayout=findViewById(R.id.nav_view);
+        //NavigationView drawerLayout=findViewById(R.id.nav_view);
+        LinearLayout drawerLayout=findViewById(R.id.left_layout);
+        //drawerLayout.findViewById(R.id.menu).setBackgroundColor(getResources().getColor(R.color.layout));
         ViewGroup.LayoutParams para= drawerLayout.getLayoutParams();//获取drawerlayout的布局
         para.width=width1/7*5;//修改宽度
         para.height=height1;//修改高度
@@ -321,7 +323,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 
     @Override
     public int getContentViewId() {
-        return R.layout.activity_home;
+        //return R.layout.activity_home;
+        return R.layout.activity_main_latest;
     }
 
 
