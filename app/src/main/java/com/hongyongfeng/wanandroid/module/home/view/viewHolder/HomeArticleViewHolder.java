@@ -27,18 +27,22 @@ public class HomeArticleViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         articleView=itemView;
         tvTitle=itemView.findViewById(R.id.tv_title);
+        tvLikes=itemView.findViewById(R.id.likes);
         final int[] count={0};
-        int position = getAdapterPosition();
         tvLikes.setOnClickListener(view -> {
             if (onClickListener != null) {
+                int position = getAdapterPosition();
                 //确保position值有效
                 if (position != RecyclerView.NO_POSITION) {
+                    System.out.println(tvLikes);
+
                     onClickListener.onLikesClicked(view, position,tvLikes,count);
                 }
             }
         });
         articleView.setOnClickListener(view->{
             if (onClickListener != null) {
+                int position = getAdapterPosition();
                 //确保position值有效
                 if (position != RecyclerView.NO_POSITION) {
                     onClickListener.onArticleClicked(view, position);
