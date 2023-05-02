@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.project.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -132,6 +133,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         super.onDestroyView();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onDestroy() {
         Log.d("ProjectFragment","onDestroy"+SystemClock.elapsedRealtime());

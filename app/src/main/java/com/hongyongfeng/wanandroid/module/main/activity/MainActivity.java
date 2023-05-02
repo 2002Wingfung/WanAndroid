@@ -231,6 +231,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         initEvent();
         adapter=new FragmentVPAdapter(getSupportFragmentManager(),fragmentList);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
 
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

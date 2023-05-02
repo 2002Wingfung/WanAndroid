@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,10 +73,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         fragmentActivity=requireActivity();
 
         super.onViewCreated(view, savedInstanceState);
-
-
-
-
+        Log.d("HomeFragment","onViewCreated"+ SystemClock.elapsedRealtime());
         setRecyclerView();
     }
 
@@ -142,6 +141,19 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         });
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("HomeFragment","onCreate"+ SystemClock.elapsedRealtime());
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onDestroy() {
+        Log.d("HomeFragment","onDestroy"+ SystemClock.elapsedRealtime());
+        super.onDestroy();
+    }
 
     protected void initData() {
         if (articleList.size()==0){
