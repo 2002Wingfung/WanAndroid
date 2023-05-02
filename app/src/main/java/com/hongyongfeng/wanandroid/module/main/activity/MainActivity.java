@@ -11,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -71,7 +74,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     private int stateDefault;
     private int stateStart=0;
     //以上为底部导航栏所需的成员变量
-
+    ListView listView;
+    private String[] listData={"我的收藏","浏览历史","关于","设置","退出登录"};
     private int count=0;
     @Override
     public MainInterface.VP getContract() {
@@ -102,6 +106,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         home.setOnClickListener(this);
         knowledge.setOnClickListener(this);
         project.setOnClickListener(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "你点击了:"+listData[position], Toast.LENGTH_SHORT).show();
+            }
+        });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -234,6 +244,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         adapter=new FragmentVPAdapter(getSupportFragmentManager(),fragmentList);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
+        ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);
+        listView.setAdapter(listViewAdapter);
 
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -351,6 +363,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         drawer = findViewById(R.id.drawer_layout);
         viewPager=findViewById(R.id.vp_main);
         initBottomNavigationView();
+        listView=findViewById(R.id.left_drawer_listView);
 
     }
 
