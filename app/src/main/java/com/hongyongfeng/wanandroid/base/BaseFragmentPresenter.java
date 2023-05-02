@@ -1,6 +1,6 @@
 package com.hongyongfeng.wanandroid.base;
 
-public abstract class BaseFragmentPresenter<M extends BaseModel,V extends BaseFragment,CONTRACT> extends SuperBase<CONTRACT>{
+public abstract class BaseFragmentPresenter<M extends BaseFragmentModel,V extends BaseFragment,CONTRACT> extends SuperBase<CONTRACT>{
     public V mView;
     public M mModel;
 
