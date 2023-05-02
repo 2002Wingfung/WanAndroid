@@ -3,6 +3,8 @@ package com.hongyongfeng.wanandroid.module.home.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
@@ -22,7 +24,17 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHold
      */
     public List<ArticleBean> articleList=new ArrayList<>();
 
-    /**
+    public interface OnItemClickListener {
+        void onLikesClicked(View view, int position, TextView likes, int[] count);
+        void onArticleClicked(View view, int position);
+
+    }
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
+        this.mOnItemClickListener = clickListener;
+    }
+        /**
      * 绑定顾客主页的item
      * @param parent   The ViewGroup into which the new View will be added after it is bound to
      *                 an adapter position.
@@ -33,7 +45,7 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHold
     @Override
     public HomeArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_article,parent,false);
-        return new HomeArticleViewHolder(view);
+        return new HomeArticleViewHolder(view,mOnItemClickListener);
     }
 
 

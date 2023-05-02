@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -32,6 +33,30 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        adapter.setOnItemClickListener(new HomeArticleAdapter.OnItemClickListener() {
+            @Override
+            public void onLikesClicked(View view, int position, TextView likes, int[] count) {
+                //String merchantId=orderLists.get(position).getMerchantId();
+                int number2=2;
+                int number0=0;
+                if (count[0]%number2==number0){
+                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes,null));
+                    Toast.makeText(activity, "点赞成功", Toast.LENGTH_SHORT).show();
+                    //UpdateLikes.updateLikesPlus(activity,merchantId);
+                }else {
+                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes,null));
+                    Toast.makeText(activity, "取消点赞", Toast.LENGTH_SHORT).show();
+                    //UpdateLikes.updateLikesDecrease(merchantId,activity);
+                }
+                count[0]++;
+            }
+
+            @Override
+            public void onArticleClicked(View view, int position) {
+                Toast.makeText(activity, "点击了view", Toast.LENGTH_SHORT).show();
+
+            }
+        });
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
     public static List<ArticleBean> articleList=new ArrayList<>();
