@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                 }else {
                     count=0;
                 }
-                if (count>=30){
+                if (count>=25){
                     drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
                     count=0;
                 }
