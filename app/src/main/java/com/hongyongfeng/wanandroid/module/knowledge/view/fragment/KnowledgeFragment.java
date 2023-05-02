@@ -9,20 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hongyongfeng.wanandroid.R;
+import com.hongyongfeng.wanandroid.base.BaseFragment;
+import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
+import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
+import com.hongyongfeng.wanandroid.module.knowledge.interfaces.KnowledgeFragmentInterface;
+import com.hongyongfeng.wanandroid.module.knowledge.presenter.KnowledgeFragmentPresenter;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link KnowledgeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KnowledgeFragment extends Fragment {
+public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, KnowledgeFragmentInterface.VP> {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -38,7 +40,6 @@ public class KnowledgeFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment KnowledgeFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static KnowledgeFragment newInstance(String param1, String param2) {
         KnowledgeFragment fragment = new KnowledgeFragment();
         Bundle args = new Bundle();
@@ -58,9 +59,59 @@ public class KnowledgeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_knowledge, container, false);
+    public KnowledgeFragmentInterface.VP getContract() {
+        return new KnowledgeFragmentInterface.VP() {
+            @Override
+            public void requestLoginVP(String name, String pwd) {
+
+            }
+
+            @Override
+            public void responseLoginResult(boolean loginStatusResult) {
+
+            }
+        };
+    }
+
+
+
+    @Override
+    protected void destroy() {
+
+    }
+
+    @Override
+    protected void initView(View view) {
+
+    }
+
+    @Override
+    protected void initListener() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected KnowledgeFragmentPresenter getPresenterInstance() {
+        return new KnowledgeFragmentPresenter();
+    }
+
+    @Override
+    protected <ERROR> void responseError(ERROR error, Throwable throwable) {
+
+    }
+
+    @Override
+    protected int getFragmentView() {
+        return R.layout.fragment_knowledge;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
