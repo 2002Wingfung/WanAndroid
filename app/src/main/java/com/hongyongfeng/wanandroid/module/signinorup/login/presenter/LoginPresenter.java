@@ -1,10 +1,10 @@
-package com.hongyongfeng.wanandroid.module.login.presenter;
+package com.hongyongfeng.wanandroid.module.signinorup.login.presenter;
 
 
 import com.hongyongfeng.wanandroid.base.BasePresenter;
-import com.hongyongfeng.wanandroid.module.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.login.model.LoginModel;
-import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
+import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
+import com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginModel;
+import com.hongyongfeng.wanandroid.module.signinorup.login.view.LoginActivity;
 
 public class LoginPresenter extends BasePresenter<LoginModel, LoginActivity,ILogin.VP> {
     @Override

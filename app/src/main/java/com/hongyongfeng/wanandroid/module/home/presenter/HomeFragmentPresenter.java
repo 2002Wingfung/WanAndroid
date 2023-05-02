@@ -1,15 +1,10 @@
 package com.hongyongfeng.wanandroid.module.home.presenter;
 
 
-import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
-import com.hongyongfeng.wanandroid.base.BasePresenter;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
-import com.hongyongfeng.wanandroid.module.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.login.model.LoginModel;
-import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
 
 public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentModel, HomeFragment, HomeFragmentInterface.VP> {
     @Override

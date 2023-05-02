@@ -1,8 +1,8 @@
-package com.hongyongfeng.wanandroid.module.login.model;
+package com.hongyongfeng.wanandroid.module.signinorup.login.model;
 
 import com.hongyongfeng.wanandroid.base.BaseModel;
-import com.hongyongfeng.wanandroid.module.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.login.presenter.LoginPresenter;
+import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
+import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
 
 public class LoginModel extends BaseModel<LoginPresenter, ILogin.M>{
     public LoginModel(LoginPresenter mPresenter) {

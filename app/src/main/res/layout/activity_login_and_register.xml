@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".module.signinorup.login.view.LoginActivity">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/action_bar_login_and_register" />
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/account"
+        android:src="@mipmap/ic_android"
+        android:layout_gravity="center_horizontal" />
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_login_and_register"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

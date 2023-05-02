@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -34,7 +33,7 @@ import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
-import com.hongyongfeng.wanandroid.module.login.view.LoginActivity;
+import com.hongyongfeng.wanandroid.module.signinorup.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
@@ -106,12 +105,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         home.setOnClickListener(this);
         knowledge.setOnClickListener(this);
         project.setOnClickListener(this);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "你点击了:"+listData[position], Toast.LENGTH_SHORT).show();
-            }
-        });
+        listView.setOnItemClickListener((parent, view, position, id) ->
+                Toast.makeText(MainActivity.this,
+                        "你点击了:"+listData[position],
+                        Toast.LENGTH_SHORT).show());
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

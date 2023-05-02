@@ -68,7 +68,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".module.login.view.LoginActivity"
+            android:name=".module.signinorup.login.view.LoginActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->

@@ -4,31 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".module.signinorup.login.view.LoginActivity">
-<!--    <ImageView-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:id="@+id/account"-->
-<!--        android:src="@drawable/ic_account_normal"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        app:tint="@color/white" />-->
-    <include
-        android:id="@+id/include"
-        layout="@layout/action_bar_login_and_register" />
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:id="@+id/account"
-        android:src="@mipmap/ic_android"
-        android:layout_gravity="center_horizontal" />
+    android:layout_height="match_parent">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/welcome"
+        android:text="@string/welcome_register"
+        android:textSize="18sp"
         android:layout_marginBottom="10dp"
 
         android:gravity="center"/>
@@ -36,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/wan_android"
-        android:layout_marginBottom="30dp"
+        android:textSize="18sp"
+        android:layout_marginBottom="15dp"
 
         android:gravity="center"/>
     <RelativeLayout
@@ -120,8 +103,9 @@
             android:backgroundTint="@color/gray"
             android:layout_marginEnd="15dp"
             android:background="@drawable/ic_invisible"
-             />
+            />
     </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -147,26 +131,96 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="28dp"
+            android:id="@+id/password_again"
+            android:background="@drawable/ic_password_normal"
+            android:layout_alignParentStart="true"
+            android:backgroundTint="@color/gray"
+            android:layout_centerVertical="true"/>
+        <EditText
+            android:id="@+id/edt_login_password_again"
+            android:layout_width="wrap_content"
+            android:imeOptions="actionDone"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:singleLine="true"
+            android:hint="@string/enter_password_again"
+            android:layout_toEndOf="@id/password_again"
+            android:layout_toStartOf="@+id/password_visibility_again"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/password_visibility_again"
+            android:layout_width="20dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/gray"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/ic_invisible"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:layout_gravity="end">
+            <TextView
+                android:id="@+id/password_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_not_same"
+                android:visibility="invisible"
+                android:textColor="#ff0000"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         >
 
         <TextView
             android:id="@+id/tv_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
 
             android:layout_centerInParent="true"
-            android:text="@string/tv_sign_up"
+            android:gravity="center"
+            android:text="@string/tv_sign_in"
             android:textColor="@color/blue"
             android:textSize="15.5sp" />
-        <TextView
+<!--        <TextView-->
+<!--            android:layout_width="15dp"-->
+<!--            android:layout_height="15dp"-->
+<!--            android:layout_toStartOf="@id/tv_sign_up"-->
+<!--            android:backgroundTint="@color/blue"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="3dp"-->
+<!--            android:background="@drawable/ic_next"/>-->
+        <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_toEndOf="@id/tv_sign_up"
-            android:backgroundTint="@color/blue"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="3dp"
-            android:background="@drawable/ic_next"/>
+            android:rotation="180"
+            android:scaleType="fitCenter"
+            android:layout_toStartOf="@id/tv_sign_up"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="3dp"
+            android:src="@drawable/ic_next"
+            android:tint="@color/blue"
+            tools:ignore="UseAppTint" />
+
     </RelativeLayout>
 
     <Button
@@ -174,12 +228,12 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:layout_marginBottom="64dp"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:enabled="false"
-        android:text="@string/btn_login"
+        android:text="@string/btn_register"
         android:background="@drawable/bg_btn_login"
         app:layout_constraintTop_toBottomOf="@+id/login_password"
         />

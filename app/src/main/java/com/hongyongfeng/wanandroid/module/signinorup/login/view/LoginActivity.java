@@ -1,4 +1,4 @@
-package com.hongyongfeng.wanandroid.module.login.view;
+package com.hongyongfeng.wanandroid.module.signinorup.login.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,8 +17,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
-import com.hongyongfeng.wanandroid.module.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.login.presenter.LoginPresenter;
+import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
+import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
 
 public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
@@ -27,9 +27,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
             @Override
             public void requestLoginVP(String name, String pwd) {
                 mPresenter.getContract().requestLoginVP(name,pwd);
-                System.out.println("iname"+name);
-                System.out.println("ipwd"+pwd);
-
             }
 
             @Override

@@ -10,13 +10,17 @@
     <string name="logout">退出登录</string>
     <string name="history">浏览历史</string>
     <string name="enter_password">请输入密码</string>
+    <string name="enter_password_again">请再次输入密码</string>
     <string name="enter_user_name">请输入用户名</string>
     <string name="welcome">欢迎使用</string>
+    <string name="welcome_register">欢迎注册</string>
     <string name="wan_android">玩安卓</string>
     <string name="tv_sign_up">去注册</string>
+    <string name="tv_sign_in">去登录</string>
     <string name="btn_login">登录</string>
     <string name="btn_register">注册</string>
     <string name="str_no_pwd">还没输入密码喔~</string>
+    <string name="str_not_same">两次输入的密码不一致</string>
     <string name="str_no_account">还没输入用户名喔~</string>
     <string name="str_webview_title">网页标题</string>
     <string name="str_home">首页文章</string>

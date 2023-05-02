@@ -1,4 +1,4 @@
-package com.hongyongfeng.wanandroid.module.login.interfaces;
+package com.hongyongfeng.wanandroid.module.signinorup.login.interfaces;
 
 public interface ILogin {
     interface M{

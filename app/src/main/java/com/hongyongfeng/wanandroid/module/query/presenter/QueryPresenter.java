@@ -1,7 +1,6 @@
 package com.hongyongfeng.wanandroid.module.query.presenter;
 
 import com.hongyongfeng.wanandroid.base.BasePresenter;
-import com.hongyongfeng.wanandroid.module.login.model.LoginModel;
 import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
 import com.hongyongfeng.wanandroid.module.query.model.QueryModel;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
