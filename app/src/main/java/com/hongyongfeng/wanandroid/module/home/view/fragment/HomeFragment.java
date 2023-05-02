@@ -33,31 +33,6 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-    public static List<ArticleBean> articleList=new ArrayList<>();
-    @SuppressLint("StaticFieldLeak")
-    public static Activity activity;
-    @SuppressLint("StaticFieldLeak")
-    static HomeArticleAdapter adapter=new HomeArticleAdapter(articleList);
-    private NestedScrollView scrollView;
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        activity=getActivity();
-        ConstraintLayout layout= requireActivity().findViewById(R.id.fragment_home);
-        scrollView=layout.findViewById(R.id.scroll_view_home);
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {   //scrollY是滑动的距离
-                if(scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
-                    //滑动到底部
-                    Toast.makeText(activity, "滑动到了底部", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
         adapter.setOnItemClickListener(new HomeArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
@@ -83,6 +58,32 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+    public static List<ArticleBean> articleList=new ArrayList<>();
+    @SuppressLint("StaticFieldLeak")
+    public static Activity activity;
+    @SuppressLint("StaticFieldLeak")
+    static HomeArticleAdapter adapter=new HomeArticleAdapter(articleList);
+    private NestedScrollView scrollView;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        activity=getActivity();
+        ConstraintLayout layout= requireActivity().findViewById(R.id.fragment_home);
+        scrollView=layout.findViewById(R.id.scroll_view_home);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {   //scrollY是滑动的距离
+                if(scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
+                    //滑动到底部
+                    Toast.makeText(activity, "滑动到了底部", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         initData();
         //根据id获取RecycleView的实例
         RecyclerView recyclerView= activity.findViewById(R.id.rv_article);
@@ -101,6 +102,7 @@ public class HomeFragment extends Fragment {
         //使recyclerView滚动到0索引的位置
         recyclerView.scrollToPosition(0);
     }
+
 
     private void initData() {
         for (int i =0;i<100;i++){
