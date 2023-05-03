@@ -116,11 +116,11 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
 
     @Override
     protected void initView(View view) {
-        tvVisibility=fragmentActivity.findViewById(R.id.password_visibility);
-        tvVisibilityAgain=fragmentActivity.findViewById(R.id.password_visibility_again);
-        edtName =fragmentActivity.findViewById(R.id.edt_login_user_name);
-        edtPwd =fragmentActivity.findViewById(R.id.edt_login_password);
-        edtPwdAgain=fragmentActivity.findViewById(R.id.edt_login_password_again);
+        tvVisibility=fragmentActivity.findViewById(R.id.password_visibility_register);
+        tvVisibilityAgain=fragmentActivity.findViewById(R.id.password_visibility_again_register);
+        edtName =fragmentActivity.findViewById(R.id.edt_register_user_name);
+        edtPwd =fragmentActivity.findViewById(R.id.edt_register_password);
+        edtPwdAgain=fragmentActivity.findViewById(R.id.edt_login_password_again_register);
         btnRegister =fragmentActivity.findViewById(R.id.register);
         tvAccount=fragmentActivity.findViewById(R.id.account_warning);
         tvPwd=fragmentActivity.findViewById(R.id.password_warning);
@@ -287,7 +287,7 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
         int num2 = 2;
         int num0 = 0;
         switch (v.getId()){
-            case R.id.password_visibility:
+            case R.id.password_visibility_register:
                 if (count[0] % num2 == num0){
                     tvVisibility.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_visible,null));
                     edtPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -300,7 +300,7 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
                 }
                 count[0]++;
                 break;
-            case R.id.password_visibility_again:
+            case R.id.password_visibility_again_register:
                 if (count[1] % num2 == num0){
                     tvVisibilityAgain.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_visible,null));
                     edtPwdAgain.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
