@@ -198,11 +198,14 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
                 if (edtPassword.length()>0){
                     tvPwd.setVisibility(View.INVISIBLE);
                     password=1;
-                    if (name==1&&passwordAgain==1){
+
+                    if (passwordAgain==1){
                         if (edtPassword.equals(edtPwdAgain.getText().toString())){
-                            btnRegister.setEnabled(true);
                             tvPwdAgain.setVisibility(View.INVISIBLE);
-                            btnRegister.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.button_shape,null));
+                            if (name==1){
+                                btnRegister.setEnabled(true);
+                                btnRegister.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.button_shape,null));
+                            }
                         }
                         else {
                             btnRegister.setEnabled(false);
