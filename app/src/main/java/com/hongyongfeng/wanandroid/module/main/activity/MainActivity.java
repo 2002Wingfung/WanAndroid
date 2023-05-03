@@ -34,6 +34,7 @@ import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragment;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
+import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.signinorup.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
@@ -67,7 +68,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     private TextView tvProject;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    TestNavFragment fragment;
     private ViewPager viewPager;
     private FragmentVPAdapter adapter;
     private List<Fragment> fragmentList;
@@ -366,7 +366,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     }
 
     public void headerOnClick(View v) {
-        Intent intent=new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent=new Intent(MainActivity.this, SignInUpActivity.class);
         startActivity(intent);
     }
 
