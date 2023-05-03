@@ -44,16 +44,12 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     private FragmentActivity fragmentActivity;
     final int[] count = {0};
 
-    private int layoutId;
 
     public LoginFragment() {
         // Required empty public constructor
-        layoutId=R.layout.fragment_login;
+
     }
-    public LoginFragment(int i) {
-        // Required empty public constructor
-        layoutId=R.layout.fragment_register;
-    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -218,7 +214,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
     @Override
     protected int getFragmentView() {
-        return layoutId;
+        return R.layout.fragment_login;
     }
 
     @SuppressLint("NonConstantResourceId")

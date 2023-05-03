@@ -21,7 +21,7 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginFragmentPresenter;
-
+@Deprecated
 public class BaseLogInUpFragment extends BaseFragment<LoginFragmentPresenter, ILogin.VP> {
     private Button btnLogin;
     private TextView tvVisibility;

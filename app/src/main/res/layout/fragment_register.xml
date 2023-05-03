@@ -175,7 +175,7 @@
             android:layout_marginEnd="25dp"
             android:layout_gravity="end">
             <TextView
-                android:id="@+id/password_warning"
+                android:id="@+id/password_warning_again"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_not_same"
@@ -223,7 +223,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/register"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"

@@ -35,13 +35,10 @@ import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragm
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
-import com.hongyongfeng.wanandroid.module.signinorup.login.view.LoginActivity;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
-import com.hongyongfeng.wanandroid.test.TestNavFragment;
 import com.hongyongfeng.wanandroid.test.VPFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 

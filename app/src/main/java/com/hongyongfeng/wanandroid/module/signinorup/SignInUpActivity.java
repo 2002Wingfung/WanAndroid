@@ -2,17 +2,11 @@ package com.hongyongfeng.wanandroid.module.signinorup;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -31,42 +25,14 @@ import java.util.List;
 public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
     public ILogin.VP getContract() {
-        return new ILogin.VP() {
-            @Override
-            public void requestLoginVP(String name, String pwd) {
-                mPresenter.getContract().requestLoginVP(name,pwd);
-            }
-
-            @Override
-            public void responseLoginResult(boolean loginStatusResult) {
-                Toast.makeText(SignInUpActivity.this, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
-            }
-        };
+        return null;
     }
 
     @Override
     public void initListener() {
-
         tvBack.setOnClickListener(this);
         tvLogin.setOnClickListener(this);
         tvRegister.setOnClickListener(this);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                onViewPagerSelected(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -87,7 +53,6 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         //重置标题栏的文字的颜色
         tvLogin.setTextColor(getResources().getColor(R.color.darker_gray));
         tvRegister.setTextColor(getResources().getColor(R.color.darker_gray));
-
     }
     private void onViewPagerSelected(int position) {
         resetTitleState();
@@ -103,9 +68,11 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         fragmentList=new ArrayList<>();
 
         //fragmentList.add(new BaseLogInUpFragment());
-        fragmentList.add(new LoginFragment());
+        //fragmentList.add(new LoginFragment());
 
         fragmentList.add(new RegisterFragment());
+        fragmentList.add(VPFragment.newInstance("123",""));
+
     }
 
     @Override

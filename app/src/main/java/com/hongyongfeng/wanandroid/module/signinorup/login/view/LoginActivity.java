@@ -20,6 +20,7 @@ import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
 
+@Deprecated
 public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
     public ILogin.VP getContract() {
