@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
+import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragment;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.login.view.LoginActivity;
@@ -214,7 +215,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         VPFragment fragmentProject=VPFragment.newInstance("项目","");
         fragmentList.add(new HomeFragment());
 //        fragmentList.add(fragmentHome);
-        fragmentList.add(fragmentKnowledge);
+        fragmentList.add(new KnowledgeFragment());
 //        fragmentList.add(fragmentProject);
         fragmentList.add(new ProjectFragment());
 

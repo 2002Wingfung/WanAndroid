@@ -52,8 +52,10 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         fragmentActivity=requireActivity();
+
+        super.onViewCreated(view, savedInstanceState);
+        System.out.println(fragmentActivity);
         setRecyclerView();
     }
 
@@ -149,8 +151,10 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     @Override
     protected void initData() {
         if (categoryList.size()==0){
-            for (int i =0;i<20;i++){
-                categoryList.add(new KnowledgeCategoryBean("开发环境"+i,"nihao askdj asd"+i));
+            StringBuilder str=new StringBuilder("abc ");
+            for (int i =1;i<21;i++){
+                categoryList.add(new KnowledgeCategoryBean("开发环境"+i,str.toString()));
+                str.append(i).append("nihao  ");
             }
         }
     }
