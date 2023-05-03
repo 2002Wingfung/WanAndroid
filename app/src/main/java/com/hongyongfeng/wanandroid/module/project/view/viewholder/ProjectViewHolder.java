@@ -21,14 +21,21 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder{
 
 
     public TextView tvTitle;
+    public TextView tvDetails;
     public TextView tvLikes;
+    public TextView tvAuthor;
+    public TextView tvTime;
+
 
 
     public ProjectViewHolder(@NonNull View itemView, final ProjectAdapter.OnItemClickListener onClickListener) {
         super(itemView);
         articleView=itemView;
-        tvTitle=itemView.findViewById(R.id.tv_title);
+        tvTitle=itemView.findViewById(R.id.tv_recycle_project_item_title);
+        tvDetails=itemView.findViewById(R.id.tv_recycle_project_item_desc);
         tvLikes=itemView.findViewById(R.id.likes);
+        tvAuthor=itemView.findViewById(R.id.author);
+        tvTime=itemView.findViewById(R.id.time);
 
 
         final int[] count={0};

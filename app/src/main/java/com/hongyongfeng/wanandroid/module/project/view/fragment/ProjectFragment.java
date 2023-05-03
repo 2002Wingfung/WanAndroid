@@ -167,8 +167,16 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         VPFragment fragment5=VPFragment.newInstance("汽车","");
         VPFragment fragment6=VPFragment.newInstance("历史","");
         VPFragment fragment7=VPFragment.newInstance("地理","");
+
         fragmentList.add(new ProjectArticleFragment());
-        fragmentList.add(fragment2);
+        //在new对象时在构造函数中传入url，然后再在articleFragment中根据url初始化recyclerview
+        fragmentList.add(ProjectArticleFragment.newInstance("nihao",""));
+//        fragmentList.add(new ProjectArticleFragment());
+//        fragmentList.add(new ProjectArticleFragment());
+//        fragmentList.add(new ProjectArticleFragment());
+//        fragmentList.add(new ProjectArticleFragment());
+//        fragmentList.add(new ProjectArticleFragment());
+        //fragmentList.add(fragment2);
         fragmentList.add(fragment3);
         fragmentList.add(fragment4);
         fragmentList.add(fragment5);

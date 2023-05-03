@@ -4,9 +4,9 @@ public class ProjectBean {
     private int articleId;
     private int id;
     private String author;
-    private String category;
+    private String details;
     private boolean likes;
-    private boolean top;
+
     private String url;
     private String title;
     private long publishTime;
@@ -27,12 +27,12 @@ public class ProjectBean {
         this.author = author;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDetails() {
+        return details;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public boolean isLikes() {
@@ -43,13 +43,6 @@ public class ProjectBean {
         this.likes = likes;
     }
 
-    public boolean isTop() {
-        return top;
-    }
-
-    public void setTop(boolean top) {
-        this.top = top;
-    }
 
     public String getUrl() {
         return url;
@@ -81,6 +74,11 @@ public class ProjectBean {
 
     public ProjectBean(int articleId) {
         this.articleId = articleId;
+    }
+
+    public ProjectBean(String title, String details) {
+        this.details = details;
+        this.title = title;
     }
 
     public void setArticleId(int articleId) {

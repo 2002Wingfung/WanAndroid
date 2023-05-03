@@ -63,7 +63,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         //在merchantInfoList集合中获取Merchant对象
         ProjectBean project=articleList.get(position);
         //设置商家图片
-        holder.tvTitle.setText(String.valueOf(project.getArticleId()));
+        holder.tvTitle.setText(project.getTitle());
+        holder.tvDetails.setText(project.getDetails());
 
     }
 
