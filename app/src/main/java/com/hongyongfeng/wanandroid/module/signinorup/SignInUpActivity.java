@@ -48,6 +48,8 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     public void initListener() {
 
         tvBack.setOnClickListener(this);
+        tvLogin.setOnClickListener(this);
+        tvRegister.setOnClickListener(this);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -100,6 +102,7 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     public void initData() {
         fragmentList=new ArrayList<>();
 
+        //fragmentList.add(new BaseLogInUpFragment());
         fragmentList.add(new LoginFragment());
 
         fragmentList.add(new RegisterFragment());
@@ -149,8 +152,20 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.tv_back) {
-            finish();
+        int id=v.getId();
+        switch (id){
+            case R.id.tv_back:
+                finish();
+                break;
+            case R.id.tv_login:
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.tv_register:
+                viewPager.setCurrentItem(2);
+                break;
+            default:
+                break;
         }
+
     }
 }

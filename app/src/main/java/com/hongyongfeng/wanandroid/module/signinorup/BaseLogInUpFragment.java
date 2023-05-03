@@ -1,12 +1,7 @@
-package com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment;
+package com.hongyongfeng.wanandroid.module.signinorup;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -16,23 +11,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginFragmentPresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.VP> {
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+public class BaseLogInUpFragment extends BaseFragment<LoginFragmentPresenter, ILogin.VP> {
     private Button btnLogin;
     private TextView tvVisibility;
     private EditText edtPwd;
@@ -43,48 +33,9 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     private int password=0;
     private FragmentActivity fragmentActivity;
     final int[] count = {0};
-
-    private int layoutId;
-
-    public LoginFragment() {
-        // Required empty public constructor
-        layoutId=R.layout.fragment_login;
-    }
-    public LoginFragment(int i) {
-        // Required empty public constructor
-        layoutId=R.layout.fragment_register;
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fragmentActivity=requireActivity();
-
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -98,6 +49,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
             @Override
             public void responseLoginResult(boolean loginStatusResult) {
+                System.out.println(loginStatusResult);
                 Toast.makeText(fragmentActivity, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
 
             }
@@ -218,7 +170,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
     @Override
     protected int getFragmentView() {
-        return layoutId;
+        return R.layout.fragment_login;
     }
 
     @SuppressLint("NonConstantResourceId")

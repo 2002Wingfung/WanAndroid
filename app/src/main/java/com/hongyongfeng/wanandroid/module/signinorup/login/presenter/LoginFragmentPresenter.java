@@ -4,6 +4,7 @@ package com.hongyongfeng.wanandroid.module.signinorup.login.presenter;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.base.BasePresenter;
+
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel;
 import com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginModel;

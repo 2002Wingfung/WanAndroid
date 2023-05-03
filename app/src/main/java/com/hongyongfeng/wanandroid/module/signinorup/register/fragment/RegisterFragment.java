@@ -9,13 +9,14 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginFragmentPresenter;
+import com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment.LoginFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends BaseFragment<LoginFragmentPresenter, ILogin.VP> {
+public class RegisterFragment extends LoginFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -24,6 +25,7 @@ public class RegisterFragment extends BaseFragment<LoginFragmentPresenter, ILogi
     private String mParam2;
 
     public RegisterFragment() {
+        super(1);
         // Required empty public constructor
     }
 
@@ -53,46 +55,28 @@ public class RegisterFragment extends BaseFragment<LoginFragmentPresenter, ILogi
         }
     }
 
-    @Override
-    public ILogin.VP getContract() {
-        return new ILogin.VP() {
-            @Override
-            public void requestLoginVP(String name, String pwd) {
-
-            }
-
-            @Override
-            public void responseLoginResult(boolean loginStatusResult) {
-
-            }
-        };
-    }
 
 
     @Override
     protected void destroy() {
-
+        super.destroy();
     }
 
     @Override
     protected void initView(View view) {
-
+        super.initView(view);
     }
 
     @Override
     protected void initListener() {
-
+        super.initListener();
     }
 
     @Override
     protected void initData() {
-
+        super.initData();
     }
 
-    @Override
-    protected LoginFragmentPresenter getPresenterInstance() {
-        return new LoginFragmentPresenter();
-    }
 
     @Override
     protected <ERROR> void responseError(ERROR error, Throwable throwable) {
@@ -101,11 +85,12 @@ public class RegisterFragment extends BaseFragment<LoginFragmentPresenter, ILogi
 
     @Override
     protected int getFragmentView() {
-        return R.layout.fragment_register;
+        return super.getFragmentView();
+//        return R.layout.fragment_register;
     }
 
     @Override
     public void onClick(View v) {
-
+        super.onClick(v);
     }
 }
