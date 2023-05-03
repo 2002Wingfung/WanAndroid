@@ -215,14 +215,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             public Object instantiateItem(ViewGroup container, int position) {
                 // TODO Auto-generated method stub
                 View view = viewList.get(position);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //callBack(position);
-                        //回调机制
-                        Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                view.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //callBack(position);
+//                        //回调机制
+//                        Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
                 container.addView(view);
                 return view;
 
@@ -234,26 +234,52 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
         viewPager.setAdapter(pagerAdapter);
-        mHandler.sendEmptyMessageDelayed(0, 1000*3);
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        //按下
+                        mHandler.removeCallbacksAndMessages(null);
+                        System.out.println(123);
+                        //mHandler.removeMessages(0);
+                    }
+                    break;
+
+                    case MotionEvent.ACTION_UP: {
+                        //抬起
+                        System.out.println(333);
+
+                        mHandler.sendEmptyMessageDelayed(0, 1000*3);
+                    }
+                    break;
+                }
+                return false;
+            }
+        });
+
+        mHandler.sendEmptyMessageDelayed(0, 1000*3);
 
         return view;
     }
 
 
     @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler()
+    {
         public void handleMessage(Message msg) {
             int count = 4;
             int index=viewPager.getCurrentItem();
             index=(index+1)%count;
             viewPager.setCurrentItem(index);
-            mHandler.sendEmptyMessageDelayed(0, 1000*2);
+            mHandler.sendEmptyMessageDelayed(0, 1000*3);
         }
     };
     @SuppressLint("MissingSuperCall")
     @Override
     public void onDestroy() {
+
         Log.d("HomeFragment","onDestroy"+ SystemClock.elapsedRealtime());
         super.onDestroy();
     }
