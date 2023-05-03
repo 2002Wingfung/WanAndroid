@@ -2,10 +2,18 @@ package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +27,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
@@ -55,6 +65,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 //
 //        return inflater.inflate(R.layout.fragment_home, container, false);
 //    }
+    View view1,view2,view3,view4;
+    private List<View> viewList;
+    ViewPager viewPager;
+    private Spinner spinner;
+    private ArrayAdapter adapter1;
+
     public static List<ArticleBean> articleList=new ArrayList<>();
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
@@ -73,6 +89,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         //setRecyclerView();
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
     }
+
+
 
     private void setRecyclerView() {
         //获取LinearLayoutManager实例，设置布局方式
@@ -149,6 +167,90 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         Log.d("HomeFragment","onCreate"+ SystemClock.elapsedRealtime());
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+
+        viewPager = (ViewPager) view.findViewById(R.id.indicator_all);
+
+        inflater = getLayoutInflater();
+        view1 = inflater.inflate(R.layout.layout1, null);
+        view2 = inflater.inflate(R.layout.layout2, null);
+        view3 = inflater.inflate(R.layout.layout3, null);
+        view4 = inflater.inflate(R.layout.layout4, null);
+
+
+        viewList = new ArrayList<View>();// 将要分页显示的View装入数组中
+        viewList.add(view1);
+        viewList.add(view2);
+        viewList.add(view3);
+        viewList.add(view4);
+
+
+        PagerAdapter pagerAdapter = new PagerAdapter() {
+
+            @Override
+            public boolean isViewFromObject(@NonNull View arg0, @NonNull Object arg1) {
+                // TODO Auto-generated method stub
+                return arg0 == arg1;
+            }
+
+            @Override
+            public int getCount() {
+                // TODO Auto-generated method stub
+                return viewList.size();
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position,
+                                    @NonNull Object object) {
+                // TODO Auto-generated method stub
+                container.removeView(viewList.get(position));
+            }
+
+            @NonNull
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                // TODO Auto-generated method stub
+                View view = viewList.get(position);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //callBack(position);
+                        //回调机制
+                        Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                container.addView(view);
+                return view;
+
+
+                //return viewList.get(position);
+            }
+
+        };
+
+
+        viewPager.setAdapter(pagerAdapter);
+        mHandler.sendEmptyMessageDelayed(0, 1000*3);
+
+
+        return view;
+    }
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            int count = 4;
+            int index=viewPager.getCurrentItem();
+            index=(index+1)%count;
+            viewPager.setCurrentItem(index);
+            mHandler.sendEmptyMessageDelayed(0, 1000*2);
+        }
+    };
     @SuppressLint("MissingSuperCall")
     @Override
     public void onDestroy() {

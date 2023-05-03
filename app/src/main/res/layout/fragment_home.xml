@@ -28,10 +28,16 @@
 <!--                app:layout_constraintEnd_toEndOf="parent"-->
 <!--                app:layout_constraintTop_toTopOf="parent"-->
 <!--                android:id="@+id/vp"/>-->
-            <ImageView
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="230dp"-->
+<!--                android:background="@drawable/ic_home_24"/>-->
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/indicator_all"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:background="@drawable/ic_home_24"/>
+                android:layout_height="220dp"
+                >
+            </androidx.viewpager.widget.ViewPager>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_article"
