@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.knowledge.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.KnowledgeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.KnowledgeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.knowledge.view.adapter.KnowledgeAdapter;
+import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +144,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
 
             @Override
             public void onCategoryClicked(View view, int position) {
+
                 Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
 
             }

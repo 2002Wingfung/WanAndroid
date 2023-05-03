@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
+import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +131,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void onArticleClicked(View view, int position) {
+                Intent intent=new Intent(fragmentActivity, WebViewActivity.class);
+                intent.putExtra("url","https://www.baidu.com");
+                startActivity(intent);
                 Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
 
             }

@@ -75,7 +75,8 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         }
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
-        webView.loadUrl("https://www.baidu.com");
+        //webView.loadUrl("https://www.baidu.com");
+        webView.loadUrl(url);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
