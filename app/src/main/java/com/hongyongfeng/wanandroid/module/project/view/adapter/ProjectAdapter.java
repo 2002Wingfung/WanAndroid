@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.home.view.viewholder.ArticleViewHolder;
 import com.hongyongfeng.wanandroid.module.project.view.viewholder.ProjectViewHolder;
 
@@ -23,7 +24,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
     /**
      * 存储DishesInformation对象的List集合
      */
-    public List<ArticleBean> articleList;
+    public List<ProjectBean> articleList;
 
     public interface OnItemClickListener {
         void onLikesClicked(View view, int position, TextView likes, int[] count);
@@ -45,7 +46,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
     @NonNull
     @Override
     public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_article,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project_article,parent,false);
         return new ProjectViewHolder(view,mOnItemClickListener);
     }
 
@@ -60,9 +61,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         //在merchantInfoList集合中获取Merchant对象
-        ArticleBean article=articleList.get(position);
+        ProjectBean project=articleList.get(position);
         //设置商家图片
-        holder.tvTitle.setText(String.valueOf(article.getArticleId()));
+        holder.tvTitle.setText(String.valueOf(project.getArticleId()));
 
     }
 
@@ -73,9 +74,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 
     /**
      *
-     * @param articleList
      */
-    public ProjectAdapter(List<ArticleBean> articleList) {
+    public ProjectAdapter(List<ProjectBean> articleList) {
         this.articleList = articleList;
     }
 }

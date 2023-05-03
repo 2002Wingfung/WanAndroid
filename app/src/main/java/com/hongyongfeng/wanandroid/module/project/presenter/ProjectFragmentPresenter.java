@@ -7,8 +7,9 @@ import com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.model.ProjectFragmentModel;
+import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectArticleFragment;
 
-public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragmentModel, HomeFragment, ProjectFragmentInterface.VP> {
+public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragmentModel, ProjectArticleFragment, ProjectFragmentInterface.VP> {
     @Override
     public ProjectFragmentModel getModelInstance() {
         return new ProjectFragmentModel(this);

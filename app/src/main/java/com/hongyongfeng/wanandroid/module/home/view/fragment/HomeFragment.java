@@ -27,6 +27,7 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
+import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
         super.onViewCreated(view, savedInstanceState);
         Log.d("HomeFragment","onViewCreated"+ SystemClock.elapsedRealtime());
-        setRecyclerView();
+        //setRecyclerView();
+        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
     }
 
     private void setRecyclerView() {

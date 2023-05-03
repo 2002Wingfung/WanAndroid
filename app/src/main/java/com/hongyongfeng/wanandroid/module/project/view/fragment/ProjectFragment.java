@@ -167,7 +167,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         VPFragment fragment5=VPFragment.newInstance("汽车","");
         VPFragment fragment6=VPFragment.newInstance("历史","");
         VPFragment fragment7=VPFragment.newInstance("地理","");
-        fragmentList.add(fragment1);
+        fragmentList.add(new ProjectArticleFragment());
         fragmentList.add(fragment2);
         fragmentList.add(fragment3);
         fragmentList.add(fragment4);

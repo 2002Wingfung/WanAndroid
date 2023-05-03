@@ -30,6 +30,7 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder{
         tvTitle=itemView.findViewById(R.id.tv_title);
         tvLikes=itemView.findViewById(R.id.likes);
 
+
         final int[] count={0};
         tvLikes.setOnClickListener(view -> {
             if (onClickListener != null) {
