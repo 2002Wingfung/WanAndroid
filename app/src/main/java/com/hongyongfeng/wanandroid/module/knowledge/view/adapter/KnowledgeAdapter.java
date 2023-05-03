@@ -1,4 +1,4 @@
-package com.hongyongfeng.wanandroid.module.home.view.adapter;
+package com.hongyongfeng.wanandroid.module.knowledge.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,26 +7,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.hongyongfeng.wanandroid.R;
-import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
-import com.hongyongfeng.wanandroid.module.home.view.viewHolder.HomeArticleViewHolder;
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.hongyongfeng.wanandroid.data.net.bean.KnowledgeCategoryBean;
+import com.hongyongfeng.wanandroid.module.knowledge.view.viewholder.KnowledgeViewHolder;
+
 import java.util.List;
 
 /**
  * @author Wingfung Hung
  */
-public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHolder>  {
+public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeViewHolder>  {
 
     /**
      * 存储DishesInformation对象的List集合
      */
-    public List<ArticleBean> articleList;
+    public List<KnowledgeCategoryBean> categoryList;
 
     public interface OnItemClickListener {
-        void onLikesClicked(View view, int position, TextView likes, int[] count);
-        void onArticleClicked(View view, int position);
+        void onCategoryClicked(View view, int position);
 
     }
     private OnItemClickListener mOnItemClickListener;
@@ -43,11 +42,10 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHold
      */
     @NonNull
     @Override
-    public HomeArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public KnowledgeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_article,parent,false);
-        return new HomeArticleViewHolder(view,mOnItemClickListener);
+        return new KnowledgeViewHolder(view,mOnItemClickListener);
     }
-
 
 
     /**
@@ -57,24 +55,23 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleViewHold
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull HomeArticleViewHolder holder, int position) {
-        //在merchantInfoList集合中获取Merchant对象
-        ArticleBean article=articleList.get(position);
-        //设置商家图片
-        holder.tvTitle.setText(String.valueOf(article.getArticleId()));
+    public void onBindViewHolder(@NonNull KnowledgeViewHolder holder, int position) {
+        KnowledgeCategoryBean category=categoryList.get(position);
+
+        holder.tvCategory.setText(category.getCategory());
+        holder.tvDetails.setText(category.getDetailedCategory());
 
     }
 
     @Override
     public int getItemCount() {
-        return articleList.size();
+        return categoryList.size();
     }
 
     /**
      *
-     * @param articleList
      */
-    public HomeArticleAdapter(List<ArticleBean> articleList) {
-        this.articleList = articleList;
+    public KnowledgeAdapter(List<KnowledgeCategoryBean> categoryList) {
+        this.categoryList = categoryList;
     }
 }

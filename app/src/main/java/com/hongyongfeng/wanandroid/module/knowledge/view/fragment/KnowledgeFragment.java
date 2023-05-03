@@ -2,18 +2,34 @@ package com.hongyongfeng.wanandroid.module.knowledge.view.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.data.net.bean.KnowledgeCategoryBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
+import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.KnowledgeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.KnowledgeFragmentPresenter;
+import com.hongyongfeng.wanandroid.module.knowledge.view.adapter.KnowledgeAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +43,36 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
 
     private String mParam1;
     private String mParam2;
+    RecyclerView recyclerView;
+    private FragmentActivity fragmentActivity;
+    public static List<KnowledgeCategoryBean> categoryList=new ArrayList<>();
+
+    static KnowledgeAdapter adapter=new KnowledgeAdapter(categoryList);
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fragmentActivity=requireActivity();
+        setRecyclerView();
+    }
+
+    private void setRecyclerView() {
+        //获取LinearLayoutManager实例，设置布局方式
+        LinearLayoutManager layoutManager=new LinearLayoutManager(fragmentActivity,LinearLayoutManager.VERTICAL,false);
+        //将LinearLayoutManager实例传入RecycleView的实例中，设置RecycleView的item布局
+        recyclerView.setLayoutManager(layoutManager);
+        //通过设置ItemDecoration 来装饰Item的效果,设置间隔线
+        DividerItemDecoration mDivider = new
+                DividerItemDecoration(fragmentActivity,DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(mDivider);
+        //将adapter传入recyclerView对象中
+        recyclerView.setAdapter(adapter);
+        //添加默认动画
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        //使recyclerView滚动到0索引的位置
+        recyclerView.scrollToPosition(0);
+    }
 
     public KnowledgeFragment() {
         // Required empty public constructor
@@ -83,16 +129,30 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     @Override
     protected void initView(View view) {
 
+        //根据id获取RecycleView的实例
+        recyclerView= fragmentActivity.findViewById(R.id.rv_knowledge);
     }
 
     @Override
     protected void initListener() {
 
+        adapter.setOnItemClickListener(new KnowledgeAdapter.OnItemClickListener() {
+
+            @Override
+            public void onCategoryClicked(View view, int position) {
+                Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     @Override
     protected void initData() {
-
+        if (categoryList.size()==0){
+            for (int i =0;i<20;i++){
+                categoryList.add(new KnowledgeCategoryBean("开发环境"+i,"nihao askdj asd"+i));
+            }
+        }
     }
 
     @Override

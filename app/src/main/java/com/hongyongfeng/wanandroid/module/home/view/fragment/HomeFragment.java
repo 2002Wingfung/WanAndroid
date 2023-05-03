@@ -24,7 +24,7 @@ import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
-import com.hongyongfeng.wanandroid.module.home.view.adapter.HomeArticleAdapter;
+import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
     @SuppressLint("StaticFieldLeak")
-    static HomeArticleAdapter adapter=new HomeArticleAdapter(articleList);
+    static ArticleAdapter adapter=new ArticleAdapter(articleList);
     private NestedScrollView scrollView;
     ConstraintLayout layout;
     RecyclerView recyclerView;
@@ -112,7 +112,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
         });
 
-        adapter.setOnItemClickListener(new HomeArticleAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
                 int number2=2;
@@ -129,7 +129,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void onArticleClicked(View view, int position) {
-                Toast.makeText(fragmentActivity, "点击了view", Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
 
             }
         });
