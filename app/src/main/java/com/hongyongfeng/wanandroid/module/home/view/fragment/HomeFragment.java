@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
@@ -215,14 +216,55 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             public Object instantiateItem(ViewGroup container, int position) {
                 // TODO Auto-generated method stub
                 View view = viewList.get(position);
-//                view.setOnClickListener(new View.OnClickListener() {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //callBack(position);
+                        //回调机制
+                        //mHandler.removeCallbacksAndMessages(null);
+                        Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
+                    }
+                });
+//                view.setOnLongClickListener(new View.OnLongClickListener() {
 //                    @Override
-//                    public void onClick(View v) {
-//                        //callBack(position);
-//                        //回调机制
-//                        Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
+//                    public boolean onLongClick(View v) {
+//                        System.out.println("long");
+//                        return false;
 //                    }
 //                });
+                view.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        //System.out.println(event.getAction());
+
+                        switch (event.getAction()) {
+
+                            case MotionEvent.ACTION_DOWN: {
+                                //按下
+                                mHandler.removeCallbacksAndMessages(null);
+                                System.out.println("Down");
+                                break;
+                            }
+
+                            case MotionEvent.ACTION_MOVE:
+                                //System.out.println("move");
+                                break;
+
+                            case MotionEvent.ACTION_CANCEL:
+                                //System.out.println("cancel");
+                                break;
+                            case MotionEvent.ACTION_UP: {
+                                //抬起
+                                mHandler.sendEmptyMessageDelayed(0, 1000*3);
+                                System.out.println("up");
+                                break;
+                            }
+
+                        }
+                        return false;
+                    }
+
+                });
                 container.addView(view);
                 return view;
 
@@ -234,30 +276,51 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                System.out.println(position);
+            }
 
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        //按下
-                        mHandler.removeCallbacksAndMessages(null);
-                        System.out.println(123);
-                        //mHandler.removeMessages(0);
-                    }
-                    break;
+            public void onPageSelected(int position) {
+                System.out.println("position"+position);
+            }
 
-                    case MotionEvent.ACTION_UP: {
-                        //抬起
-                        System.out.println(333);
-
-                        mHandler.sendEmptyMessageDelayed(0, 1000*3);
-                    }
-                    break;
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                System.out.println("state"+state);
+                if (state==0){
+                    mHandler.removeCallbacksAndMessages(null);
+                    mHandler.sendEmptyMessageDelayed(0,3000);
                 }
-                return false;
             }
         });
+//        viewPager.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN: {
+//                        //按下
+//                        mHandler.removeCallbacksAndMessages(null);
+//                        System.out.println(123);
+//                    }
+//                    break;
+//
+//                    case MotionEvent.ACTION_UP: {
+//                        //抬起
+//                        mHandler.sendEmptyMessageDelayed(0, 1000*3);
+//                        System.out.println(333);
+//
+//                    }
+//                    break;
+//                }
+//                return false;
+//            }
+//        });
 
         mHandler.sendEmptyMessageDelayed(0, 1000*3);
 
@@ -266,7 +329,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
     @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler()
+    private Handler mHandler = new Handler(Looper.getMainLooper())
     {
         public void handleMessage(Message msg) {
             int count = 4;
