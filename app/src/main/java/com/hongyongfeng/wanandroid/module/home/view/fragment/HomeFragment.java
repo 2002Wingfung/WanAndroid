@@ -2,7 +2,10 @@ package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,12 +41,18 @@ import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
+import com.hongyongfeng.wanandroid.module.home.interfaces.OnLoadImageListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,18 +201,23 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         view1 = inflater.inflate(R.layout.layout1, null);
         view2 = inflater.inflate(R.layout.layout2, null);
         view3 = inflater.inflate(R.layout.layout3, null);
-        //view4 = inflater.inflate(R.layout.layout4, null);
-
 
         viewList = new ArrayList<>();// 将要分页显示的View装入数组中
         viewList.add(view1);
         viewList.add(view2);
         viewList.add(view3);
-        //viewList.add(view4);
 
         getContract().requestImageVP();
 
-        BannerAdapter pagerAdapter=new BannerAdapter(viewList);
+        BannerAdapter pagerAdapter=new BannerAdapter(viewList,beanLists,new OnLoadImageListener(){
+
+            @Override
+            public void loadImage(Context context, BannerBean bannerBean, int position, View imageView) {
+                String imagePath = bannerBean.getImagePath();
+                ((ImageView)imageView).setImageBitmap(getImageBitmap(imagePath));
+            }
+        });
+
         pagerAdapter.setOnPictureClickListener(new BannerAdapter.OnPictureClickListener() {
             @Override
             public void onPictureClick(int position) {
@@ -281,4 +296,21 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @Override
     public void onClick(View v) {
     }
+    public Bitmap getImageBitmap(String imagePath) {
+        URL imgUrl;
+        Bitmap bitmap = null;
+        try {
+            imgUrl = new URL(imagePath);
+            HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
 }

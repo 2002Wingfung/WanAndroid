@@ -5,11 +5,13 @@ import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.OnLoadImageListener;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
@@ -21,14 +23,14 @@ public class BannerAdapter extends PagerAdapter {
     private List<View> viewList;
     public int up=0;
     public static int down=0;
-    private BannerBean mBannerBean;
+    private List<BannerBean> mBannerBean;
     private OnLoadImageListener mOnLoadImageListener;
 
     /**
      * @param bannerBean          装有图片路径的数据源
      * @param onLoadImageListener 加载图片的回调接口 让调用层处理加载图片的逻辑
      */
-    private BannerAdapter(List<View> viewList,BannerBean bannerBean, OnLoadImageListener onLoadImageListener) {
+    public BannerAdapter(List<View> viewList,List<BannerBean> bannerBean, OnLoadImageListener onLoadImageListener) {
         this.mBannerBean = bannerBean;
         this.mOnLoadImageListener = onLoadImageListener;
         this.viewList = viewList;
@@ -65,6 +67,13 @@ public class BannerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = viewList.get(position);
+        ImageView iv= view.findViewById(R.id.img_banner);
+        //等比例缩放图片,占满容器
+        //iv.setScaleType(ImageView.ScaleType.FIT_XY);
+        if (null!=mOnLoadImageListener){
+            //设置回调,传入数据 让调用层(Activity)去处理加载图片的逻辑
+            mOnLoadImageListener.loadImage(container.getContext(),mBannerBean.get(position),position,iv);
+        }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
