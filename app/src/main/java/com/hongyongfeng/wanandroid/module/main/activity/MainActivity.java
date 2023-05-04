@@ -32,6 +32,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
+import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragment;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
@@ -146,13 +147,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
             @Override
             public void onPageScrollStateChanged(int state) {
                 stateDefault=state;
-                System.out.println("main"+state);
                 if (state==0){
                     stateStart=0;
                     count=0;
                 }
-                if(HomeFragment.down==1&&state==0){
-                    System.out.println("执行");
+                if(BannerAdapter.down==1&&state==0){
                     mHandler.sendEmptyMessageDelayed(0,3000);
                 }
             }

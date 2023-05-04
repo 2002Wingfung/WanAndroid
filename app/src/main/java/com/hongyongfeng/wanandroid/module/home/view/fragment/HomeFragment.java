@@ -37,6 +37,7 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
+import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
@@ -69,10 +70,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     View view1,view2,view3,view4;
     private List<View> viewList;
     static ViewPager viewPager;
-    private Spinner spinner;
-    private ArrayAdapter adapter1;
-    public static int up=0;
-    public static int down=0;
 
 
     public static List<ArticleBean> articleList=new ArrayList<>();
@@ -171,6 +168,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         Log.d("HomeFragment","onCreate"+ SystemClock.elapsedRealtime());
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -192,112 +191,26 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         viewList.add(view3);
         viewList.add(view4);
 
-
-        PagerAdapter pagerAdapter = new PagerAdapter() {
-
+        BannerAdapter pagerAdapter=new BannerAdapter(view1,view2,view3,view4,viewList);
+        pagerAdapter.setOnPictureClickListener(new BannerAdapter.OnPictureClickListener() {
             @Override
-            public boolean isViewFromObject(@NonNull View arg0, @NonNull Object arg1) {
-                // TODO Auto-generated method stub
-                return arg0 == arg1;
+            public void onPictureClick(int position) {
+                Toast.makeText(getActivity(), "clicked"+position, Toast.LENGTH_SHORT).show();
             }
-
-            @Override
-            public int getCount() {
-                // TODO Auto-generated method stub
-                return viewList.size();
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position,
-                                    @NonNull Object object) {
-                // TODO Auto-generated method stub
-                container.removeView(viewList.get(position));
-            }
-
-            @NonNull
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                // TODO Auto-generated method stub
-                View view = viewList.get(position);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //callBack(position);
-                        //回调机制
-                        //mHandler.removeCallbacksAndMessages(null);
-                        Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-                    }
-                });
-//                view.setOnLongClickListener(new View.OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View v) {
-//                        System.out.println("long");
-//                        return false;
-//                    }
-//                });
-                view.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        //System.out.println(event.getAction());
-
-                        switch (event.getAction()) {
-
-                            case MotionEvent.ACTION_DOWN: {
-                                //按下
-                                mHandler.removeCallbacksAndMessages(null);
-                                down=1;
-                                up=0;
-                                System.out.println("Down");
-                                break;
-                            }
-
-                            case MotionEvent.ACTION_MOVE:
-                                //System.out.println("move");
-                                break;
-
-                            case MotionEvent.ACTION_CANCEL:
-                                //System.out.println("cancel");
-                                break;
-                            case MotionEvent.ACTION_UP: {
-                                //抬起
-                                down=0;
-                                up=1;
-                                mHandler.sendEmptyMessageDelayed(0, 1000*3);
-                                System.out.println("up");
-                                break;
-                            }
-
-                        }
-                        return false;
-                    }
-
-                });
-                container.addView(view);
-                return view;
-
-
-                //return viewList.get(position);
-            }
-
-        };
-
+        });
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                System.out.println(position);
             }
 
             @Override
             public void onPageSelected(int position) {
-                System.out.println("position"+position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                System.out.println("state"+state);
                 if (state==0){
                     mHandler.removeCallbacksAndMessages(null);
                     mHandler.sendEmptyMessageDelayed(0,3000);
