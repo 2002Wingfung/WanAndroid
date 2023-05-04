@@ -28,17 +28,15 @@ public class BannerAdapter extends PagerAdapter {
      * @param bannerBean          装有图片路径的数据源
      * @param onLoadImageListener 加载图片的回调接口 让调用层处理加载图片的逻辑
      */
-    private BannerAdapter(BannerBean bannerBean, OnLoadImageListener onLoadImageListener) {
+    private BannerAdapter(List<View> viewList,BannerBean bannerBean, OnLoadImageListener onLoadImageListener) {
         this.mBannerBean = bannerBean;
         this.mOnLoadImageListener = onLoadImageListener;
+        this.viewList = viewList;
     }
 
-    public BannerAdapter(View view1, View view2, View view3, View view4, List<View> viewList) {
-        this.view1 = view1;
-        this.view2 = view2;
-        this.view3 = view3;
-        this.view4 = view4;
+    public BannerAdapter( List<View> viewList) {
         this.viewList = viewList;
+
     }
     public interface OnPictureClickListener{
         void onPictureClick(int position);

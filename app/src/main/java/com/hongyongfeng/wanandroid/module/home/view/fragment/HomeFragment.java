@@ -34,6 +34,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
@@ -49,24 +50,22 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public HomeFragmentInterface.VP getContract() {
         return new HomeFragmentInterface.VP() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
-
+            public void requestImageVP() {
+                mPresenter.getContract().requestImageVP();
             }
 
             @Override
-            public void responseLoginResult(boolean loginStatusResult) {
-
+            public void responseImageResult(List<BannerBean> beanList) {
+                for (BannerBean banner:beanList) {
+                    String url=banner.getUrl();
+                    String imagePath=banner.getImagePath();
+                    System.out.println(url);
+                    System.out.println(imagePath);
+                }
             }
         };
     }
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//
-//
-//        return inflater.inflate(R.layout.fragment_home, container, false);
-//    }
     View view1,view2,view3,view4;
     private List<View> viewList;
     static ViewPager viewPager;
@@ -173,6 +172,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mPresenter=getPresenterInstance();
+        mPresenter.bindView(this);
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 
@@ -185,13 +187,15 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         view4 = inflater.inflate(R.layout.layout4, null);
 
 
-        viewList = new ArrayList<View>();// 将要分页显示的View装入数组中
+        viewList = new ArrayList<>();// 将要分页显示的View装入数组中
         viewList.add(view1);
         viewList.add(view2);
         viewList.add(view3);
         viewList.add(view4);
 
-        BannerAdapter pagerAdapter=new BannerAdapter(view1,view2,view3,view4,viewList);
+        getContract().requestImageVP();
+
+        BannerAdapter pagerAdapter=new BannerAdapter(viewList);
         pagerAdapter.setOnPictureClickListener(new BannerAdapter.OnPictureClickListener() {
             @Override
             public void onPictureClick(int position) {
@@ -217,33 +221,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 }
             }
         });
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN: {
-//                        //按下
-//                        mHandler.removeCallbacksAndMessages(null);
-//                        System.out.println(123);
-//                    }
-//                    break;
-//
-//                    case MotionEvent.ACTION_UP: {
-//                        //抬起
-//                        mHandler.sendEmptyMessageDelayed(0, 1000*3);
-//                        System.out.println(333);
-//
-//                    }
-//                    break;
-//                }
-//                return false;
-//            }
-//        });
-
         mHandler.sendEmptyMessageDelayed(0, 1000*3);
-
         return view;
     }
 
@@ -273,7 +251,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 articleList.add(new ArticleBean(i));
             }
         }
-
     }
 
     @Override
@@ -283,7 +260,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
     @Override
     protected <ERROR> void responseError(ERROR error, Throwable throwable) {
-
     }
 
     @Override
@@ -293,6 +269,5 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
     @Override
     public void onClick(View v) {
-
     }
 }

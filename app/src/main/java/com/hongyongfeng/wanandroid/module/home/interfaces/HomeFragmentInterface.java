@@ -1,11 +1,15 @@
 package com.hongyongfeng.wanandroid.module.home.interfaces;
 
+import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
+
+import java.util.List;
+
 public interface HomeFragmentInterface {
     interface M{
-        void requestLoginM(String name, String pwd)throws Exception;
+        void requestImageM()throws Exception;
     }
     interface VP{
-        void requestLoginVP(String name, String pwd);
-        void responseLoginResult(boolean loginStatusResult);
+        void requestImageVP();
+        void responseImageResult(List<BannerBean> beanList);
     }
 }
