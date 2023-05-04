@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
+import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -117,7 +119,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 //                }
                 if (position==0&&positionOffsetPixels==0){
                     count++;
-                    System.out.println(count);
+                    //System.out.println(count);
                 }else {
                     count=0;
                 }
@@ -144,9 +146,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
             @Override
             public void onPageScrollStateChanged(int state) {
                 stateDefault=state;
+                System.out.println("main"+state);
                 if (state==0){
                     stateStart=0;
                     count=0;
+                }
+                if(HomeFragment.down==1&&state==0){
+                    System.out.println("执行");
+                    mHandler.sendEmptyMessageDelayed(0,3000);
                 }
             }
         });

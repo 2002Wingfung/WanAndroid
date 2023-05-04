@@ -68,9 +68,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 //    }
     View view1,view2,view3,view4;
     private List<View> viewList;
-    ViewPager viewPager;
+    static ViewPager viewPager;
     private Spinner spinner;
     private ArrayAdapter adapter1;
+    public static int up=0;
+    public static int down=0;
+
 
     public static List<ArticleBean> articleList=new ArrayList<>();
     @SuppressLint("StaticFieldLeak")
@@ -242,6 +245,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             case MotionEvent.ACTION_DOWN: {
                                 //按下
                                 mHandler.removeCallbacksAndMessages(null);
+                                down=1;
+                                up=0;
                                 System.out.println("Down");
                                 break;
                             }
@@ -255,6 +260,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                                 break;
                             case MotionEvent.ACTION_UP: {
                                 //抬起
+                                down=0;
+                                up=1;
                                 mHandler.sendEmptyMessageDelayed(0, 1000*3);
                                 System.out.println("up");
                                 break;
@@ -329,7 +336,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
     @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler(Looper.getMainLooper())
+    public static Handler mHandler = new Handler(Looper.getMainLooper())
     {
         public void handleMessage(Message msg) {
             int count = 4;
