@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,12 +57,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void responseImageResult(List<BannerBean> beanList) {
+                beanLists=beanList;
                 for (BannerBean banner:beanList) {
                     String url=banner.getUrl();
                     String imagePath=banner.getImagePath();
                     System.out.println(url);
                     System.out.println(imagePath);
                 }
+                dialog.dismiss();
             }
         };
     }
@@ -69,8 +72,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     View view1,view2,view3,view4;
     private List<View> viewList;
     static ViewPager viewPager;
+    List<BannerBean> beanLists;
 
-
+    ProgressDialog dialog;
     public static List<ArticleBean> articleList=new ArrayList<>();
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
@@ -83,6 +87,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fragmentActivity=requireActivity();
+
 
         super.onViewCreated(view, savedInstanceState);
         Log.d("HomeFragment","onViewCreated"+ SystemClock.elapsedRealtime());
@@ -165,6 +170,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("HomeFragment","onCreate"+ SystemClock.elapsedRealtime());
+        dialog=ProgressDialog.show(requireActivity(),"","正在加载",false,false);
+
     }
 
 
@@ -184,14 +191,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         view1 = inflater.inflate(R.layout.layout1, null);
         view2 = inflater.inflate(R.layout.layout2, null);
         view3 = inflater.inflate(R.layout.layout3, null);
-        view4 = inflater.inflate(R.layout.layout4, null);
+        //view4 = inflater.inflate(R.layout.layout4, null);
 
 
         viewList = new ArrayList<>();// 将要分页显示的View装入数组中
         viewList.add(view1);
         viewList.add(view2);
         viewList.add(view3);
-        viewList.add(view4);
+        //viewList.add(view4);
 
         getContract().requestImageVP();
 
@@ -199,7 +206,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         pagerAdapter.setOnPictureClickListener(new BannerAdapter.OnPictureClickListener() {
             @Override
             public void onPictureClick(int position) {
-                Toast.makeText(getActivity(), "clicked"+position, Toast.LENGTH_SHORT).show();
+                String url=beanLists.get(position).getUrl();
+                Intent intent=new Intent(fragmentActivity,WebViewActivity.class);
+                intent.putExtra("url",url);
+                startActivity(intent);
+                //Toast.makeText(getActivity(), "clicked"+position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -230,7 +241,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public static Handler mHandler = new Handler(Looper.getMainLooper())
     {
         public void handleMessage(Message msg) {
-            int count = 4;
+            int count = 3;
             int index=viewPager.getCurrentItem();
             index=(index+1)%count;
             viewPager.setCurrentItem(index);

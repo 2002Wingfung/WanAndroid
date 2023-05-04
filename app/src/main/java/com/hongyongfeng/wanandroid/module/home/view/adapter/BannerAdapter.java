@@ -69,7 +69,7 @@ public class BannerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 //回调机制
-                onPictureClickListener.onPictureClick(position+1);
+                onPictureClickListener.onPictureClick(position);
             }
         });
         view.setOnTouchListener(new View.OnTouchListener() {
