@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.OnLoadImageListener;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 
 import java.util.List;
@@ -19,6 +21,17 @@ public class BannerAdapter extends PagerAdapter {
     private List<View> viewList;
     public int up=0;
     public static int down=0;
+    private BannerBean mBannerBean;
+    private OnLoadImageListener mOnLoadImageListener;
+
+    /**
+     * @param bannerBean          装有图片路径的数据源
+     * @param onLoadImageListener 加载图片的回调接口 让调用层处理加载图片的逻辑
+     */
+    private BannerAdapter(BannerBean bannerBean, OnLoadImageListener onLoadImageListener) {
+        this.mBannerBean = bannerBean;
+        this.mOnLoadImageListener = onLoadImageListener;
+    }
 
     public BannerAdapter(View view1, View view2, View view3, View view4, List<View> viewList) {
         this.view1 = view1;

@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.knowledge.view.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,6 +147,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
             @Override
             public void onCategoryClicked(View view, int position) {
 
+                ProgressDialog.show(fragmentActivity,"","正在加载",false,true);
                 Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
 
             }
