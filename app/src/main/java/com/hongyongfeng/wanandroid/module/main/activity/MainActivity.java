@@ -156,8 +156,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                 }
             }
         });
-        //默认进入选中首页
-        onViewPagerSelected(0);
+
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -212,10 +211,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     @Override
     public void initData() {
         fragmentList=new ArrayList<>();
-        VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
-
-        VPFragment fragmentKnowledge=VPFragment.newInstance("知识体系","");
-        VPFragment fragmentProject=VPFragment.newInstance("项目","");
+//        VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
+//
+//        VPFragment fragmentKnowledge=VPFragment.newInstance("知识体系","");
+//        VPFragment fragmentProject=VPFragment.newInstance("项目","");
         fragmentList.add(new HomeFragment());
 //        fragmentList.add(fragmentHome);
         fragmentList.add(new KnowledgeFragment());
@@ -231,6 +230,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //默认进入选中首页
+        onViewPagerSelected(0);
         WindowManager wm = this.getWindowManager();//获取屏幕宽高
         int width1 = wm.getDefaultDisplay().getWidth();
         int height1 = wm.getDefaultDisplay().getHeight();
