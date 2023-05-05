@@ -71,9 +71,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
 
     /**
      *
-     * @param articleList
      */
     public ArticleAdapter(List<ArticleBean> articleList) {
         this.articleList = articleList;
     }
+//    public void addData(int position,String name,String price,int imageId,int dishesId) {
+//        DishesInformation dish =new DishesInformation(name,imageId,price,dishesId);
+////      在list中添加数据，并通知条目加入一条
+//        articleList.add(position, dish);
+//        //添加动画
+//        this.notifyItemInserted(position);
+//    }
 }

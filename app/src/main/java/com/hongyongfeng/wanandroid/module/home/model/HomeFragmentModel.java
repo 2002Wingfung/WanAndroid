@@ -92,6 +92,11 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     }
                 });
             }
+
+            @Override
+            public void requestArticleM() throws Exception {
+
+            }
         };
     }
     public void finish(List<BannerBean> beanList,List<Bitmap> bitmapList){

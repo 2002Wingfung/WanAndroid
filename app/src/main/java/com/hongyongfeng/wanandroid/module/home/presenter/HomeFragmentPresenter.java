@@ -4,6 +4,7 @@ package com.hongyongfeng.wanandroid.module.home.presenter;
 import android.graphics.Bitmap;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel;
@@ -40,6 +41,16 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             @Override
             public void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList) {
                 mView.getContract().responseImageResult(beanList,bitmapList);
+            }
+
+            @Override
+            public void requestArticleVP() throws Exception {
+
+            }
+
+            @Override
+            public void responseArticleResult(List<ArticleBean> articleList) {
+
             }
         };
     }

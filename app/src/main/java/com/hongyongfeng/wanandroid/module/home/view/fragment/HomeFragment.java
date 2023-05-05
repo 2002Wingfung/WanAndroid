@@ -78,9 +78,23 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             ImageView imgBanner= view.findViewById(R.id.img_banner);
                             imgBanner.setImageBitmap(bitmapLists.get(i));
                         }
+                        articleList.add(new ArticleBean(1));
+                        articleList.add(new ArticleBean(2));
+                        articleList.add(new ArticleBean(3));
+                        adapter.notifyItemRangeInserted(0,3);
                         dialog.dismiss();
                     }
                 });
+            }
+
+            @Override
+            public void requestArticleVP() throws Exception {
+
+            }
+
+            @Override
+            public void responseArticleResult(List<ArticleBean> articleList) {
+
             }
         };
     }
@@ -175,7 +189,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 intent.putExtra("url","https://www.baidu.com");
                 startActivity(intent);
                 Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -186,10 +199,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         super.onCreate(savedInstanceState);
         Log.d("HomeFragment","onCreate"+ SystemClock.elapsedRealtime());
         dialog=ProgressDialog.show(requireActivity(),"","正在加载",false,false);
-
     }
-
-
 
     @Nullable
     @Override
@@ -202,6 +212,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
         viewPager = view.findViewById(R.id.indicator_all);
+
 
         inflater = getLayoutInflater();
         view1 = inflater.inflate(R.layout.layout1, null);
@@ -236,6 +247,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         });
 
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -284,6 +296,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 //                articleList.add(new ArticleBean(i));
 //            }
 //        }
+
     }
 
     @Override
