@@ -2,11 +2,8 @@ package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,48 +11,31 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
-import com.hongyongfeng.wanandroid.module.home.interfaces.OnLoadImageListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.VP> {
     public Handler dialogHandler=new Handler(Looper.myLooper()){
@@ -104,8 +84,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
 
             @Override
-            public void requestArticleVP() throws Exception {
-
+            public void requestArticleVP()  {
+                mPresenter.getContract().requestArticleVP();
             }
 
             @Override
@@ -140,25 +120,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         Log.d("HomeFragment","onViewCreated"+ SystemClock.elapsedRealtime());
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
     }
-
-
-
-//    private void setRecyclerView() {
-//        //获取LinearLayoutManager实例，设置布局方式
-//        LinearLayoutManager layoutManager=new LinearLayoutManager(fragmentActivity,LinearLayoutManager.VERTICAL,false);
-//        //将LinearLayoutManager实例传入RecycleView的实例中，设置RecycleView的item布局
-//        recyclerView.setLayoutManager(layoutManager);
-//        //通过设置ItemDecoration 来装饰Item的效果,设置间隔线
-//        DividerItemDecoration mDivider = new
-//                DividerItemDecoration(fragmentActivity,DividerItemDecoration.VERTICAL);
-//        recyclerView.addItemDecoration(mDivider);
-//        //将adapter传入recyclerView对象中
-//        recyclerView.setAdapter(adapter);
-//        //添加默认动画
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        //使recyclerView滚动到0索引的位置
-//        recyclerView.scrollToPosition(0);
-//    }
 
     @Override
     protected void destroy() {
@@ -225,6 +186,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         mPresenter.bindView(this);
         if (count==0){
             getContract().requestImageVP();
+            getContract().requestArticleVP();
             count=1;
         }
 

@@ -6,10 +6,12 @@ import android.util.Log;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
+import com.hongyongfeng.wanandroid.test.Bean;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
 import org.json.JSONArray;
@@ -52,15 +54,17 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     List<Bitmap> bitmapList=new ArrayList<>();
 
     List<BannerBean> beanList;
+    private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
+    private static final String ARTICLE_URL="https://www.wanandroid.com/banner/json";
+    private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
+
 
     @Override
     public HomeFragmentInterface.M getContract() {
         return new HomeFragmentInterface.M() {
             @Override
             public void requestImageM() throws Exception {
-
-                String address="https://www.wanandroid.com/banner/json";
-                HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
+                HttpUtil.sendHttpRequest(IMAGE_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
                         beanList= parseJSONWithJSONObject(response);
@@ -87,7 +91,18 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 
             @Override
             public void requestArticleM() throws Exception {
+                HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        List<Bean> articleBeanList=HttpUtil.parseJSONWithJSONObject(response, Bean.class);
 
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
             }
         };
     }

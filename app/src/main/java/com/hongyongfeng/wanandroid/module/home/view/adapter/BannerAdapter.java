@@ -1,21 +1,11 @@
 package com.hongyongfeng.wanandroid.module.home.view.adapter;
 
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
-
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-
-import com.hongyongfeng.wanandroid.R;
-import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
-import com.hongyongfeng.wanandroid.module.home.interfaces.OnLoadImageListener;
-import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
-
 import java.util.List;
 
 public class BannerAdapter extends PagerAdapter {
@@ -23,8 +13,7 @@ public class BannerAdapter extends PagerAdapter {
     private List<View> viewList;
     public int up=0;
     public static int down=0;
-    private List<BannerBean> mBannerBean;
-    private OnLoadImageListener mOnLoadImageListener;
+
 
 //    /**
 //     * @param bannerBean          装有图片路径的数据源

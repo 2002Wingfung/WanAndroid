@@ -15,9 +15,7 @@ public interface HomeFragmentInterface {
     interface VP{
         void requestImageVP();
         void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList);
-        void requestArticleVP()throws Exception;
+        void requestArticleVP();
         void responseArticleResult(List<ArticleBean> articleList);
-
-
     }
 }

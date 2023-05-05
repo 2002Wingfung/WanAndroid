@@ -44,13 +44,17 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
-            public void requestArticleVP() throws Exception {
-
+            public void requestArticleVP()  {
+                try {
+                    mModel.getContract().requestArticleM();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void responseArticleResult(List<ArticleBean> articleList) {
-
+                mView.getContract().responseArticleResult(articleList);
             }
         };
     }
