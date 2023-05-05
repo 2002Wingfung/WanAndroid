@@ -21,6 +21,7 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
 import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
+import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
 import com.hongyongfeng.wanandroid.util.KeyboardUtils;
@@ -29,6 +30,9 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
     HeatedWordsFragment heatedWordsFragment=new HeatedWordsFragment();
+    LoadingFragment loadingFragment=new LoadingFragment();
+    ArticleFragment articleFragment=new ArticleFragment();
+
     TextView tvBack;
     TextView tvClear;
     EditText edtKeyWords;
@@ -43,7 +47,8 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
 
             @Override
             public void responseQueryResult(boolean loginStatusResult) {
-
+                loadFragment();
+                transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
             }
         };
     }
@@ -81,7 +86,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
 
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     Toast.makeText(QueryActivity.this, edtKeyWords.getText().toString(), Toast.LENGTH_SHORT).show();
-                    LoadingFragment loadingFragment=new LoadingFragment();
 
                     loadFragment();
 
