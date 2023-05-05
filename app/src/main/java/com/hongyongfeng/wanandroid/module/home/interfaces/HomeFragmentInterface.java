@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.interfaces;
 
+import android.graphics.Bitmap;
+
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 
 import java.util.List;
@@ -10,6 +12,6 @@ public interface HomeFragmentInterface {
     }
     interface VP{
         void requestImageVP();
-        void responseImageResult(List<BannerBean> beanList);
+        void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList);
     }
 }

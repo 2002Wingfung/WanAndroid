@@ -72,7 +72,7 @@ public class BannerAdapter extends PagerAdapter {
         //iv.setScaleType(ImageView.ScaleType.FIT_XY);
         if (null!=mOnLoadImageListener){
             //设置回调,传入数据 让调用层(Activity)去处理加载图片的逻辑
-            mOnLoadImageListener.loadImage(container.getContext(),mBannerBean.get(position),position,iv);
+            //mOnLoadImageListener.loadImage(container.getContext(),mBannerBean.get(position),position,iv);
         }
         view.setOnClickListener(new View.OnClickListener() {
             @Override

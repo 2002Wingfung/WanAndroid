@@ -2,6 +2,7 @@ package com.hongyongfeng.wanandroid.module.webview.view;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 /**
  * @author Wingfung Hung
@@ -216,6 +218,11 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
 
                     @Override
                     public void onError(Exception e) {
+
+                    }
+
+                    @Override
+                    public void onBitmapFinish(List<Bitmap> bitmapList) {
 
                     }
                 });

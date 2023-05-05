@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
@@ -13,6 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +48,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         }
         return beanList;
     }
+    List<Bitmap> bitmapList=new ArrayList<>();
 
     List<BannerBean> beanList;
 
@@ -56,18 +63,89 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         beanList= parseJSONWithJSONObject(response);
-                        finish();
+                        Log.d("beanlist",beanList.toString());
+                        requestImageBitmap(beanList, new HttpCallbackListener() {
+                            @Override
+                            public void onFinish(String response) {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+
+                            @Override
+                            public void onBitmapFinish(List<Bitmap> bitmapList) {
+                                System.out.println("bitmap"+bitmapList);
+                                finish(beanList,bitmapList);
+                            }
+                        });
                     }
 
                     @Override
                     public void onError(Exception e) {
 
                     }
+
+                    @Override
+                    public void onBitmapFinish(List<Bitmap> bitmapList) {
+
+                    }
                 });
             }
         };
     }
-    public void finish(){
-        mPresenter.getContract().responseImageResult(beanList);
+    public void finish(List<BannerBean> beanList,List<Bitmap> bitmapList){
+        //处理得到的beanlist
+        //将beanlist储存为bitmap数组进行返回
+        mPresenter.getContract().responseImageResult(beanList,bitmapList);
+    }
+    public void requestImageBitmap(List<BannerBean> beanList,final HttpCallbackListener listener) {
+        System.out.println(true);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection conn=null;
+                InputStream is=null;
+                Log.d("run","true");
+                try {
+                    for (BannerBean bannerBean:beanList) {
+                        String imagePath = bannerBean.getImagePath();
+
+                        URL imgUrl = new URL(imagePath);
+                        conn = (HttpURLConnection) imgUrl.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+                        is = conn.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        bitmapList.add(bitmap);
+                    }
+                    if (listener!=null){
+                        //回调onFinish()方法
+                        listener.onBitmapFinish(bitmapList);
+                    }
+                } catch (IOException e) {
+                    if (listener!=null){
+                        //回调onError()方法
+                        listener.onError(e);
+                        e.printStackTrace();
+                    }
+                }finally {
+                    if (is!=null&&listener!=null){
+                        try {
+                            is.close();
+                        }catch (IOException e){
+                            listener.onError(e);
+                        }
+                    }
+                    if (conn !=null){
+                        conn.disconnect();
+                    }
+                }
+
+            }
+        }).start();
     }
 }

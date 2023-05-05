@@ -66,7 +66,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
 
             @Override
-            public void responseImageResult(List<BannerBean> beanList) {
+            public void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList) {
                 beanLists=beanList;
                 for (BannerBean banner:beanList) {
                     String url=banner.getUrl();
@@ -74,15 +74,18 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     System.out.println(url);
                     System.out.println(imagePath);
                 }
+                //System.out.println(bitmapList);
+                bitmapLists=bitmapList;
                 dialog.dismiss();
             }
         };
     }
 
-    View view1,view2,view3,view4;
+    View view1,view2,view3;
     private List<View> viewList;
     static ViewPager viewPager;
     List<BannerBean> beanLists;
+    List<Bitmap> bitmapLists;
 
     ProgressDialog dialog;
     public static List<ArticleBean> articleList=new ArrayList<>();
@@ -97,8 +100,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fragmentActivity=requireActivity();
-
-
         super.onViewCreated(view, savedInstanceState);
         Log.d("HomeFragment","onViewCreated"+ SystemClock.elapsedRealtime());
         //setRecyclerView();
@@ -213,8 +214,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void loadImage(Context context, BannerBean bannerBean, int position, View imageView) {
-                String imagePath = bannerBean.getImagePath();
-                ((ImageView)imageView).setImageBitmap(getImageBitmap(imagePath));
+                //String imagePath = bannerBean.getImagePath();
+                //((ImageView)imageView).setImageBitmap(getImageBitmap(imagePath));
             }
         });
 
@@ -295,22 +296,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
     @Override
     public void onClick(View v) {
-    }
-    public Bitmap getImageBitmap(String imagePath) {
-        URL imgUrl;
-        Bitmap bitmap = null;
-        try {
-            imgUrl = new URL(imagePath);
-            HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
     }
 
 }
