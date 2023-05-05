@@ -2,6 +2,9 @@ package com.hongyongfeng.wanandroid.module.query.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -11,6 +14,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -43,15 +48,26 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
             @Override
             public void requestQueryVP(String name) {
 
+                mPresenter.getContract().requestQueryVP(name);
             }
 
             @Override
             public void responseQueryResult(boolean loginStatusResult) {
                 loadFragment();
-                transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+                handler.sendEmptyMessageDelayed(0,2000);
+//                transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
             }
         };
     }
+    Handler handler=new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            System.out.println(msg.what);
+            transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+
+        }
+    };
 
     @Override
     public void initListener() {
@@ -88,14 +104,22 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                     Toast.makeText(QueryActivity.this, edtKeyWords.getText().toString(), Toast.LENGTH_SHORT).show();
 
                     loadFragment();
-//                    transaction.hide(heatedWordsFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+                    if (!articleFragment.isAdded()){
+//                        transaction.hide(heatedWordsFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
 
-                    transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+
+                    }
+
+                    if (!loadingFragment.isAdded()){
+                        transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                        getContract().requestQueryVP("");
+                    }
 
                     // 在这里写搜索的操作,一般都是网络请求数据
                 }
-                //点击搜索的时候隐藏软键盘·
+                //点击搜索的时候隐藏软键盘
                 return false;
+
             }
         });
     }
@@ -147,6 +171,10 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
         switch (v.getId()){
             case R.id.tv_clear:
                 edtKeyWords.setText("");
+                loadFragment();
+                if (articleFragment.isVisible()){
+                    transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+                }
                 break;
             case R.id.tv_back:
                 finish();

@@ -91,10 +91,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             ImageView imgBanner= view.findViewById(R.id.img_banner);
                             imgBanner.setImageBitmap(bitmapLists.get(i));
                         }
-                        articleList.add(new ArticleBean(1));
-                        articleList.add(new ArticleBean(2));
-                        articleList.add(new ArticleBean(3));
-                        adapter.notifyItemRangeInserted(0,3);
+                        if (!(articleList.size()==3)){
+                            articleList.add(new ArticleBean(1));
+                            articleList.add(new ArticleBean(2));
+                            articleList.add(new ArticleBean(3));
+                            adapter.notifyItemRangeInserted(0,3);
+                        }
                         dialogHandler.sendEmptyMessageDelayed(1,500);
                     }
                 });
@@ -129,13 +131,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     private NestedScrollView scrollView;
     ConstraintLayout layout;
     RecyclerView recyclerView;
+    private int count=0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fragmentActivity=requireActivity();
         super.onViewCreated(view, savedInstanceState);
         Log.d("HomeFragment","onViewCreated"+ SystemClock.elapsedRealtime());
-        //setRecyclerView();
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
     }
 
@@ -221,7 +223,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
-        getContract().requestImageVP();
+        if (count==0){
+            getContract().requestImageVP();
+            count=1;
+        }
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 

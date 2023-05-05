@@ -11,6 +11,12 @@ public class QueryModel extends BaseModel<QueryPresenter, Query.M> {
 
     @Override
     public Query.M getContract() {
-        return null;
+        return new Query.M() {
+            @Override
+            public void requestQueryM(String name) throws Exception {
+                mPresenter.getContract().responseQueryResult(true);
+
+            }
+        };
     }
 }

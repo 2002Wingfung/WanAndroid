@@ -14,6 +14,20 @@ public class QueryPresenter extends BasePresenter<QueryModel, QueryActivity, Que
 
     @Override
     public Query.VP getContract() {
-        return null;
+        return new Query.VP() {
+            @Override
+            public void requestQueryVP(String name) {
+                try {
+                    mModel.getContract().requestQueryM(name);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void responseQueryResult(boolean loginStatusResult) {
+                mView.getContract().responseQueryResult(loginStatusResult);
+            }
+        };
     }
 }
