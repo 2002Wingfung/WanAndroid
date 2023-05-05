@@ -55,6 +55,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.VP> {
     @Override
@@ -68,15 +69,18 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList) {
                 beanLists=beanList;
-                for (BannerBean banner:beanList) {
-                    String url=banner.getUrl();
-                    String imagePath=banner.getImagePath();
-                    System.out.println(url);
-                    System.out.println(imagePath);
-                }
-                //System.out.println(bitmapList);
                 bitmapLists=bitmapList;
-                dialog.dismiss();
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i =0;i<viewList.size();i++){
+                            View view=viewList.get(i);
+                            ImageView imgBanner= view.findViewById(R.id.img_banner);
+                            imgBanner.setImageBitmap(bitmapLists.get(i));
+                        }
+                        dialog.dismiss();
+                    }
+                });
             }
         };
     }
@@ -108,22 +112,22 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
 
-    private void setRecyclerView() {
-        //获取LinearLayoutManager实例，设置布局方式
-        LinearLayoutManager layoutManager=new LinearLayoutManager(fragmentActivity,LinearLayoutManager.VERTICAL,false);
-        //将LinearLayoutManager实例传入RecycleView的实例中，设置RecycleView的item布局
-        recyclerView.setLayoutManager(layoutManager);
-        //通过设置ItemDecoration 来装饰Item的效果,设置间隔线
-        DividerItemDecoration mDivider = new
-                DividerItemDecoration(fragmentActivity,DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(mDivider);
-        //将adapter传入recyclerView对象中
-        recyclerView.setAdapter(adapter);
-        //添加默认动画
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //使recyclerView滚动到0索引的位置
-        recyclerView.scrollToPosition(0);
-    }
+//    private void setRecyclerView() {
+//        //获取LinearLayoutManager实例，设置布局方式
+//        LinearLayoutManager layoutManager=new LinearLayoutManager(fragmentActivity,LinearLayoutManager.VERTICAL,false);
+//        //将LinearLayoutManager实例传入RecycleView的实例中，设置RecycleView的item布局
+//        recyclerView.setLayoutManager(layoutManager);
+//        //通过设置ItemDecoration 来装饰Item的效果,设置间隔线
+//        DividerItemDecoration mDivider = new
+//                DividerItemDecoration(fragmentActivity,DividerItemDecoration.VERTICAL);
+//        recyclerView.addItemDecoration(mDivider);
+//        //将adapter传入recyclerView对象中
+//        recyclerView.setAdapter(adapter);
+//        //添加默认动画
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        //使recyclerView滚动到0索引的位置
+//        recyclerView.scrollToPosition(0);
+//    }
 
     @Override
     protected void destroy() {
@@ -192,11 +196,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
+        getContract().requestImageVP();
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 
-        viewPager = (ViewPager) view.findViewById(R.id.indicator_all);
+        viewPager = view.findViewById(R.id.indicator_all);
 
         inflater = getLayoutInflater();
         view1 = inflater.inflate(R.layout.layout1, null);
@@ -208,17 +213,17 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         viewList.add(view2);
         viewList.add(view3);
 
-        getContract().requestImageVP();
 
-        BannerAdapter pagerAdapter=new BannerAdapter(viewList,beanLists,new OnLoadImageListener(){
-
-            @Override
-            public void loadImage(Context context, BannerBean bannerBean, int position, View imageView) {
-                //String imagePath = bannerBean.getImagePath();
-                //((ImageView)imageView).setImageBitmap(getImageBitmap(imagePath));
-            }
-        });
-
+//        BannerAdapter pagerAdapter=new BannerAdapter(viewList,beanLists,new OnLoadImageListener(){
+//
+//            @Override
+//            public void loadImage(int position, View imageView) {
+//                //.out.println(bitmapLists.get(position));
+//                //String imagePath = bannerBean.getImagePath();
+//                //((ImageView)imageView).setImageBitmap(getImageBitmap(imagePath));
+//            }
+//        });
+        BannerAdapter pagerAdapter=new BannerAdapter(viewList);
         pagerAdapter.setOnPictureClickListener(new BannerAdapter.OnPictureClickListener() {
             @Override
             public void onPictureClick(int position) {
@@ -272,12 +277,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         super.onDestroy();
     }
 
+    @Override
     protected void initData() {
-        if (articleList.size()==0){
-            for (int i =0;i<20;i++){
-                articleList.add(new ArticleBean(i));
-            }
-        }
+//        if (articleList.size()==0){
+//            for (int i =0;i<20;i++){
+//                articleList.add(new ArticleBean(i));
+//            }
+//        }
     }
 
     @Override

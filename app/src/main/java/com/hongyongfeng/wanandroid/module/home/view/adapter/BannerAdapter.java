@@ -26,15 +26,15 @@ public class BannerAdapter extends PagerAdapter {
     private List<BannerBean> mBannerBean;
     private OnLoadImageListener mOnLoadImageListener;
 
-    /**
-     * @param bannerBean          装有图片路径的数据源
-     * @param onLoadImageListener 加载图片的回调接口 让调用层处理加载图片的逻辑
-     */
-    public BannerAdapter(List<View> viewList,List<BannerBean> bannerBean, OnLoadImageListener onLoadImageListener) {
-        this.mBannerBean = bannerBean;
-        this.mOnLoadImageListener = onLoadImageListener;
-        this.viewList = viewList;
-    }
+//    /**
+//     * @param bannerBean          装有图片路径的数据源
+//     * @param onLoadImageListener 加载图片的回调接口 让调用层处理加载图片的逻辑
+//     */
+//    public BannerAdapter(List<View> viewList,List<BannerBean> bannerBean, OnLoadImageListener onLoadImageListener) {
+//        this.mBannerBean = bannerBean;
+//        this.mOnLoadImageListener = onLoadImageListener;
+//        this.viewList = viewList;
+//    }
 
     public BannerAdapter( List<View> viewList) {
         this.viewList = viewList;
@@ -65,15 +65,15 @@ public class BannerAdapter extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = viewList.get(position);
-        ImageView iv= view.findViewById(R.id.img_banner);
-        //等比例缩放图片,占满容器
-        //iv.setScaleType(ImageView.ScaleType.FIT_XY);
-        if (null!=mOnLoadImageListener){
-            //设置回调,传入数据 让调用层(Activity)去处理加载图片的逻辑
-            //mOnLoadImageListener.loadImage(container.getContext(),mBannerBean.get(position),position,iv);
-        }
+//        ImageView iv= view.findViewById(R.id.img_banner);
+//        //等比例缩放图片,占满容器
+//        //iv.setScaleType(ImageView.ScaleType.FIT_XY);
+//        if (null!=mOnLoadImageListener){
+//            //设置回调,传入数据 让调用层(Activity)去处理加载图片的逻辑
+//            mOnLoadImageListener.loadImage(position,iv);
+//        }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

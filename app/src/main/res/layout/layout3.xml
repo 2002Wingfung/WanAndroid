@@ -8,9 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/img_banner"
-
-        android:background="@drawable/button_shape">
-
+        android:src="@drawable/ic_loading"
+        >
     </ImageView>
 
 

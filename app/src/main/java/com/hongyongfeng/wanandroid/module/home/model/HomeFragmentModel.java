@@ -37,9 +37,9 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 String id =jsonObject.getString("id");
                 String imagePath =jsonObject.getString("imagePath");
                 String url =jsonObject.getString("url");
-                Log.d("MainActivity","id is "+id);
-                Log.d("MainActivity","imagePath is "+imagePath);
-                Log.d("MainActivity","url is "+url);
+//                Log.d("MainActivity","id is "+id);
+//                Log.d("MainActivity","imagePath is "+imagePath);
+//                Log.d("MainActivity","url is "+url);
                 BannerBean bannerBean=new BannerBean(imagePath,url);
                 beanList.add(bannerBean);
             }
@@ -63,7 +63,6 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         beanList= parseJSONWithJSONObject(response);
-                        Log.d("beanlist",beanList.toString());
                         requestImageBitmap(beanList, new HttpCallbackListener() {
                             @Override
                             public void onFinish(String response) {
@@ -77,7 +76,6 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 
                             @Override
                             public void onBitmapFinish(List<Bitmap> bitmapList) {
-                                System.out.println("bitmap"+bitmapList);
                                 finish(beanList,bitmapList);
                             }
                         });
@@ -102,18 +100,14 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         mPresenter.getContract().responseImageResult(beanList,bitmapList);
     }
     public void requestImageBitmap(List<BannerBean> beanList,final HttpCallbackListener listener) {
-        System.out.println(true);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection conn=null;
                 InputStream is=null;
-                Log.d("run","true");
                 try {
                     for (BannerBean bannerBean:beanList) {
                         String imagePath = bannerBean.getImagePath();
-
                         URL imgUrl = new URL(imagePath);
                         conn = (HttpURLConnection) imgUrl.openConnection();
                         conn.setDoInput(true);
