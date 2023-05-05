@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.util;
 
+import android.util.Log;
+
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 
@@ -26,7 +28,7 @@ public class HttpUtil {
         List<T> list=new ArrayList<>();
         try {
             int indexStart=toString.indexOf('[');
-            int indexEnd=toString.indexOf(']');
+            int indexEnd=toString.lastIndexOf(']');
             Field[] fields=c.getDeclaredFields();
             T t;
             JSONArray jsonArray=new JSONArray(toString.substring(indexStart,indexEnd+1));
@@ -36,23 +38,23 @@ public class HttpUtil {
                 List<String> jsonFieldList=new ArrayList<>();
                 while (keys.hasNext()){
                     String jsonField=keys.next();
-                    System.out.println(jsonField);
                     jsonFieldList.add(jsonField);
-                    System.out.println(jsonObject.optString(jsonField));
                 }
 
-//                String id =jsonObject.getString("id");
-//                String imagePath =jsonObject.getString("imagePath");
-//                String url =jsonObject.getString("url");
-//                Log.d("MainActivity","id is "+id);
-//                Log.d("MainActivity","imagePath is "+imagePath);
-//                Log.d("MainActivity","url is "+url);
-
                 t=c.newInstance();
+                System.out.println(fields.length);
                 for (int j=0;j<fields.length;j++){
-                    fields[i].setAccessible(true);
+                    fields[j].setAccessible(true);
+                    String fieldName=fields[j].getName();
+                    Log.d("field",fieldName);
+                    for (String jsonFieldName:jsonFieldList) {
+                        Log.d("jsonField",jsonFieldName);
 
-                    fields[i].set(t,jsonObject.getString(jsonFieldList.get(j)));
+                        if (fieldName.equals(jsonFieldName)){
+                            fields[j].set(t,jsonObject.getString(jsonFieldName));
+                            break;
+                        }
+                    }
                 }
                 list.add(t);
             }

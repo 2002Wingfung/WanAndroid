@@ -1,17 +1,20 @@
 package com.hongyongfeng.wanandroid.data.net.bean;
 
-import java.util.List;
-
 public class ArticleBean {
+    public ArticleBean() {
+    }
+
     private int articleId;
     private int id;
     private String author;
     private String category;
     private boolean likes;
     private boolean top;
-    private String url;
+    private String link;
     private String title;
     private long publishTime;
+    private String superChapterName;
+    private String chapterName;
 
     public int getId() {
         return id;
@@ -53,12 +56,12 @@ public class ArticleBean {
         this.top = top;
     }
 
-    public String getUrl() {
-        return url;
+    public String getLink() {
+        return link;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getTitle() {

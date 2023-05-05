@@ -55,7 +55,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 
     List<BannerBean> beanList;
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
-    private static final String ARTICLE_URL="https://www.wanandroid.com/banner/json";
+    private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
     private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
 
 
@@ -94,8 +94,9 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        List<Bean> articleBeanList=HttpUtil.parseJSONWithJSONObject(response, Bean.class);
-
+                        List<ArticleBean> articleBeanList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        ArticleBean articleBean=articleBeanList.get(0);
+                        System.out.println(articleBean.getArticleId());
                     }
 
                     @Override
