@@ -220,11 +220,6 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                     public void onError(Exception e) {
 
                     }
-
-                    @Override
-                    public void onBitmapFinish(List<Bitmap> bitmapList) {
-
-                    }
                 });
                 break;
         }

@@ -8,6 +8,7 @@ import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
+import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
@@ -63,12 +64,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         beanList= parseJSONWithJSONObject(response);
-                        requestImageBitmap(beanList, new HttpCallbackListener() {
-                            @Override
-                            public void onFinish(String response) {
-
-                            }
-
+                        requestImageBitmap(beanList, new ImageCallbackListener() {
                             @Override
                             public void onError(Exception e) {
 
@@ -77,17 +73,13 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                             @Override
                             public void onBitmapFinish(List<Bitmap> bitmapList) {
                                 finish(beanList,bitmapList);
+
                             }
                         });
                     }
 
                     @Override
                     public void onError(Exception e) {
-
-                    }
-
-                    @Override
-                    public void onBitmapFinish(List<Bitmap> bitmapList) {
 
                     }
                 });
@@ -104,7 +96,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         //将beanlist储存为bitmap数组进行返回
         mPresenter.getContract().responseImageResult(beanList,bitmapList);
     }
-    public void requestImageBitmap(List<BannerBean> beanList,final HttpCallbackListener listener) {
+    public void requestImageBitmap(List<BannerBean> beanList,final ImageCallbackListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -143,7 +135,6 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                         conn.disconnect();
                     }
                 }
-
             }
         }).start();
     }
