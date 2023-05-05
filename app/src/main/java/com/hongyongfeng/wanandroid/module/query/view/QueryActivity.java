@@ -88,6 +88,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                     Toast.makeText(QueryActivity.this, edtKeyWords.getText().toString(), Toast.LENGTH_SHORT).show();
 
                     loadFragment();
+//                    transaction.hide(heatedWordsFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
 
                     transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
 

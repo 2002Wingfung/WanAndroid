@@ -58,6 +58,19 @@ import java.util.List;
 import java.util.Objects;
 
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.VP> {
+    public Handler dialogHandler=new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    dialog.dismiss();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     @Override
     public HomeFragmentInterface.VP getContract() {
         return new HomeFragmentInterface.VP() {
@@ -82,9 +95,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         articleList.add(new ArticleBean(2));
                         articleList.add(new ArticleBean(3));
                         adapter.notifyItemRangeInserted(0,3);
-                        dialog.dismiss();
+                        dialogHandler.sendEmptyMessageDelayed(1,500);
                     }
                 });
+
             }
 
             @Override
@@ -99,13 +113,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         };
     }
 
+
     View view1,view2,view3;
     private List<View> viewList;
     static ViewPager viewPager;
     List<BannerBean> beanLists;
     List<Bitmap> bitmapLists;
 
-    ProgressDialog dialog;
+    static ProgressDialog dialog;
     public static List<ArticleBean> articleList=new ArrayList<>();
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
