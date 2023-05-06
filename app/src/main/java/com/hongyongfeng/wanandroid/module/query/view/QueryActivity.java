@@ -155,7 +155,17 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
     public <ERROR> void responseError(ERROR error, Throwable throwable) {
 
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && articleFragment.isVisible()) {
+            loadFragment();
+            System.out.println(true);
+            transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+            //返回搜索热词页面
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);//退出H5界面
+    }
     @Override
     public void initView() {
         tvBack=findViewById(R.id.tv_back);

@@ -76,7 +76,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             ImageView imgBanner = view.findViewById(R.id.img_banner);
                             imgBanner.setImageBitmap(bitmapLists.get(i));
                         }
-                        dialogHandler.sendEmptyMessageDelayed(1, 1000);
+                        dialogHandler.sendEmptyMessageDelayed(1, 500);
                     }
                 });
             }

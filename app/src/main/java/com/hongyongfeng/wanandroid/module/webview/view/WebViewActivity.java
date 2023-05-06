@@ -117,7 +117,7 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                 }
             }
         });
-
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE,null);//开启硬件加速
     }
 
     @Override
