@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.model;
 
+import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -24,6 +26,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, HomeFragmentInterface.M> {
     public HomeFragmentModel(HomeFragmentPresenter mPresenter) {
@@ -51,6 +55,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         }
         return beanList;
     }
+
     List<Bitmap> bitmapList=new ArrayList<>();
     List<ArticleBean> articleBeanList;
     List<ArticleBean> articleTopList;
@@ -149,7 +154,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         mPresenter.getContract().responseImageResult(beanList,bitmapList);
     }
     public void requestImageBitmap(List<BannerBean> beanList,final ImageCallbackListener listener) {
-        new Thread(new Runnable() {
+        es.execute(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection conn=null;
@@ -188,6 +193,12 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     }
                 }
             }
-        }).start();
+        });
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }).start();
     }
 }
