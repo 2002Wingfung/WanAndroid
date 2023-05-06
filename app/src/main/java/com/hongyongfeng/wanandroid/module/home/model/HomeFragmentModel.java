@@ -52,7 +52,8 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         return beanList;
     }
     List<Bitmap> bitmapList=new ArrayList<>();
-
+    List<ArticleBean> articleBeanList;
+    List<ArticleBean> articleTopList;
     List<BannerBean> beanList;
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
     private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
@@ -91,11 +92,26 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 
             @Override
             public void requestArticleM() throws Exception {
+                HttpUtil.sendHttpRequest(ARTICLE_TOP_URL, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        articleTopList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        if (articleBeanList.size()!=0){
+                            mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
+                        }
+                    }
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
                 HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        List<ArticleBean> articleBeanList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
-                        mPresenter.getContract().responseArticleResult(articleBeanList);
+                        articleBeanList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        if (articleTopList.size()!=0){
+                            mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
+                        }
                     }
 
                     @Override

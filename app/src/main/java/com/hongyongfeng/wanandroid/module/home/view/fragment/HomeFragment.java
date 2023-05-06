@@ -84,14 +84,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
 
             @Override
-            public void responseArticleResult(List<ArticleBean> articleLists) {
-                System.out.println(articleLists);
+            public void responseArticleResult(List<ArticleBean> articleLists,List<ArticleBean> articleTopLists) {
                 if ((articleList.size()==0)){
+                    for (ArticleBean article:articleTopLists){
+                        article.setId(-1);
+                        articleList.add(article);
+                    }
                     articleList.addAll(articleLists);
-//                    articleList.add(new ArticleBean(2));
-//                    articleList.add(new ArticleBean(3));
                     adapter.notifyItemInserted(0);
-                    //adapter.notifyItemRangeInserted(0,3);
                 }
             }
         };
@@ -166,7 +166,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent=new Intent(fragmentActivity, WebViewActivity.class);
-
                 intent.putExtra("url",articleList.get(position).getLink());
                 startActivity(intent);
                 //Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();

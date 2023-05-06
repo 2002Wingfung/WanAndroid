@@ -53,8 +53,8 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
-            public void responseArticleResult(List<ArticleBean> articleList) {
-                mView.getContract().responseArticleResult(articleList);
+            public void responseArticleResult(List<ArticleBean> articleList,List<ArticleBean> articleTopLists) {
+                mView.getContract().responseArticleResult(articleList,articleTopLists);
             }
         };
     }

@@ -65,8 +65,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         holder.tvCategory.setText(category);
         holder.tvTime.setText(article.getNiceDate());
         holder.tvAuthor.setText(article.getAuthor());
-        //tvtop判断布尔值
-
+        //tvTop
+        if (article.getId()==-1){
+            holder.tvTop.setText("置顶");
+        }
     }
 
     @Override
