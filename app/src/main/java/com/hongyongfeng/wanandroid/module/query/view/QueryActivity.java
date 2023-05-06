@@ -63,8 +63,12 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            System.out.println(msg.what);
-            transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+            //System.out.println(msg.what);
+            if (!articleFragment.isAdded()){
+                transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+            }else {
+                transaction.hide(loadingFragment).show(articleFragment).commit();
+            }
 
         }
     };
@@ -112,8 +116,10 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
 
                     if (!loadingFragment.isAdded()){
                         transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
-                        getContract().requestQueryVP("");
+                    }else {
+                        transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
                     }
+                    getContract().requestQueryVP("");
 
                     // 在这里写搜索的操作,一般都是网络请求数据
                 }

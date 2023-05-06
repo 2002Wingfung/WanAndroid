@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.home.view.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +61,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         ArticleBean article=articleList.get(position);
         //holder.tvId.setText(String.valueOf(article.getId()));
         holder.tvTitle.setText(article.getTitle());
-        StringBuilder category=new StringBuilder(article.getSuperChapterName());
-        category.append("-").append(article.getChapterName());
-        holder.tvCategory.setText(category);
+        try{
+            StringBuilder category=new StringBuilder(article.getSuperChapterName());
+            category.append("-").append(article.getChapterName());
+            holder.tvCategory.setText(category);
+        }catch (Exception e){
+            Log.e("StringBuilder",e.toString());
+        }
+
         holder.tvTime.setText(article.getNiceDate());
         holder.tvAuthor.setText(article.getAuthor());
         //tvTop

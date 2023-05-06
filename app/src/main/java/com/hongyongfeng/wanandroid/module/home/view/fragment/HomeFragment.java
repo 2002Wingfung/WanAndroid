@@ -76,7 +76,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             ImageView imgBanner = view.findViewById(R.id.img_banner);
                             imgBanner.setImageBitmap(bitmapLists.get(i));
                         }
-                        dialogHandler.sendEmptyMessageDelayed(1, 500);
+                        dialogHandler.sendEmptyMessageDelayed(1, 1000);
                     }
                 });
             }
@@ -88,6 +88,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void responseArticleResult(List<ArticleBean> articleLists, List<ArticleBean> articleTopLists) {
+                //这里有点bug，没有用runOnUiThread也能更新ui
                  if ((articleList.size()==0)){
                     for (ArticleBean article:articleTopLists){
                         article.setId(-1);
@@ -96,20 +97,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     articleList.addAll(articleLists);
                     adapter.notifyItemInserted(0);
                  }
-//                articleList.add(new ArticleBean(-1));
-//                adapter.notifyItemInserted(0);
-//
-//                articleList.add(new ArticleBean(-1));
-//                articleList.add(new ArticleBean(-1));
-//                articleList.add(new ArticleBean(-1));
-//                adapter.notifyItemInserted(0);
-//                articleList.add(new ArticleBean(-1));
-//                articleList.add(new ArticleBean(-1));
-//                articleList.add(new ArticleBean(-1));
-//                articleList.add(new ArticleBean(-1));
-
-
-
             }
 
             @Override
@@ -122,17 +109,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //articleList.add(new ArticleBean(-1));
                         articleList.addAll(articleLists);
                         adapter.notifyItemInserted(articleList.size());
                         dialog.dismiss();
                     }
                 });
-
             }
         };
     }
-
     private int page = 0;
 
     private List<View> viewList;
