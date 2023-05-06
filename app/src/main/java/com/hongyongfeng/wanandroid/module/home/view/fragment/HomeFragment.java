@@ -131,7 +131,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         fragmentActivity=requireActivity();
         super.onViewCreated(view, savedInstanceState);
         Log.d("HomeFragment","onViewCreated"+ SystemClock.elapsedRealtime());
-        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+        SetRecyclerView.setRecyclerViewScroll(fragmentActivity,recyclerView,adapter);
     }
 
     @Override
