@@ -11,11 +11,15 @@ public interface HomeFragmentInterface {
     interface M{
         void requestImageM()throws Exception;
         void requestArticleM()throws Exception;
+        void requestLoadMoreM(int page)throws Exception;
     }
     interface VP{
         void requestImageVP();
         void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList);
         void requestArticleVP();
         void responseArticleResult(List<ArticleBean> articleList,List<ArticleBean> articleTopList);
+        void requestLoadMoreVP(int page);
+        void responseLoadMoreVP(List<ArticleBean> articleList);
+
     }
 }

@@ -71,11 +71,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             ImageView imgBanner= view.findViewById(R.id.img_banner);
                             imgBanner.setImageBitmap(bitmapLists.get(i));
                         }
-
                         dialogHandler.sendEmptyMessageDelayed(1,500);
                     }
                 });
-
             }
 
             @Override
@@ -85,7 +83,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void responseArticleResult(List<ArticleBean> articleLists,List<ArticleBean> articleTopLists) {
-                if ((articleList.size()==0)){
+                 if ((articleList.size()==0)){
                     for (ArticleBean article:articleTopLists){
                         article.setId(-1);
                         articleList.add(article);
@@ -94,15 +92,28 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     adapter.notifyItemInserted(0);
                 }
             }
+
+            @Override
+            public void requestLoadMoreVP(int page) {
+                mPresenter.getContract().requestLoadMoreVP(page);
+            }
+
+            @Override
+            public void responseLoadMoreVP(List<ArticleBean> articleLists) {
+                articleList.addAll(articleLists);
+                adapter.notifyItemInserted(articleList.size());
+                System.out.println(true);
+                dialog.dismiss();
+            }
         };
     }
 
+    private int page=0;
 
-    View view1,view2,view3;
     private List<View> viewList;
     static ViewPager viewPager;
-    List<BannerBean> beanLists;
-    List<Bitmap> bitmapLists;
+    private List<BannerBean> beanLists;
+    private List<Bitmap> bitmapLists;
 
     static ProgressDialog dialog;
     public static List<ArticleBean> articleList=new ArrayList<>();
@@ -143,6 +154,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {   //scrollY是滑动的距离
                 if(scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
                     //滑动到底部
+                    //dialog.show();
+                    //=ProgressDialog.show(requireActivity(),"","正在加载",false,false);
+                    page++;
+                    getContract().requestLoadMoreVP(page);
                     Toast.makeText(fragmentActivity, "滑动到了底部", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -199,9 +214,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
         inflater = getLayoutInflater();
-        view1 = inflater.inflate(R.layout.layout1, null);
-        view2 = inflater.inflate(R.layout.layout2, null);
-        view3 = inflater.inflate(R.layout.layout3, null);
+        View view1 = inflater.inflate(R.layout.layout1, null);
+        View view2 = inflater.inflate(R.layout.layout2, null);
+        View view3 = inflater.inflate(R.layout.layout3, null);
 
         viewList = new ArrayList<>();// 将要分页显示的View装入数组中
         viewList.add(view1);

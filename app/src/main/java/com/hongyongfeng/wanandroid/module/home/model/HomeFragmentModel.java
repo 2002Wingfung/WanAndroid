@@ -54,6 +54,8 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     List<Bitmap> bitmapList=new ArrayList<>();
     List<ArticleBean> articleBeanList;
     List<ArticleBean> articleTopList;
+    List<ArticleBean> articleMoreList;
+
     List<BannerBean> beanList;
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
     private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
@@ -64,7 +66,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     public HomeFragmentInterface.M getContract() {
         return new HomeFragmentInterface.M() {
             @Override
-            public void requestImageM() throws Exception {
+            public void requestImageM()  {
                 HttpUtil.sendHttpRequest(IMAGE_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
@@ -72,13 +74,11 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                         requestImageBitmap(beanList, new ImageCallbackListener() {
                             @Override
                             public void onError(Exception e) {
-
                             }
 
                             @Override
                             public void onBitmapFinish(List<Bitmap> bitmapList) {
                                 finish(beanList,bitmapList);
-
                             }
                         });
                     }
@@ -91,7 +91,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             }
 
             @Override
-            public void requestArticleM() throws Exception {
+            public void requestArticleM() {
                 HttpUtil.sendHttpRequest(ARTICLE_TOP_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
@@ -111,6 +111,25 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                         articleBeanList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
                         if (articleTopList.size()!=0){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void requestLoadMoreM(int page) {
+                String loadMore="https://www.wanandroid.com/article/list/"+page+"/json";
+                HttpUtil.sendHttpRequest(loadMore, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        articleMoreList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        if (articleMoreList.size()!=0){
+                            mPresenter.getContract().responseLoadMoreVP(articleMoreList);
                         }
                     }
 
