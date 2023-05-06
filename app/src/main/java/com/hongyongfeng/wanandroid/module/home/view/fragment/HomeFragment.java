@@ -166,9 +166,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent=new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url","https://www.baidu.com");
+
+                intent.putExtra("url",articleList.get(position).getLink());
                 startActivity(intent);
-                Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -57,9 +57,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
      */
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
-        //在merchantInfoList集合中获取Merchant对象
         ArticleBean article=articleList.get(position);
-        //设置商家图片
         //holder.tvId.setText(String.valueOf(article.getId()));
         holder.tvTitle.setText(article.getTitle());
         StringBuilder category=new StringBuilder(article.getSuperChapterName());
