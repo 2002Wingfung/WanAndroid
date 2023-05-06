@@ -71,12 +71,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             ImageView imgBanner= view.findViewById(R.id.img_banner);
                             imgBanner.setImageBitmap(bitmapLists.get(i));
                         }
-                        if (!(articleList.size()==3)){
-                            articleList.add(new ArticleBean(1));
-                            articleList.add(new ArticleBean(2));
-                            articleList.add(new ArticleBean(3));
-                            adapter.notifyItemRangeInserted(0,3);
-                        }
+
                         dialogHandler.sendEmptyMessageDelayed(1,500);
                     }
                 });
@@ -89,8 +84,15 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
 
             @Override
-            public void responseArticleResult(List<ArticleBean> articleList) {
-                System.out.println(articleList);
+            public void responseArticleResult(List<ArticleBean> articleLists) {
+                System.out.println(articleLists);
+                if ((articleList.size()==0)){
+                    articleList.addAll(articleLists);
+//                    articleList.add(new ArticleBean(2));
+//                    articleList.add(new ArticleBean(3));
+                    adapter.notifyItemInserted(0);
+                    //adapter.notifyItemRangeInserted(0,3);
+                }
             }
         };
     }
