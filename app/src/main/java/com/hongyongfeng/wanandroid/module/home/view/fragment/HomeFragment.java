@@ -90,7 +90,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void responseArticleResult(List<ArticleBean> articleList) {
-
+                System.out.println(articleList);
             }
         };
     }

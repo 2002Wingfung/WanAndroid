@@ -95,8 +95,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         List<ArticleBean> articleBeanList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
-                        ArticleBean articleBean=articleBeanList.get(0);
-                        System.out.println(articleBean.getLink());
+                        mPresenter.getContract().responseArticleResult(articleBeanList);
                     }
 
                     @Override

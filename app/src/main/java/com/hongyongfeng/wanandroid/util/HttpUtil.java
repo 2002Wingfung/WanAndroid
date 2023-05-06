@@ -45,36 +45,69 @@ public class HttpUtil {
 //
 //                list.add(t);
 //            }
-            JSONObject jsonObject=jsonArray.getJSONObject(0);
-            Iterator<String> keys = jsonObject.keys();
-            List<String> jsonFieldList=new ArrayList<>();
-            while (keys.hasNext()){
-                String jsonField=keys.next();
-                jsonFieldList.add(jsonField);
-            }
+//            JSONObject jsonObject=jsonArray.getJSONObject(0);
+//            Iterator<String> keys = jsonObject.keys();
+//            List<String> jsonFieldList=new ArrayList<>();
+//            while (keys.hasNext()){
+//                String jsonField=keys.next();
+//                jsonFieldList.add(jsonField);
+//            }
             for (int i=0;i<jsonArray.length();i++){
-                jsonObject=jsonArray.getJSONObject(i);
+                JSONObject jsonObject=jsonArray.getJSONObject(i);
                 t=c.newInstance();
-                for (int j=0;j<fields.length;j++){
-
-                    fields[j].setAccessible(true);
-                    String fieldName=fields[j].getName();
-                    if (fieldName.equals("id")){
-                        continue;
-                    }
-                    //System.out.println(fieldName);
-                    String value=jsonObject.getString(fieldName);
-                    if ("".equals(value)){
-                        System.out.println("null");
-                    }else {
-                        //System.out.println(value);
-                        fields[j].set(t,value);
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    String fieldName = field.getName();
+                    Class<?> type = field.getType();
+                    String classType = type.toString();
+//                    System.out.print(classType);
+//                    System.out.println(" "+fieldName);
+                    switch (classType) {
+                        case "int":
+                            field.set(t, jsonObject.getInt(fieldName));
+                            break;
+                        case "class java.lang.String":
+                            String value = jsonObject.getString(fieldName);
+                            if ("".equals(value)) {
+                                //Log.d("value", "null");
+                            } else {
+                                field.set(t, value);
+                            }
+                            break;
+                        default:
+                            //Log.d("defaultType", classType);
+                            break;
                     }
                 }
+//                for (int j=0;j<fields.length;j++){
+//                    fields[j].setAccessible(true);
+//                    String fieldName=fields[j].getName();
+//                    Class<?> type = fields[j].getType();
+//                    String classType=type.toString();
+////                    System.out.print(classType);
+////                    System.out.println(" "+fieldName);
+//                    switch (classType){
+//                        case "int":
+//                            fields[j].set(t,jsonObject.getInt(fieldName));
+//                            break;
+//                        case "class java.lang.String":
+//                            String value=jsonObject.getString(fieldName);
+//                            if ("".equals(value)){
+//                                Log.d("value","null");
+//                            }else {
+//                                fields[j].set(t,value);
+//                            }
+//                            break;
+//                        default:
+//                            Log.d("defaultType",classType);
+//                            break;
+//                    }
+//                }
                 list.add(t);
             }
         } catch (JSONException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
+
         }
         return list;
     }
