@@ -60,7 +60,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         //在merchantInfoList集合中获取Merchant对象
         ArticleBean article=articleList.get(position);
         //设置商家图片
-        holder.tvTitle.setText(String.valueOf(article.getArticleId()));
+        holder.tvTitle.setText(String.valueOf(article.getId()));
 
     }
 

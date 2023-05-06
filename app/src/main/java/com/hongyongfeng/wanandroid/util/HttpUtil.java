@@ -32,28 +32,43 @@ public class HttpUtil {
             Field[] fields=c.getDeclaredFields();
             T t;
             JSONArray jsonArray=new JSONArray(toString.substring(indexStart,indexEnd+1));
+//            for (int i=0;i<jsonArray.length();i++){
+//                JSONObject jsonObject=jsonArray.getJSONObject(i);
+//                Iterator<String> keys = jsonObject.keys();
+//                List<String> jsonFieldList=new ArrayList<>();
+//                while (keys.hasNext()){
+//                    String jsonField=keys.next();
+//                    jsonFieldList.add(jsonField);
+//                }
+//                t=c.newInstance();
+//
+//
+//                list.add(t);
+//            }
+            JSONObject jsonObject=jsonArray.getJSONObject(0);
+            Iterator<String> keys = jsonObject.keys();
+            List<String> jsonFieldList=new ArrayList<>();
+            while (keys.hasNext()){
+                String jsonField=keys.next();
+                jsonFieldList.add(jsonField);
+            }
             for (int i=0;i<jsonArray.length();i++){
-                JSONObject jsonObject=jsonArray.getJSONObject(i);
-                Iterator<String> keys = jsonObject.keys();
-                List<String> jsonFieldList=new ArrayList<>();
-                while (keys.hasNext()){
-                    String jsonField=keys.next();
-                    jsonFieldList.add(jsonField);
-                }
-
+                jsonObject=jsonArray.getJSONObject(i);
                 t=c.newInstance();
-                System.out.println(fields.length);
                 for (int j=0;j<fields.length;j++){
+
                     fields[j].setAccessible(true);
                     String fieldName=fields[j].getName();
-                    Log.d("field",fieldName);
-                    for (String jsonFieldName:jsonFieldList) {
-                        Log.d("jsonField",jsonFieldName);
-
-                        if (fieldName.equals(jsonFieldName)){
-                            fields[j].set(t,jsonObject.getString(jsonFieldName));
-                            break;
-                        }
+                    if (fieldName.equals("id")){
+                        continue;
+                    }
+                    //System.out.println(fieldName);
+                    String value=jsonObject.getString(fieldName);
+                    if ("".equals(value)){
+                        System.out.println("null");
+                    }else {
+                        //System.out.println(value);
+                        fields[j].set(t,value);
                     }
                 }
                 list.add(t);

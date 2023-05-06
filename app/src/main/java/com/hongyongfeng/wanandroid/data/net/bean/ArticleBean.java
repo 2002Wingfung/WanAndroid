@@ -4,17 +4,22 @@ public class ArticleBean {
     public ArticleBean() {
     }
 
-    private int articleId;
     private int id;
     private String author;
-    private String category;
-    private boolean likes;
-    private boolean top;
+    private String chapterName;
+
     private String link;
     private String title;
-    private long publishTime;
+    private String niceDate;
     private String superChapterName;
-    private String chapterName;
+
+    public String getSuperChapterName() {
+        return superChapterName;
+    }
+
+    public void setSuperChapterName(String superChapterName) {
+        this.superChapterName = superChapterName;
+    }
 
     public int getId() {
         return id;
@@ -32,28 +37,12 @@ public class ArticleBean {
         this.author = author;
     }
 
-    public String getCategory() {
-        return category;
+    public String getChapterName() {
+        return chapterName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public boolean isLikes() {
-        return likes;
-    }
-
-    public void setLikes(boolean likes) {
-        this.likes = likes;
-    }
-
-    public boolean isTop() {
-        return top;
-    }
-
-    public void setTop(boolean top) {
-        this.top = top;
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
     }
 
     public String getLink() {
@@ -72,23 +61,18 @@ public class ArticleBean {
         this.title = title;
     }
 
-    public long getPublishTime() {
-        return publishTime;
+    public String getNiceDate() {
+        return niceDate;
     }
 
-    public void setPublishTime(long publishTime) {
-        this.publishTime = publishTime;
+    public void setNiceDate(String niceDate) {
+        this.niceDate = niceDate;
     }
 
-    public int getArticleId() {
-        return articleId;
+
+
+    public ArticleBean(int id) {
+        this.id = id;
     }
 
-    public ArticleBean(int articleId) {
-        this.articleId = articleId;
-    }
-
-    public void setArticleId(int articleId) {
-        this.articleId = articleId;
-    }
 }
