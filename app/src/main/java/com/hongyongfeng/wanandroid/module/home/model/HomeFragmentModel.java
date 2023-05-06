@@ -128,7 +128,9 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         articleMoreList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+
                         if (articleMoreList.size()!=0){
+
                             mPresenter.getContract().responseLoadMoreVP(articleMoreList);
                         }
                     }
