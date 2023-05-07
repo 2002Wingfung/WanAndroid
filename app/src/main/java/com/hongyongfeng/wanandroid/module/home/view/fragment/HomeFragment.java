@@ -40,6 +40,7 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.VP> {
     public Handler dialogHandler = new Handler(Looper.myLooper()) {
@@ -148,6 +149,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("home","onPause");
+    }
+
     @Override
     protected void initView(View view) {
         layout = fragmentActivity.findViewById(R.id.fragment_home);
@@ -236,9 +244,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
 
         inflater = getLayoutInflater();
-        View view1 = inflater.inflate(R.layout.layout1, null);
-        View view2 = inflater.inflate(R.layout.layout2, null);
-        View view3 = inflater.inflate(R.layout.layout3, null);
+        View view1 = inflater.inflate(R.layout.layout1, container,false);
+        View view2 = inflater.inflate(R.layout.layout2, container,false);
+        View view3 = inflater.inflate(R.layout.layout3, container,false);
 
         viewList = new ArrayList<>();// 将要分页显示的View装入数组中
         viewList.add(view1);

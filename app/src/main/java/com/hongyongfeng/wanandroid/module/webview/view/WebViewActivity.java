@@ -77,13 +77,11 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         }
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
-        //webView.loadUrl("https://www.baidu.com");
         webView.loadUrl(url);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setVisibility(View.VISIBLE);
-
                 //显示进度条
                 progressBar.setProgress(newProgress);
                 if (newProgress == 100) {
