@@ -82,6 +82,8 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
+                progressBar.setVisibility(View.VISIBLE);
+
                 //显示进度条
                 progressBar.setProgress(newProgress);
                 if (newProgress == 100) {

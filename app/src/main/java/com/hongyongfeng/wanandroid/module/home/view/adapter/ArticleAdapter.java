@@ -73,7 +73,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         holder.tvAuthor.setText(article.getAuthor());
         //tvTop
         if (article.getId()==-1){
+            holder.tvTop.setVisibility(View.VISIBLE);
             holder.tvTop.setText("置顶");
+        }else {
+            holder.tvTop.setVisibility(View.GONE);
         }
     }
 
