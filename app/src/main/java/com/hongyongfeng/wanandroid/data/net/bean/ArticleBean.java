@@ -16,6 +16,15 @@ public class ArticleBean {
     public String getSuperChapterName() {
         return superChapterName;
     }
+    public int top;
+
+    public int getTop() {
+        return top;
+    }
+
+    public void setTop(int top) {
+        this.top = top;
+    }
 
     public void setSuperChapterName(String superChapterName) {
         this.superChapterName = superChapterName;

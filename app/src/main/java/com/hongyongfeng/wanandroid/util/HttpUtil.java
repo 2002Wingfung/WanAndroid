@@ -1,6 +1,9 @@
 package com.hongyongfeng.wanandroid.util;
 
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
+
+import android.util.Log;
+
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +39,13 @@ public class HttpUtil {
                     String classType = type.toString();
                     switch (classType) {
                         case "int":
-                            field.set(t, jsonObject.getInt(fieldName));
+                            try {
+                                int valueInt=jsonObject.getInt(fieldName);
+                                field.set(t, valueInt);
+                            }catch (Exception e){
+                                //Log.d("No fields",e.toString());
+                                break;
+                            }
                             break;
                         case "class java.lang.String":
                             String value = jsonObject.getString(fieldName);

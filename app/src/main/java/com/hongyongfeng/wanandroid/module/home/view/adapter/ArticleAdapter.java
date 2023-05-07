@@ -72,7 +72,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         holder.tvTime.setText(article.getNiceDate());
         holder.tvAuthor.setText(article.getAuthor());
         //tvTop
-        if (article.getId()==-1){
+        if (article.getTop()==-1){
             holder.tvTop.setVisibility(View.VISIBLE);
             holder.tvTop.setText("置顶");
         }else {

@@ -92,7 +92,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 //这里有点bug，没有用runOnUiThread也能更新ui
                  if ((articleList.size()==0)){
                     for (ArticleBean article:articleTopLists){
-                        article.setId(-1);
+                        article.setTop(-1);
                         articleList.add(article);
                     }
                     articleList.addAll(articleLists);
