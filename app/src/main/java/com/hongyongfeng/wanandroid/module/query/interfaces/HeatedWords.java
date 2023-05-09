@@ -1,11 +1,14 @@
 package com.hongyongfeng.wanandroid.module.query.interfaces;
 
+import java.util.List;
+import java.util.Map;
+
 public interface HeatedWords {
     interface M{
-        void requestQueryM(String name)throws Exception;
+        void requestHeatedWordsM()throws Exception;
     }
     interface VP{
-        void requestQueryVP(String name);
-        void responseQueryResult(boolean loginStatusResult);
+        void requestHeatedWordsVP();
+        void responseHeatedWordsResult(List<Map<String,Object>> heatedWordsList);
     }
 }

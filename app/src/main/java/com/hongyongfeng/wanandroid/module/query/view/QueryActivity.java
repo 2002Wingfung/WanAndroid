@@ -54,7 +54,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
             @Override
             public void responseQueryResult(boolean loginStatusResult) {
                 loadFragment();
-                handler.sendEmptyMessageDelayed(0,2000);
+                handler.sendEmptyMessageDelayed(0,500);
 //                transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
             }
         };

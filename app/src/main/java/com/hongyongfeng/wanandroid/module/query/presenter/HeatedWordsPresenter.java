@@ -1,14 +1,12 @@
 package com.hongyongfeng.wanandroid.module.query.presenter;
 
-import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
-import com.hongyongfeng.wanandroid.base.BasePresenter;
 import com.hongyongfeng.wanandroid.module.query.interfaces.HeatedWords;
-import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
 import com.hongyongfeng.wanandroid.module.query.model.HeatedWordsModel;
-import com.hongyongfeng.wanandroid.module.query.model.QueryModel;
-import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragment;
+
+import java.util.List;
+import java.util.Map;
 
 public class HeatedWordsPresenter extends BaseFragmentPresenter<HeatedWordsModel, HeatedWordsFragment, HeatedWords.VP> {
 
@@ -21,17 +19,17 @@ public class HeatedWordsPresenter extends BaseFragmentPresenter<HeatedWordsModel
     public HeatedWords.VP getContract() {
         return new HeatedWords.VP() {
             @Override
-            public void requestQueryVP(String name) {
+            public void requestHeatedWordsVP() {
                 try {
-                    mModel.getContract().requestQueryM(name);
+                    mModel.getContract().requestHeatedWordsM();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
 
             @Override
-            public void responseQueryResult(boolean loginStatusResult) {
-                mView.getContract().responseQueryResult(loginStatusResult);
+            public void responseHeatedWordsResult(List<Map<String,Object>> heatedWordsList) {
+                mView.getContract().responseHeatedWordsResult(heatedWordsList);
             }
         };
     }

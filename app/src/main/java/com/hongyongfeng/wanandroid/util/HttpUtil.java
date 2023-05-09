@@ -16,9 +16,40 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class HttpUtil {
+    public static List<Map<String,Object>> parseJsonWithJSONObject(String string){
+        List<Map<String,Object>> stringListMap=new ArrayList<>();
+        try {
+            int indexStart=string.indexOf('[');
+            int indexEnd=string.lastIndexOf(']');
+            JSONArray jsonArray=new JSONArray(string.substring(indexStart,indexEnd+1));
+            JSONObject jsonObject=jsonArray.getJSONObject(0);
+            Iterator<String> keys = jsonObject.keys();
+            List<String> jsonFieldList=new ArrayList<>();
+            while (keys.hasNext()){
+                String jsonField=keys.next();
+                jsonFieldList.add(jsonField);
+            }
+            for (int i=0;i<jsonArray.length();i++){
+                jsonObject=jsonArray.getJSONObject(i);
+                Map<String,Object> stringMap = new HashMap<String,Object>();
+                for (String field:jsonFieldList){
+                    stringMap.put(field,jsonObject.get(field));
+                    //System.out.println(jsonObject.get(field));
+                }
+                stringListMap.add(stringMap);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return stringListMap;
+    }
 
 
     public static <T> List<T> parseJSONWithJSONObject(String toString,Class<T> c) {
@@ -35,6 +66,7 @@ public class HttpUtil {
                 for (Field field : fields) {
                     field.setAccessible(true);
                     String fieldName = field.getName();
+//                    field.set(t,jsonObject.get(fieldName));
                     Class<?> type = field.getType();
                     String classType = type.toString();
                     switch (classType) {
