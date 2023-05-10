@@ -62,7 +62,19 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         ArticleBean article=articleList.get(position);
         //holder.tvId.setText(String.valueOf(article.getId()));
         //holder.tvTitle.setText(article.getTitle());
-        holder.tvTitle.setText(Html.fromHtml(article.getTitle()));
+        String title=article.getTitle();
+        StringBuilder tvTitle=new StringBuilder(title);
+        int first=title.indexOf("<em class='highlight'>");
+        if (first!=-1){
+            tvTitle.insert(first,"<font color='red'>");
+            int last=tvTitle.indexOf("</em>");
+            if (last!=-1){
+                last+=5;
+                tvTitle.insert(last,"</font>");
+            }
+        }
+        //System.out.println(tvtitle);
+        holder.tvTitle.setText(Html.fromHtml(tvTitle.toString()));
         try{
             StringBuilder category=new StringBuilder(article.getSuperChapterName());
             category.append("-").append(article.getChapterName());
