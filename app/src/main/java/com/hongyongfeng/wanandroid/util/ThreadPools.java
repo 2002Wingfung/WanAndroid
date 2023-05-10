@@ -13,6 +13,6 @@ import java.util.concurrent.TimeUnit;
  * @author 86186
  */
 public class ThreadPools {
-    public static ExecutorService es = Executors.newFixedThreadPool(5);
+    public static ExecutorService es = Executors.newFixedThreadPool(10);
 
 }

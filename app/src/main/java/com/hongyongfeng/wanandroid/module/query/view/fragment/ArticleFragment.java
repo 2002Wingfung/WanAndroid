@@ -50,6 +50,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                     public void run() {
                         articleList.addAll(articleLists);
                         adapter.notifyItemInserted(articleList.size());
+                        System.out.println("finish");
                         dialog.dismiss();
                     }
                 });
@@ -71,8 +72,10 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
     }
 
+
     @Override
     protected void initView(View view) {
+        Log.d("init","success");
         recyclerView= fragmentActivity.findViewById(R.id.rv_article);
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
         edtQuery=fragmentActivity.findViewById(R.id.edt_keyword);
@@ -95,13 +98,11 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                //LogUtils.d("------->isSlideToBottom:" + isSlideToBottom(recyclerView));
                 if (isSlideToBottom(recyclerView)) {
-                    //srlLayout.setEnabled(true);
-                    //Toast.makeText(fragmentActivity, edtQuery.getText().toString(), Toast.LENGTH_SHORT).show();
                     dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
                     getContract().requestLoadMoreVP(edtQuery.getText().toString(),page);
                     page++;
+                    System.out.println("ok");
                 }
             }
         });
