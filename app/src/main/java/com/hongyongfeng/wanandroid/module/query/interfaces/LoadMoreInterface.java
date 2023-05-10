@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface LoadMoreInterface {
     interface M{
-        void requestLoadMoreM(int page)throws Exception;
+        void requestLoadMoreM(String key,int page)throws Exception;
     }
     interface VP{
-        void requestLoadMoreVP(int page);
+        void requestLoadMoreVP(String key,int page);
         void responseLoadMoreVP(List<ArticleBean> articleList);
     }
 }

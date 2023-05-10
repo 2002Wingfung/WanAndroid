@@ -27,9 +27,9 @@ public class LoadMorePresenter extends BaseFragmentPresenter<LoadMoreModel, Arti
 
 
             @Override
-            public void requestLoadMoreVP(int page) {
+            public void requestLoadMoreVP(String key,int page) {
                 try {
-                    mModel.getContract().requestLoadMoreM(page);
+                    mModel.getContract().requestLoadMoreM(key,page);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

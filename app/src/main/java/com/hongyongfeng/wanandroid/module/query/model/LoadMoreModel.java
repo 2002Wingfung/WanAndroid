@@ -37,8 +37,25 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
         return new LoadMoreInterface.M() {
 
             @Override
-            public void requestLoadMoreM(int page) throws Exception {
+            public void requestLoadMoreM(String key,int page) throws Exception {
+                String query="https://www.wanandroid.com/article/query/"+page+"/json";
 
+                HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
+
+                    @Override
+                    public void onFinish(String response) {
+                        List<ArticleBean> articleBeanList = HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        if (articleBeanList.size()!=0){
+
+                            mPresenter.getContract().responseLoadMoreVP(articleBeanList);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
             }
         };
     }

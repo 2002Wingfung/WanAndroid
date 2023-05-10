@@ -3,6 +3,7 @@ package com.hongyongfeng.wanandroid.module.query.view.fragment;
 import static android.content.Intent.getIntent;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,13 +39,20 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     public LoadMoreInterface.VP getContract() {
         return new LoadMoreInterface.VP() {
             @Override
-            public void requestLoadMoreVP(int page) {
-
+            public void requestLoadMoreVP(String key,int page) {
+                mPresenter.getContract().requestLoadMoreVP(key,page);
             }
 
             @Override
-            public void responseLoadMoreVP(List<ArticleBean> articleList) {
-
+            public void responseLoadMoreVP(List<ArticleBean> articleLists) {
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        articleList.addAll(articleLists);
+                        adapter.notifyItemInserted(articleList.size());
+                        dialog.dismiss();
+                    }
+                });
             }
         };
     }
@@ -53,7 +62,10 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
     ArticleAdapter adapter=new ArticleAdapter(articleList);
     RecyclerView recyclerView;
-
+    static ProgressDialog dialog;
+    private int page=1;
+    EditText edtQuery;
+    View view;
     @Override
     protected void destroy() {
 
@@ -63,10 +75,40 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     protected void initView(View view) {
         recyclerView= fragmentActivity.findViewById(R.id.rv_article);
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+        edtQuery=fragmentActivity.findViewById(R.id.edt_keyword);
+    }
+    protected boolean isSlideToBottom(RecyclerView recyclerView) {
+        if (recyclerView == null) {
+            return false;
+        }
+        return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
     }
 
     @Override
     protected void initListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //LogUtils.d("------->isSlideToBottom:" + isSlideToBottom(recyclerView));
+                if (isSlideToBottom(recyclerView)) {
+                    //srlLayout.setEnabled(true);
+                    //Toast.makeText(fragmentActivity, edtQuery.getText().toString(), Toast.LENGTH_SHORT).show();
+                    dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
+                    getContract().requestLoadMoreVP(edtQuery.getText().toString(),page);
+                    page++;
+                }
+            }
+        });
+
+        //System.out.println(recyclerView.canScrollVertically(-1));
+        //判断是否滑动到底部
+        //返回false表示不能往上滑动，即代表到底部了
         adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {

@@ -126,8 +126,8 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Toast.makeText(QueryActivity.this, edtKeyWords.getText().toString(), Toast.LENGTH_SHORT).show();
-
+                    //Toast.makeText(QueryActivity.this, edtKeyWords.getText().toString(), Toast.LENGTH_SHORT).show();
+                    //System.out.println(edtKeyWords);
                     loadFragment();
                     if (!articleFragment.isAdded()){
 //                        transaction.hide(heatedWordsFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
