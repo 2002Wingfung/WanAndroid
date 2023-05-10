@@ -4,14 +4,18 @@ import static android.content.Intent.getIntent;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +26,7 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
 import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
+import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
 import java.util.ArrayList;
@@ -50,26 +55,40 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     RecyclerView recyclerView;
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        recyclerView= fragmentActivity.findViewById(R.id.rv_article);
-        Log.d("article","onviewcreated");
-        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
-    }
-
-    @Override
     protected void destroy() {
 
     }
 
     @Override
     protected void initView(View view) {
-
+        recyclerView= fragmentActivity.findViewById(R.id.rv_article);
+        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
     }
 
     @Override
     protected void initListener() {
+        adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
+            @Override
+            public void onLikesClicked(View view, int position, TextView likes, int[] count) {
+                int number2 = 2;
+                int number0 = 0;
+                if (count[0] % number2 == number0) {
+                    likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
+                    Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
+                    Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                }
+                count[0]++;
+            }
 
+            @Override
+            public void onArticleClicked(View view, int position) {
+                Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
+                intent.putExtra("url", articleList.get(position).getLink());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -93,14 +112,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("article","onResume");
-    }
-
-    @Override
     public void onStart() {
-        Log.d("article","onStart");
         super.onStart();
         loadData();
     }
@@ -108,13 +120,9 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        Log.d("article", "onAttach");
         fragmentActivity = requireActivity();
-
         if (getArguments() != null) {
             articleBeanList = getArguments().getParcelableArrayList("list");
-//            articleBeanList.remove(0);
-//            articleBeanList.remove(0);
         }
     }
 

@@ -65,9 +65,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                 //直接把list数据传给Fragment
                 //然后直接showFragment，不用搞延迟了。
                 handler.sendEmptyMessageDelayed(0,500);
-                for (ArticleBean article:articleBeanList) {
-                    System.out.println(article.getTitle());
-                }
                 articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
                 //System.out.println(articleBeanLists.get(0).getLink());
 //                QueryActivity.this.runOnUiThread(new Runnable() {
@@ -87,8 +84,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
             super.handleMessage(msg);
             Bundle bundle=new Bundle();
             bundle.putParcelableArrayList("list",  articleBeanLists);
-            //System.out.println(articleBeanLists);
-            //System.out.println(msg.what);
             if (!articleFragment.isAdded()){
                 articleFragment.setArguments(bundle);
                 transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
@@ -96,7 +91,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                 articleFragment.setArguments(bundle);
                 transaction.hide(loadingFragment).show(articleFragment).commit();
             }
-
         }
     };
 
