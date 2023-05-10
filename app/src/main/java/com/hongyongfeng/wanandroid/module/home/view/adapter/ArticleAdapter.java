@@ -19,6 +19,8 @@ import java.util.List;
  * @author Wingfung Hung
  */
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
+    public static final String HIGH_LIGHT_START="<em class='highlight'>";
+    public static final String HIGH_LIGHT_END="</em>";
 
     /**
      * 存储DishesInformation对象的List集合
@@ -64,16 +66,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         //holder.tvTitle.setText(article.getTitle());
         String title=article.getTitle();
         StringBuilder tvTitle=new StringBuilder(title);
-        int first=title.indexOf("<em class='highlight'>");
-        if (first!=-1){
+        int first=title.indexOf(HIGH_LIGHT_START);
+        while (first!=-1){
             tvTitle.insert(first,"<font color='red'>");
-            int last=tvTitle.indexOf("</em>");
-            if (last!=-1){
-                last+=5;
-                tvTitle.insert(last,"</font>");
-            }
+            first=tvTitle.indexOf(HIGH_LIGHT_START,first+1+HIGH_LIGHT_START.length());
         }
-        //System.out.println(tvtitle);
+        int last=tvTitle.indexOf(HIGH_LIGHT_END);
+        while (last!=-1){
+            last+=5;
+            tvTitle.insert(last,"</font>");
+            last=tvTitle.indexOf(HIGH_LIGHT_END,last+1+HIGH_LIGHT_END.length());
+        }
         holder.tvTitle.setText(Html.fromHtml(tvTitle.toString()));
         try{
             StringBuilder category=new StringBuilder(article.getSuperChapterName());
