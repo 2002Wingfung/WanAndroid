@@ -97,6 +97,7 @@ public class ArticleFragment extends Fragment {
             articleList.addAll(articleBeanList);
         }
         adapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(0);
         //adapter.notifyItemRangeChanged(0,articleList.size());
     }
 }
