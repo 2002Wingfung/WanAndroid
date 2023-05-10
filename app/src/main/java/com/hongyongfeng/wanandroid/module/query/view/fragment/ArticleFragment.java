@@ -17,18 +17,30 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hongyongfeng.wanandroid.R;
+import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
+import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
+import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticleFragment extends Fragment {
-    @Nullable
+public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInterface.VP> {
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_query_article,container,false);
+    public LoadMoreInterface.VP getContract() {
+        return new LoadMoreInterface.VP() {
+            @Override
+            public void requestLoadMoreVP(int page) {
+
+            }
+
+            @Override
+            public void responseLoadMoreVP(List<ArticleBean> articleList) {
+
+            }
+        };
     }
     public List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
@@ -43,6 +55,41 @@ public class ArticleFragment extends Fragment {
         recyclerView= fragmentActivity.findViewById(R.id.rv_article);
         Log.d("article","onviewcreated");
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+    }
+
+    @Override
+    protected void destroy() {
+
+    }
+
+    @Override
+    protected void initView(View view) {
+
+    }
+
+    @Override
+    protected void initListener() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected LoadMorePresenter getPresenterInstance() {
+        return new LoadMorePresenter();
+    }
+
+    @Override
+    protected <ERROR> void responseError(ERROR error, Throwable throwable) {
+
+    }
+
+    @Override
+    protected int getFragmentView() {
+        return R.layout.fragment_query_article;
     }
 
     @Override
@@ -99,5 +146,10 @@ public class ArticleFragment extends Fragment {
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(0);
         //adapter.notifyItemRangeChanged(0,articleList.size());
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
