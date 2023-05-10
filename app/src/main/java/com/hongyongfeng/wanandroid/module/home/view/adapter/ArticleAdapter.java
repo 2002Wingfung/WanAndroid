@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.home.view.adapter;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +61,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
         ArticleBean article=articleList.get(position);
         //holder.tvId.setText(String.valueOf(article.getId()));
-        holder.tvTitle.setText(article.getTitle());
+        //holder.tvTitle.setText(article.getTitle());
+        holder.tvTitle.setText(Html.fromHtml(article.getTitle()));
         try{
             StringBuilder category=new StringBuilder(article.getSuperChapterName());
             category.append("-").append(article.getChapterName());

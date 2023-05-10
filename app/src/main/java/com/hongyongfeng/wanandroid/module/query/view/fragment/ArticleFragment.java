@@ -97,7 +97,6 @@ public class ArticleFragment extends Fragment {
             articleList.addAll(articleBeanList);
         }
         adapter.notifyDataSetChanged();
-
         //adapter.notifyItemRangeChanged(0,articleList.size());
     }
 }

@@ -65,6 +65,9 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                 //直接把list数据传给Fragment
                 //然后直接showFragment，不用搞延迟了。
                 handler.sendEmptyMessageDelayed(0,500);
+                for (ArticleBean article:articleBeanList) {
+                    System.out.println(article.getTitle());
+                }
                 articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
                 //System.out.println(articleBeanLists.get(0).getLink());
 //                QueryActivity.this.runOnUiThread(new Runnable() {
