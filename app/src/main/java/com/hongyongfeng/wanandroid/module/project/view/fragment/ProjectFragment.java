@@ -70,20 +70,20 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("ProjectFragment","onCreate"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onCreate"+SystemClock.elapsedRealtime());
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("ProjectFragment","onCreateView"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onCreateView"+SystemClock.elapsedRealtime());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d("ProjectFragment","onViewCreated"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onViewCreated"+SystemClock.elapsedRealtime());
         super.onViewCreated(view, savedInstanceState);
         adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
                 fragmentList,categoryList);
@@ -93,50 +93,50 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        Log.d("ProjectFragment","onViewStateRestored"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onViewStateRestored"+SystemClock.elapsedRealtime());
         super.onViewStateRestored(savedInstanceState);
     }
 
     @Override
     public void onStart() {
-        Log.d("ProjectFragment","onStart"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onStart"+SystemClock.elapsedRealtime());
         super.onStart();
     }
 
     @Override
     public void onResume() {
-        Log.d("ProjectFragment","onResume"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onResume"+SystemClock.elapsedRealtime());
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        Log.d("ProjectFragment","onPause"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onPause"+SystemClock.elapsedRealtime());
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.d("ProjectFragment","onStop"+ SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onStop"+ SystemClock.elapsedRealtime());
         super.onStop();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d("ProjectFragment","onSaveInstanceState"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onSaveInstanceState"+SystemClock.elapsedRealtime());
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroyView() {
-        Log.d("ProjectFragment","onDestroyView"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onDestroyView"+SystemClock.elapsedRealtime());
         super.onDestroyView();
     }
 
     @SuppressLint("MissingSuperCall")
     @Override
     public void onDestroy() {
-        Log.d("ProjectFragment","onDestroy"+SystemClock.elapsedRealtime());
+        //Log.d("ProjectFragment","onDestroy"+SystemClock.elapsedRealtime());
         super.onDestroy();
     }
 

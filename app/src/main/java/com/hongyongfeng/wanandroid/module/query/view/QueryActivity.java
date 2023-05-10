@@ -24,12 +24,15 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
 import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
 import com.hongyongfeng.wanandroid.util.KeyboardUtils;
+
+import java.util.List;
 
 public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
     FragmentManager fragmentManager;
@@ -42,20 +45,34 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
     TextView tvClear;
     EditText edtKeyWords;
 
+    List<ArticleBean> articleBeanList;
     @Override
     public Query.VP getContract() {
         return new Query.VP() {
             @Override
-            public void requestQueryVP(String name) {
+            public void requestQueryVP(String key,int page) {
+                //System.out.println(key);
 
-                mPresenter.getContract().requestQueryVP(name);
+                mPresenter.getContract().requestQueryVP(key,page);
             }
 
             @Override
-            public void responseQueryResult(boolean loginStatusResult) {
+            public void responseQueryResult(List<ArticleBean> articleBeanList) {
                 loadFragment();
-                handler.sendEmptyMessageDelayed(0,500);
-//                transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+                //获取查询的数据
+                //然后传入articleFragment
+                //直接把list数据传给Fragment
+                //然后直接showFragment，不用搞延迟了。
+                //handler.sendEmptyMessageDelayed(0,500);
+                //System.out.println(articleBeanList.get(0).getLink());
+//                QueryActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+//
+//                    }
+//                });
             }
         };
     }
@@ -119,7 +136,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                     }else {
                         transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
                     }
-                    getContract().requestQueryVP("");
+                    getContract().requestQueryVP(edtKeyWords.getText().toString(),0);
 
                     // 在这里写搜索的操作,一般都是网络请求数据
                 }

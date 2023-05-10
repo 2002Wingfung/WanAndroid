@@ -67,7 +67,7 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getContract().requestHeatedWordsVP();
-        Log.d("heated","print");
+        //Log.d("heated","print");
     }
 
     @Override
