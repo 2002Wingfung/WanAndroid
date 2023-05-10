@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -32,6 +33,7 @@ import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragmen
 import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
 import com.hongyongfeng.wanandroid.util.KeyboardUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
@@ -44,8 +46,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
     TextView tvBack;
     TextView tvClear;
     EditText edtKeyWords;
-
-    List<ArticleBean> articleBeanList;
+    ArrayList<ArticleBean> articleBeanLists;
     @Override
     public Query.VP getContract() {
         return new Query.VP() {
@@ -63,8 +64,9 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                 //然后传入articleFragment
                 //直接把list数据传给Fragment
                 //然后直接showFragment，不用搞延迟了。
-                //handler.sendEmptyMessageDelayed(0,500);
-                //System.out.println(articleBeanList.get(0).getLink());
+                handler.sendEmptyMessageDelayed(0,500);
+                articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
+                //System.out.println(articleBeanLists.get(0).getLink());
 //                QueryActivity.this.runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -80,10 +82,15 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
+            Bundle bundle=new Bundle();
+            bundle.putParcelableArrayList("list",  articleBeanLists);
+            //System.out.println(articleBeanLists);
             //System.out.println(msg.what);
             if (!articleFragment.isAdded()){
+                articleFragment.setArguments(bundle);
                 transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
             }else {
+                articleFragment.setArguments(bundle);
                 transaction.hide(loadingFragment).show(articleFragment).commit();
             }
 

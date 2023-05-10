@@ -1,6 +1,11 @@
 package com.hongyongfeng.wanandroid.data.net.bean;
 
-public class ArticleBean {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class ArticleBean implements Parcelable {
     public ArticleBean() {
     }
 
@@ -12,6 +17,29 @@ public class ArticleBean {
     private String title;
     private String niceDate;
     private String superChapterName;
+
+    protected ArticleBean(Parcel in) {
+        id = in.readInt();
+        author = in.readString();
+        chapterName = in.readString();
+        link = in.readString();
+        title = in.readString();
+        niceDate = in.readString();
+        superChapterName = in.readString();
+        top = in.readInt();
+    }
+
+//    public static final Creator<ArticleBean> CREATOR = new Creator<ArticleBean>() {
+//        @Override
+//        public ArticleBean createFromParcel(Parcel in) {
+//            return new ArticleBean(in);
+//        }
+//
+//        @Override
+//        public ArticleBean[] newArray(int size) {
+//            return new ArticleBean[size];
+//        }
+//    };
 
     public String getSuperChapterName() {
         return superChapterName;
@@ -84,4 +112,41 @@ public class ArticleBean {
         this.id = id;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(author);
+        dest.writeString(chapterName);
+        dest.writeString(link);
+        dest.writeString(title);
+        dest.writeString(niceDate);
+        dest.writeString(superChapterName);
+        dest.writeInt(top);
+    }
+    public static final Parcelable.Creator<ArticleBean> CREATOR  = new Creator<ArticleBean>() {
+        //实现从source中创建出类的实例的功能
+        @Override
+        public ArticleBean createFromParcel(Parcel source) {
+            ArticleBean article  = new ArticleBean();
+            article.id = source.readInt();
+            article.author= source.readString();
+            article.chapterName = source.readString();
+            article.link = source.readString();
+            article.title = source.readString();
+            article.niceDate = source.readString();
+            article.superChapterName = source.readString();
+            article.top = source.readInt();
+            return article;
+        }
+        //创建一个类型为T，长度为size的数组
+        @Override
+        public ArticleBean[] newArray(int size) {
+            return new ArticleBean[size];
+        }
+    };
 }

@@ -5,16 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <!--    此处应该换成recyclerview-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_words"
-        android:text="article"
-        android:textSize="23sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_article"
         android:layout_width="match_parent"

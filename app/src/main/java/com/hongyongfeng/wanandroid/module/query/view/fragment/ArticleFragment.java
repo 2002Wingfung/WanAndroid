@@ -1,7 +1,11 @@
 package com.hongyongfeng.wanandroid.module.query.view.fragment;
 
+import static android.content.Intent.getIntent;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +28,11 @@ public class ArticleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        fragmentActivity=requireActivity();
         return inflater.inflate(R.layout.fragment_query_article,container,false);
     }
     public List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
+    List<ArticleBean> articleBeanList = null;
 
     ArticleAdapter adapter=new ArticleAdapter(articleList);
     RecyclerView recyclerView;
@@ -37,11 +41,63 @@ public class ArticleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView= fragmentActivity.findViewById(R.id.rv_article);
-
-        articleList.add(new ArticleBean(1));
-        articleList.add(new ArticleBean(3));
-        articleList.add(new ArticleBean(4));
+        Log.d("article","onviewcreated");
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("article","onResume");
+    }
+
+    @Override
+    public void onStart() {
+        Log.d("article","onStart");
+        super.onStart();
+        loadData();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.d("article", "onAttach");
+        fragmentActivity = requireActivity();
+
+        if (getArguments() != null) {
+            articleBeanList = getArguments().getParcelableArrayList("list");
+//            articleBeanList.remove(0);
+//            articleBeanList.remove(0);
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {   // 不在最前端显示 相当于调用了onPause();
+            //System.out.println("hide");;
+        }else{  // 在最前端显示 相当于调用了onResume();
+            //System.out.println("show");//网络数据刷新
+
+            if (getArguments() != null) {
+                articleBeanList = getArguments().getParcelableArrayList("list");
+//                articleBeanList.remove(0);
+//                articleBeanList.remove(0);
+            }
+            loadData();
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadData() {
+        if (articleList.size()==0){
+            articleList.addAll(articleBeanList);
+        }else {
+            articleList.clear();
+            articleList.addAll(articleBeanList);
+        }
+        adapter.notifyDataSetChanged();
+
+        //adapter.notifyItemRangeChanged(0,articleList.size());
     }
 }
