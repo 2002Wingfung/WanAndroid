@@ -123,7 +123,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         };
     }
     private int page = 0;
-
     private List<View> viewList;
     static ViewPager viewPager;
     private List<BannerBean> beanLists;

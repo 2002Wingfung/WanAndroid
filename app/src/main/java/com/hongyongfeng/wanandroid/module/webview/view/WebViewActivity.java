@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,7 +41,8 @@ import java.util.List;
  * @author Wingfung Hung
  */
 public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyongfeng.wanandroid.module.webview.interfaces.WebView.VP> {
-
+    private static final long CLICK_INTERVAL_TIME = 300;
+    private static long lastClickTime = 0;
     TextView responseText;
     ConstraintLayout layout;
     ProgressBar progressBar;
@@ -75,8 +77,22 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
             url = intent.getStringExtra("url");
 
         }
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setDomStorageEnabled(true);
+        WebSettings webSettings=webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        //设置可以支持缩放
+        webSettings.setSupportZoom(true);
+        //设置出现缩放工具
+        webSettings.setBuiltInZoomControls(true);
+        //扩大比例的缩放
+        webSettings.setUseWideViewPort(true);
+        //自适应屏幕
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setLoadWithOverviewMode(true);
+
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
         webView.loadUrl(url);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -118,16 +134,15 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
             }
         });
         webView.setLayerType(View.LAYER_TYPE_HARDWARE,null);//开启硬件加速
-        WebSettings webSettings=webView.getSettings();
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setDatabaseEnabled(true);
-        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+
     }
 
     @Override
     public void initListener() {
         tvLikes.setOnClickListener(this);
         tvBack.setOnClickListener(this);
+        tvTitle.setOnClickListener(this);
 
     }
 
@@ -178,6 +193,18 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.tv_title:
+                //webView.scrollBy(0,-1000);
+                //获取系统当前毫秒数，从开机到现在的毫秒数(手机睡眠时间不包括在内)
+                long currentTimeMillis = SystemClock.uptimeMillis();
+                //两次点击间隔时间小于300ms代表双击
+                if (currentTimeMillis - lastClickTime < CLICK_INTERVAL_TIME) {
+                    webView.scrollTo(0,0);
+
+                }
+                lastClickTime = currentTimeMillis;
+
+                break;
             case R.id.tv_back:
                 if (webView.canGoBack()) {
                     webView.goBack();//返回上个页面
