@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.base.BasePresenter;
+import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeArticleFragment;
 import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectCategoryAdapter;
 import com.hongyongfeng.wanandroid.test.VPFragment;
 
@@ -44,14 +45,24 @@ public class TabActivity extends BaseActivity {
             //获取intent中的参数
             Map<String,Object> childrenMap=(Map<String,Object>)intent.getSerializableExtra("map");
             //System.out.println(childrenMap.get("name0"));
+            categoryList.add("test");
+            KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
+            Bundle bundle=new Bundle();
+            bundle.putInt("id",(int)childrenMap.get("id0"));
+            fragment.setArguments(bundle);
+            fragmentList.add(fragment);
             for (int i=0;i<childrenMap.size()/2;i++){
 
                 System.out.println(childrenMap.get("id"+i));
                 String name=(String) childrenMap.get("name"+i);
                 categoryList.add(name);
-
                 fragmentList.add(VPFragment.newInstance(name,""));
 
+//                KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
+//                Bundle bundle=new Bundle();
+//                bundle.putInt("id",(int)childrenMap.get("id"+i));
+//                fragment.setArguments(bundle);
+//                fragmentList.add(fragment);
             }
 
             String name=intent.getStringExtra("name");

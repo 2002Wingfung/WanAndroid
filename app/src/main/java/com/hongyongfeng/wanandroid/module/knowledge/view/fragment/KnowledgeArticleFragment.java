@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -174,7 +176,17 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         fragmentActivity = requireActivity();
         if (getArguments() != null) {
             articleBeanList = getArguments().getParcelableArrayList("list");
+            System.out.println("id"+getArguments().getInt("id"));
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_query_article,container, false);
+        recyclerView= view.findViewById(R.id.rv_article);
+        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+        return view;
     }
 
     @Override
@@ -197,14 +209,15 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
 
-        if (articleList.size()==0){
-            articleList.addAll(articleBeanList);
-        }else {
-            articleList.clear();
-            articleList.addAll(articleBeanList);
-        }
-        adapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(0);
+//        if (articleList.size()==0){
+//            articleList.addAll(articleBeanList);
+//        }else {
+//            articleList.clear();
+//            articleList.addAll(articleBeanList);
+//        }
+//        adapter.notifyDataSetChanged();
+//        recyclerView.scrollToPosition(0);
+
         //adapter.notifyItemRangeChanged(0,articleList.size());
     }
 
