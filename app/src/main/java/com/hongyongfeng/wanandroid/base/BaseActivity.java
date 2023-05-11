@@ -61,7 +61,9 @@ public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends App
         initListener();
         initData();
         mPresenter=getPresenterInstance();
-        mPresenter.bindView(this);
+        if (mPresenter!=null){
+            mPresenter.bindView(this);
+        }
     }
 
     public P mPresenter;

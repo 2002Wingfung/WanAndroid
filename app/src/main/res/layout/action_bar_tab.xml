@@ -25,11 +25,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="biaoti"
         android:textColor="@color/white"
         android:gravity="center"
         android:maxLines="1"
         android:singleLine="true"
-        android:textSize="23sp" />
+        android:textSize="20sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
