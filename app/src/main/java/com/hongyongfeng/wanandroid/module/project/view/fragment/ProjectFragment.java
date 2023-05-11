@@ -91,54 +91,6 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        //Log.d("ProjectFragment","onViewStateRestored"+SystemClock.elapsedRealtime());
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        //Log.d("ProjectFragment","onStart"+SystemClock.elapsedRealtime());
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        //Log.d("ProjectFragment","onResume"+SystemClock.elapsedRealtime());
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        //Log.d("ProjectFragment","onPause"+SystemClock.elapsedRealtime());
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        //Log.d("ProjectFragment","onStop"+ SystemClock.elapsedRealtime());
-        super.onStop();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        //Log.d("ProjectFragment","onSaveInstanceState"+SystemClock.elapsedRealtime());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroyView() {
-        //Log.d("ProjectFragment","onDestroyView"+SystemClock.elapsedRealtime());
-        super.onDestroyView();
-    }
-
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onDestroy() {
-        //Log.d("ProjectFragment","onDestroy"+SystemClock.elapsedRealtime());
-        super.onDestroy();
-    }
 
     @Override
     protected void destroy() {

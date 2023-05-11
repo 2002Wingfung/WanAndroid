@@ -31,6 +31,7 @@ import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.KnowledgeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.KnowledgeFragmentPresenter;
+import com.hongyongfeng.wanandroid.module.knowledge.view.activity.TabActivity;
 import com.hongyongfeng.wanandroid.module.knowledge.view.adapter.KnowledgeAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 
@@ -38,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -159,17 +161,19 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
                             for (Map<String,Object> treeMap:treeList) {
                                 //System.out.println(treeMap.get("children"));
                                 try {
-                                    JSONArray jsonArray=new JSONArray(Objects.requireNonNull(treeMap.get("children")).toString());
+//                                    JSONArray jsonArray=new JSONArray(Objects.requireNonNull(treeMap.get("children")).toString());
+                                    JSONArray jsonArray=(JSONArray)treeMap.get("children");
                                     StringBuilder builder=new StringBuilder();
-                                    for (int i=0;i<jsonArray.length();i++){
+                                    Map<String,Object> stringMap = new HashMap<String,Object>();
+
+                                    for (int i = 0; i< Objects.requireNonNull(jsonArray).length(); i++){
                                         JSONObject jsonObject=jsonArray.getJSONObject(i);
-                                        Map<String,Object> stringMap = new HashMap<String,Object>();
-                                        stringMap.put("id",jsonObject.get("id"));
+                                        stringMap.put("id"+i,jsonObject.get("id"));
                                         String name=jsonObject.getString("name");
                                         builder.append(name).append("  ");
-                                        stringMap.put("name",name);
-                                        stringListMap.add(stringMap);
+                                        stringMap.put("name"+i,name);
                                     }
+                                    stringListMap.add(stringMap);
                                     nameList.add(builder.toString());
                                     //System.out.println(builder.toString());
                                 } catch (JSONException e) {
@@ -209,8 +213,15 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
             @Override
             public void onCategoryClicked(View view, int position) {
 
-                ProgressDialog.show(fragmentActivity,"","正在加载",false,true);
-                Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
+                //ProgressDialog.show(fragmentActivity,"","正在加载",false,true);
+                String name=(String) categoryList.get(position).get("name");
+                Toast.makeText(fragmentActivity, name, Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(activity, TabActivity.class);
+                intent.putExtra("name",name);
+                Map<String,Object> childrenMap=stringListMap.get(position);
+                intent.putExtra("name",name);
+                intent.putExtra("map",(Serializable)childrenMap);
+                startActivity(intent);
 
             }
         });

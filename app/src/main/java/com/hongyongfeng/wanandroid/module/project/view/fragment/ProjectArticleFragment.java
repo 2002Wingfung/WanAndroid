@@ -131,7 +131,7 @@ public class ProjectArticleFragment extends BaseFragment<ProjectFragmentPresente
     protected void initData() {
         if (projectList.size()==0){
             StringBuilder str=new StringBuilder("abc ");
-            for (int i =1;i<21;i++){
+            for (int i =1;i<11;i++){
                 projectList.add(new ProjectBean("项目"+i,str.toString()));
                 str.append(i).append("nihao  ");
             }
