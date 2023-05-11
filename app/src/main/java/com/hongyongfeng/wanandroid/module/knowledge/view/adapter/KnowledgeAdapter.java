@@ -13,16 +13,18 @@ import com.hongyongfeng.wanandroid.data.net.bean.KnowledgeCategoryBean;
 import com.hongyongfeng.wanandroid.module.knowledge.view.viewholder.KnowledgeViewHolder;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Wingfung Hung
  */
 public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeViewHolder>  {
 
+    private final List<String> nameList;
     /**
      * 存储DishesInformation对象的List集合
      */
-    public List<KnowledgeCategoryBean> categoryList;
+    public List<Map<String,Object>> categoryList;
 
     public interface OnItemClickListener {
         void onCategoryClicked(View view, int position);
@@ -56,10 +58,11 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeViewHolder> 
      */
     @Override
     public void onBindViewHolder(@NonNull KnowledgeViewHolder holder, int position) {
-        KnowledgeCategoryBean category=categoryList.get(position);
+        Map<String,Object> category=categoryList.get(position);
 
-        holder.tvCategory.setText(category.getCategory());
-        holder.tvDetails.setText(category.getDetailedCategory());
+        holder.tvDetails.setText(nameList.get(position));
+        holder.tvCategory.setText((String) category.get("name"));
+        //holder.tvDetails.setText(category.getDetailedCategory());
 
     }
 
@@ -71,7 +74,8 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeViewHolder> 
     /**
      *
      */
-    public KnowledgeAdapter(List<KnowledgeCategoryBean> categoryList) {
+    public KnowledgeAdapter(List<Map<String,Object>> categoryList,List<String> nameList) {
         this.categoryList = categoryList;
+        this.nameList=nameList;
     }
 }

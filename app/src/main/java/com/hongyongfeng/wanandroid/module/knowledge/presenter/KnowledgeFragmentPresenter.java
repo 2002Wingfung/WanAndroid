@@ -6,6 +6,9 @@ import com.hongyongfeng.wanandroid.module.knowledge.interfaces.KnowledgeFragment
 import com.hongyongfeng.wanandroid.module.knowledge.model.KnowledgeFragmentModel;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragment;
 
+import java.util.List;
+import java.util.Map;
+
 public class KnowledgeFragmentPresenter extends BaseFragmentPresenter<KnowledgeFragmentModel, KnowledgeFragment, KnowledgeFragmentInterface.VP> {
     @Override
     public KnowledgeFragmentModel getModelInstance() {
@@ -33,9 +36,9 @@ public class KnowledgeFragmentPresenter extends BaseFragmentPresenter<KnowledgeF
             }
 
             @Override
-            public void responseTitleResult(boolean loginStatusResult) {
+            public void responseTitleResult(List<Map<String,Object>> treeList) {
                 //真实开发过程中，是要解析数据的
-                mView.getContract().responseTitleResult(loginStatusResult);
+                mView.getContract().responseTitleResult(treeList);
             }
         };
     }

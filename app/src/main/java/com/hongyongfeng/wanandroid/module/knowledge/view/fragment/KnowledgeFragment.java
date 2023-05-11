@@ -1,6 +1,8 @@
 package com.hongyongfeng.wanandroid.module.knowledge.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -32,8 +34,15 @@ import com.hongyongfeng.wanandroid.module.knowledge.presenter.KnowledgeFragmentP
 import com.hongyongfeng.wanandroid.module.knowledge.view.adapter.KnowledgeAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,15 +53,19 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    static ProgressDialog dialog;
 
     private String mParam1;
     private String mParam2;
     RecyclerView recyclerView;
     private FragmentActivity fragmentActivity;
-    public static List<KnowledgeCategoryBean> categoryList=new ArrayList<>();
+//    public static List<KnowledgeCategoryBean> categoryList=new ArrayList<>();
+    public static List<Map<String,Object>> categoryList=new ArrayList<>();
+    static List<Map<String,Object>> stringListMap=new ArrayList<>();
+    public static List<String> nameList=new ArrayList<>();
 
-    static KnowledgeAdapter adapter=new KnowledgeAdapter(categoryList);
-
+    static KnowledgeAdapter adapter=new KnowledgeAdapter(categoryList,nameList);
+    FragmentActivity activity;
     private int count=0;
 
     @Override
@@ -68,6 +81,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
         super.onResume();
         if (count==0){
             getContract().requestTitleVP();
+            dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
             count=1;
         }
         //请求网络代码
@@ -113,6 +127,12 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity=requireActivity();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -129,8 +149,39 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
                 mPresenter.getContract().requestTitleVP();
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void responseTitleResult(boolean loginStatusResult) {
+            public void responseTitleResult(List<Map<String,Object>> treeList) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (categoryList.size()==0){
+                            for (Map<String,Object> treeMap:treeList) {
+                                //System.out.println(treeMap.get("children"));
+                                try {
+                                    JSONArray jsonArray=new JSONArray(Objects.requireNonNull(treeMap.get("children")).toString());
+                                    StringBuilder builder=new StringBuilder();
+                                    for (int i=0;i<jsonArray.length();i++){
+                                        JSONObject jsonObject=jsonArray.getJSONObject(i);
+                                        Map<String,Object> stringMap = new HashMap<String,Object>();
+                                        stringMap.put("id",jsonObject.get("id"));
+                                        String name=jsonObject.getString("name");
+                                        builder.append(name).append("  ");
+                                        stringMap.put("name",name);
+                                        stringListMap.add(stringMap);
+                                    }
+                                    nameList.add(builder.toString());
+                                    //System.out.println(builder.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            categoryList.addAll(treeList);
+                            adapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                    }
+                });
 
             }
         };
@@ -167,13 +218,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
 
     @Override
     protected void initData() {
-        if (categoryList.size()==0){
-            StringBuilder str=new StringBuilder("abc ");
-            for (int i =1;i<10;i++){
-                categoryList.add(new KnowledgeCategoryBean("开发环境"+i,str.toString()));
-                str.append(i).append("nihao  ");
-            }
-        }
+
     }
 
     @Override
