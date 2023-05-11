@@ -1,0 +1,41 @@
+package com.hongyongfeng.wanandroid.module.knowledge.view.presenter;
+
+
+import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
+import com.hongyongfeng.wanandroid.module.knowledge.view.model.ArticleModel;
+import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
+import com.hongyongfeng.wanandroid.module.query.model.LoadMoreModel;
+import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
+
+import java.util.List;
+
+public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, ArticleFragment, ArticleInterface.VP> {
+    @Override
+    public ArticleModel getModelInstance() {
+        return new ArticleModel(this);
+    }
+
+    @Override
+    public ArticleInterface.VP getContract() {
+        return new ArticleInterface.VP() {
+
+
+            @Override
+            public void requestArticleVP(int id, int page) {
+                try {
+                    mModel.getContract().requestLoadMoreM(id,page);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void responseArticleVP(List<ArticleBean> articleList) {
+                mView.getContract().responseLoadMoreVP(articleList);
+
+            }
+        };
+    }
+}

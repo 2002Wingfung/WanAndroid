@@ -46,9 +46,10 @@ public class TabActivity extends BaseActivity {
             //System.out.println(childrenMap.get("name0"));
             for (int i=0;i<childrenMap.size()/2;i++){
 
-                System.out.println(childrenMap.get("name"+i));
+                System.out.println(childrenMap.get("id"+i));
                 String name=(String) childrenMap.get("name"+i);
                 categoryList.add(name);
+
                 fragmentList.add(VPFragment.newInstance(name,""));
 
             }
