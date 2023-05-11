@@ -12,7 +12,6 @@ public class ArticleBean implements Parcelable {
     private int id;
     private String author;
     private String chapterName;
-
     private String link;
     private String title;
     private String niceDate;
@@ -28,18 +27,6 @@ public class ArticleBean implements Parcelable {
         superChapterName = in.readString();
         top = in.readInt();
     }
-
-//    public static final Creator<ArticleBean> CREATOR = new Creator<ArticleBean>() {
-//        @Override
-//        public ArticleBean createFromParcel(Parcel in) {
-//            return new ArticleBean(in);
-//        }
-//
-//        @Override
-//        public ArticleBean[] newArray(int size) {
-//            return new ArticleBean[size];
-//        }
-//    };
 
     public String getSuperChapterName() {
         return superChapterName;

@@ -53,6 +53,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
 
     static KnowledgeAdapter adapter=new KnowledgeAdapter(categoryList);
 
+    private int count=0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -63,15 +64,12 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        //请求网络代码
-
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+        if (count==0){
+            getContract().requestTitleVP();
+            count=1;
+        }
         //请求网络代码
 
     }
@@ -127,12 +125,12 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     public KnowledgeFragmentInterface.VP getContract() {
         return new KnowledgeFragmentInterface.VP() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
-
+            public void requestTitleVP() {
+                mPresenter.getContract().requestTitleVP();
             }
 
             @Override
-            public void responseLoginResult(boolean loginStatusResult) {
+            public void responseTitleResult(boolean loginStatusResult) {
 
             }
         };
@@ -171,7 +169,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     protected void initData() {
         if (categoryList.size()==0){
             StringBuilder str=new StringBuilder("abc ");
-            for (int i =1;i<21;i++){
+            for (int i =1;i<10;i++){
                 categoryList.add(new KnowledgeCategoryBean("开发环境"+i,str.toString()));
                 str.append(i).append("nihao  ");
             }
