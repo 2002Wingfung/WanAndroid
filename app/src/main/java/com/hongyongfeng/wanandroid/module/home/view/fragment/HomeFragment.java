@@ -110,8 +110,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        articleList.addAll(articleLists);
-                        adapter.notifyItemInserted(articleList.size());
+                        if (articleLists.size()!=0){
+                            articleList.addAll(articleLists);
+                            adapter.notifyItemInserted(articleList.size());
+                        }else {
+                            Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                 });
