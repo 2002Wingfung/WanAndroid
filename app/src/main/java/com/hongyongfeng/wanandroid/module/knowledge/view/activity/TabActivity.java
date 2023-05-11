@@ -7,16 +7,30 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.base.BasePresenter;
+import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectCategoryAdapter;
+import com.hongyongfeng.wanandroid.test.VPFragment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
 public class TabActivity extends BaseActivity {
     TextView tvTitle;
     TextView tvBack;
+    private ProjectCategoryAdapter adapter;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private List<Fragment> fragmentList;
+    private List<String> categoryList;
+
     @Override
     public Object getContract() {
         return null;
@@ -29,10 +43,23 @@ public class TabActivity extends BaseActivity {
         if(intent != null){
             //获取intent中的参数
             Map<String,Object> childrenMap=(Map<String,Object>)intent.getSerializableExtra("map");
-            System.out.println(childrenMap.get("name0"));
+            //System.out.println(childrenMap.get("name0"));
+            for (int i=0;i<childrenMap.size()/2;i++){
+
+                System.out.println(childrenMap.get("name"+i));
+                String name=(String) childrenMap.get("name"+i);
+                categoryList.add(name);
+                fragmentList.add(VPFragment.newInstance(name,""));
+
+            }
+
             String name=intent.getStringExtra("name");
             tvTitle.setText(name);
         }
+        adapter=new ProjectCategoryAdapter(getSupportFragmentManager(),
+                fragmentList,categoryList);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -42,6 +69,8 @@ public class TabActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        fragmentList=new ArrayList<>();
+        categoryList=new ArrayList<>();
 
     }
 
@@ -64,6 +93,8 @@ public class TabActivity extends BaseActivity {
     protected void initView() {
         tvBack=findViewById(R.id.tv_back);
         tvTitle=findViewById(R.id.tv_title);
+        viewPager=findViewById(R.id.vp_knowledge);
+        tabLayout=findViewById(R.id.tab_layout);
     }
 
     @Override

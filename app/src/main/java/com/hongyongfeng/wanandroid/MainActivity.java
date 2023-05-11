@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_deprecated);
         initView();
         WindowManager wm = this.getWindowManager();//获取屏幕宽高
         int width1 = wm.getDefaultDisplay().getWidth();
