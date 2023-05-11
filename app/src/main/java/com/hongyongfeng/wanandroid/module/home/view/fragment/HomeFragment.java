@@ -77,7 +77,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             ImageView imgBanner = view.findViewById(R.id.img_banner);
                             imgBanner.setImageBitmap(bitmapLists.get(i));
                         }
-                        dialogHandler.sendEmptyMessageDelayed(1, 500);
+                        //dialogHandler.sendEmptyMessageDelayed(1, 500);
+                        dialogHandler.sendEmptyMessage(1);
                     }
                 });
             }
@@ -90,14 +91,24 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void responseArticleResult(List<ArticleBean> articleLists, List<ArticleBean> articleTopLists) {
                 //这里有点bug，没有用runOnUiThread也能更新ui
-                 if ((articleList.size()==0)){
-                    for (ArticleBean article:articleTopLists){
-                        article.setTop(-1);
-                        articleList.add(article);
+                requireActivity().runOnUiThread(new Runnable() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void run() {
+                        if ((articleList.size()==0)){
+                            for (ArticleBean article:articleTopLists){
+                                article.setTop(-1);
+                                articleList.add(article);
+                            }
+                            articleList.addAll(articleLists);
+                            //adapter.notifyItemInserted(0);
+                            adapter.notifyDataSetChanged();
+                            //dialogHandler.sendEmptyMessage(1);
+
+                        }
                     }
-                    articleList.addAll(articleLists);
-                    adapter.notifyItemInserted(0);
-                 }
+                });
+
             }
 
             @Override

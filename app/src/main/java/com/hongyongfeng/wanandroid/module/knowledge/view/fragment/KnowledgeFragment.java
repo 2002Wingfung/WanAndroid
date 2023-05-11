@@ -63,6 +63,13 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        //请求网络代码
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         //请求网络代码

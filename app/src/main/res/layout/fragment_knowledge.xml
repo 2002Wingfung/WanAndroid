@@ -9,8 +9,8 @@
         android:id="@+id/rv_knowledge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         >
     </androidx.recyclerview.widget.RecyclerView>
 
