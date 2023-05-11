@@ -59,8 +59,14 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
         fragmentActivity=requireActivity();
 
         super.onViewCreated(view, savedInstanceState);
-        System.out.println(fragmentActivity);
         setRecyclerView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //请求网络代码
+
     }
 
     private void setRecyclerView() {
