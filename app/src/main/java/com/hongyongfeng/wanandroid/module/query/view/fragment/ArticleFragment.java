@@ -48,9 +48,12 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        articleList.addAll(articleLists);
-                        adapter.notifyItemInserted(articleList.size());
-                        System.out.println("finish");
+                        if (articleLists.size() != 0){
+                            articleList.addAll(articleLists);
+                            adapter.notifyItemInserted(articleList.size());
+                        }else {
+                            Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                 });
@@ -60,13 +63,6 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     public List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
     List<ArticleBean> articleBeanList = null;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("article","onCreateView");
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
 
     ArticleAdapter adapter=new ArticleAdapter(articleList);
     RecyclerView recyclerView;
@@ -110,7 +106,6 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                     dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
                     getContract().requestLoadMoreVP(edtQuery.getText().toString(),page);
                     page++;
-                    System.out.println("ok");
                 }
             }
         });

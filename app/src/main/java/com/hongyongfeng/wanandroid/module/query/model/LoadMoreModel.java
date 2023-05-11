@@ -45,10 +45,9 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
                     @Override
                     public void onFinish(String response) {
                         List<ArticleBean> articleBeanList = HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
-                        if (articleBeanList.size()!=0){
-                            mPresenter.getContract().responseLoadMoreVP(articleBeanList);
-                        }
+                        mPresenter.getContract().responseLoadMoreVP(articleBeanList);
                     }
+
 
                     @Override
                     public void onError(Exception e) {
