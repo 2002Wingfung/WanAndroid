@@ -61,23 +61,31 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     private FragmentActivity fragmentActivity;
     List<ArticleBean> articleBeanList = null;
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("article","onCreateView");
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     ArticleAdapter adapter=new ArticleAdapter(articleList);
     RecyclerView recyclerView;
     static ProgressDialog dialog;
     private int page=1;
     EditText edtQuery;
-    View view;
+    private int count=0;
     @Override
     protected void destroy() {
 
     }
-
-
     @Override
     protected void initView(View view) {
         Log.d("init","success");
         recyclerView= fragmentActivity.findViewById(R.id.rv_article);
-        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+        if (count==0){
+            SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+            count=1;
+        }
         edtQuery=fragmentActivity.findViewById(R.id.edt_keyword);
     }
     protected boolean isSlideToBottom(RecyclerView recyclerView) {
@@ -135,6 +143,12 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadData();
+    }
+
+    @Override
     protected void initData() {
 
     }
@@ -157,7 +171,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     @Override
     public void onStart() {
         super.onStart();
-        loadData();
+
     }
 
     @Override
@@ -188,6 +202,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
+
         if (articleList.size()==0){
             articleList.addAll(articleBeanList);
         }else {

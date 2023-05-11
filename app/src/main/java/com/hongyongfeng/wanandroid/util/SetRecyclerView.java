@@ -36,6 +36,5 @@ public class SetRecyclerView {
         //获取LinearLayoutManager实例，设置布局方式
         LinearLayoutManager layoutManager=new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
         recyclerView(layoutManager,context,recyclerView,adapter);
-
     }
 }
