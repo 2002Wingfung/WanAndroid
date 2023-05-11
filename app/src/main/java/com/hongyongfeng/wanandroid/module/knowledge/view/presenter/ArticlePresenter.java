@@ -4,6 +4,7 @@ package com.hongyongfeng.wanandroid.module.knowledge.view.presenter;
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
+import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeArticleFragment;
 import com.hongyongfeng.wanandroid.module.knowledge.view.model.ArticleModel;
 import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
 import com.hongyongfeng.wanandroid.module.query.model.LoadMoreModel;
@@ -11,7 +12,7 @@ import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
 
 import java.util.List;
 
-public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, ArticleFragment, ArticleInterface.VP> {
+public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, KnowledgeArticleFragment, ArticleInterface.VP> {
     @Override
     public ArticleModel getModelInstance() {
         return new ArticleModel(this);
@@ -33,7 +34,7 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Articl
 
             @Override
             public void responseArticleVP(List<ArticleBean> articleList) {
-                mView.getContract().responseLoadMoreVP(articleList);
+                mView.getContract().responseArticleVP(articleList);
 
             }
         };
