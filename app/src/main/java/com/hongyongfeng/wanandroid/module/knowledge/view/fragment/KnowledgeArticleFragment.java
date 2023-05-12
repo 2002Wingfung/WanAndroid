@@ -5,11 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,9 +24,6 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.view.presenter.ArticlePresenter;
-import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
-import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
-import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
@@ -55,11 +49,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                         if (articleLists.size() != 0){
                             articleList.addAll(articleLists);
                             adapter.notifyDataSetChanged();
-                            System.out.println(articleLists);
-
-                            //adapter.notifyItemInserted(articleList.size());
                         }else {
-                            System.out.println(articleLists);
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
@@ -76,7 +66,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     private RecyclerView recyclerView;
     private ProgressDialog dialog;
     private int page=1;
-    private boolean firstLoad  = false;
+    private boolean loadMore = false;
 
     private FragmentTransaction transaction;
     @Override
@@ -96,14 +86,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             return false;
         }
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
-    }
-
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        loadData();
     }
 
     @Override
@@ -141,44 +123,21 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("fra","onCreateView");
         View view = inflater.inflate(R.layout.fragment_query_article,container, false);
         recyclerView= view.findViewById(R.id.rv_article);
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
-        firstLoad=true;//视图创建完成，将变量置为true
-
         dialog=ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
         articleList.clear();
         getContract().requestArticleVP(id,0);
-
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        firstLoad=false;//视图销毁将变量置为false
-    }
-
-    private void loadFragment(){
-        FragmentManager fragmentManager = getChildFragmentManager();
-        transaction= fragmentManager.beginTransaction();
-    }
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadData() {
-
-//        if (articleList.size()==0){
-//            articleList.addAll(articleBeanList);
-//        }else {
-//            articleList.clear();
-//            articleList.addAll(articleBeanList);
-//        }
-//        adapter.notifyDataSetChanged();
-//        recyclerView.scrollToPosition(0);
-
-        //adapter.notifyItemRangeChanged(0,articleList.size());
+        loadMore=false;//视图销毁将变量置为false
     }
 
     @Override
@@ -195,12 +154,19 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (isSlideToBottom(recyclerView)) {
-                    dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
-                    getContract().requestArticleVP(id,page);
-                    //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();
-                    page++;
+                if (isSlideToBottom(recyclerView)){
+                    if (loadMore){
+                        dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
+                        getContract().requestArticleVP(id,page);
+                        //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();
+                        page++;
+                    }
                 }
+
+                if (isSlideToBottom(recyclerView)) {
+                    loadMore=true;
+                }
+
             }
         });
 
