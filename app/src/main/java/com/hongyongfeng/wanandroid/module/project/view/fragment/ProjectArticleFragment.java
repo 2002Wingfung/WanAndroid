@@ -29,6 +29,7 @@ import com.hongyongfeng.wanandroid.test.VPFragment;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ProjectArticleFragment extends BaseFragment<ProjectFragmentPresenter, ProjectFragmentInterface.VP> {
@@ -54,13 +55,13 @@ public class ProjectArticleFragment extends BaseFragment<ProjectFragmentPresente
     public ProjectFragmentInterface.VP getContract() {
         return new ProjectFragmentInterface.VP() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
-
+            public void requestTitleVP() {
+                mPresenter.getContract().requestTitleVP();
             }
 
             @Override
-            public void responseLoginResult(boolean loginStatusResult) {
-
+            public void responseTitleResult(List<Map<String,Object>> titleMapList) {
+                System.out.println(titleMapList);
             }
         };
     }

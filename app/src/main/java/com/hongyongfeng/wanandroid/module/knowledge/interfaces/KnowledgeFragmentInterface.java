@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface KnowledgeFragmentInterface {
     interface M{
-        void requestLoginM()throws Exception;
+        void requestTitleM()throws Exception;
     }
     interface VP{
         void requestTitleVP();

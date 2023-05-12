@@ -1,6 +1,8 @@
 package com.hongyongfeng.wanandroid.module.project.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.TableLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,6 +27,7 @@ import com.hongyongfeng.wanandroid.test.VPFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, ProjectFragmentInterface.VP>{
 
@@ -37,6 +41,9 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     private List<Fragment> fragmentList;
     private ProjectCategoryAdapter adapter;
     private List<String> categoryList;
+    private FragmentActivity activity;
+    static ProgressDialog dialog;
+    private int count=0;
     public static ProjectFragment newInstance(String param1, String param2) {
         ProjectFragment fragment = new ProjectFragment();
         Bundle args = new Bundle();
@@ -49,12 +56,28 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     public ProjectFragmentInterface.VP getContract() {
         return new ProjectFragmentInterface.VP() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
+            public void requestTitleVP() {
 
+                mPresenter.getContract().requestTitleVP();
             }
 
             @Override
-            public void responseLoginResult(boolean loginStatusResult) {
+            public void responseTitleResult(List<Map<String,Object>> titleMapList) {
+
+                System.out.println(titleMapList);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Map<String,Object> titleMap:titleMapList) {
+                            categoryList.add((String) titleMap.get("name"));
+                        }
+                        adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
+                                fragmentList,categoryList);
+                        viewPager.setAdapter(adapter);
+                        tabLayout.setupWithViewPager(viewPager);
+                        dialog.dismiss();
+                    }
+                });
 
             }
         };
@@ -67,6 +90,12 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
 //        //待修改
 //    }
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity=requireActivity();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,12 +114,21 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //Log.d("ProjectFragment","onViewCreated"+SystemClock.elapsedRealtime());
         super.onViewCreated(view, savedInstanceState);
-        adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
-                fragmentList,categoryList);
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
+//        adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
+//                fragmentList,categoryList);
+//        viewPager.setAdapter(adapter);
+//        tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (count==0){
+            getContract().requestTitleVP();
+            dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
+            count=1;
+        }
+    }
 
     @Override
     protected void destroy() {
@@ -134,13 +172,13 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         fragmentList.add(fragment5);
         fragmentList.add(fragment6);
         fragmentList.add(fragment7);
-        categoryList.add("推荐");
-        categoryList.add("关注");
-        categoryList.add("娱乐");
-        categoryList.add("时政");
-        categoryList.add("汽车");
-        categoryList.add("历史");
-        categoryList.add("地理");
+//        categoryList.add("推荐");
+//        categoryList.add("关注");
+//        categoryList.add("娱乐");
+//        categoryList.add("时政");
+//        categoryList.add("汽车");
+//        categoryList.add("历史");
+//        categoryList.add("地理");
     }
 
     @Override

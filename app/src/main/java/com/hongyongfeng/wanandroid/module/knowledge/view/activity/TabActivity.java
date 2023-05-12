@@ -4,24 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.tabs.TabLayout;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.base.BasePresenter;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeArticleFragment;
 import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectCategoryAdapter;
-import com.hongyongfeng.wanandroid.test.VPFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 public class TabActivity extends BaseActivity {
     TextView tvTitle;

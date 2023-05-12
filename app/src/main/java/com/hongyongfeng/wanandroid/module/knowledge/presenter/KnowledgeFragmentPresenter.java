@@ -24,7 +24,7 @@ public class KnowledgeFragmentPresenter extends BaseFragmentPresenter<KnowledgeF
                 //调用model层
                 try {
 //                    mModel.requestLogin(name,pwd);
-                    mModel.getContract().requestLoginM();
+                    mModel.getContract().requestTitleM();
 
                 } catch (Exception e) {
                     e.printStackTrace();

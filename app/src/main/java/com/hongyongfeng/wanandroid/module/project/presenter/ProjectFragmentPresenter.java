@@ -2,14 +2,15 @@ package com.hongyongfeng.wanandroid.module.project.presenter;
 
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
-import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
-import com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel;
-import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.model.ProjectFragmentModel;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectArticleFragment;
+import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 
-public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragmentModel, ProjectArticleFragment, ProjectFragmentInterface.VP> {
+import java.util.List;
+import java.util.Map;
+
+public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragmentModel, ProjectFragment, ProjectFragmentInterface.VP> {
     @Override
     public ProjectFragmentModel getModelInstance() {
         return new ProjectFragmentModel(this);
@@ -19,12 +20,12 @@ public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragm
     public ProjectFragmentInterface.VP getContract() {
         return new ProjectFragmentInterface.VP() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
+            public void requestTitleVP() {
                 //核验请求的信息，进行逻辑处理
                 //调用model层
                 try {
 //                    mModel.requestLogin(name,pwd);
-                    mModel.getContract().requestLoginM(name,pwd);
+                    mModel.getContract().requestTitleM();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -36,9 +37,9 @@ public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragm
             }
 
             @Override
-            public void responseLoginResult(boolean loginStatusResult) {
+            public void responseTitleResult(List<Map<String,Object>> titleMapList) {
                 //真实开发过程中，是要解析数据的
-                mView.getContract().responseLoginResult(loginStatusResult);
+                mView.getContract().responseTitleResult(titleMapList);
             }
         };
     }

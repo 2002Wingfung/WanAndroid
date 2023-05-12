@@ -20,7 +20,7 @@ public class KnowledgeFragmentModel extends BaseFragmentModel<KnowledgeFragmentP
     public KnowledgeFragmentInterface.M getContract() {
         return new KnowledgeFragmentInterface.M() {
             @Override
-            public void requestLoginM() throws Exception {
+            public void requestTitleM() throws Exception {
                 //请求服务器登录接口，然后拿到
 
                 HttpUtil.sendHttpRequest(Knowledge_Tree_URL, new HttpCallbackListener() {
