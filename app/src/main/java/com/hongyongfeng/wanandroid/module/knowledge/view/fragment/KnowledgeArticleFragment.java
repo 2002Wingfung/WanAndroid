@@ -47,7 +47,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
 
             @Override
             public void responseArticleVP(List<ArticleBean> articleLists) {
-                System.out.println(articleLists);
+                //System.out.println(articleLists);
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -72,7 +72,8 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     private RecyclerView recyclerView;
     private ProgressDialog dialog;
     private int page=1;
-    private int count=0;
+    private boolean firstLoad  = false;
+
     private FragmentTransaction transaction;
     @Override
     protected void destroy() {
@@ -80,12 +81,11 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     }
     @Override
     protected void initView(View view) {
-        Log.d("init","success");
-        recyclerView= fragmentActivity.findViewById(R.id.rv_article);
-        if (count==0){
-            SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
-            count=1;
-        }
+//        recyclerView= fragmentActivity.findViewById(R.id.rv_article);
+//        if (count==0){
+//            SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+//            count=1;
+//        }
     }
     protected boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) {
@@ -137,38 +137,27 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("fra","oncreate");
+        Log.d("fra","onCreateView");
         View view = inflater.inflate(R.layout.fragment_query_article,container, false);
         recyclerView= view.findViewById(R.id.rv_article);
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
-        dialog=ProgressDialog.show(requireActivity(), "", "正在加载", false, true);
+        firstLoad=true;//视图创建完成，将变量置为true
+
+        dialog=ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
         articleList.clear();
         getContract().requestArticleVP(id,0);
-//        loadFragment();
-//        if (!loadingFragment.isAdded()){
-//            transaction.hide(this).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
-//        }else {
-//            transaction.hide(this).show(loadingFragment).commit();
-//        }
-        //transaction.replace(R.id.loading,loadingFragment).commit();
+
         return view;
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden) {   // 不在最前端显示 相当于调用了onPause();
-            //System.out.println("hide");;
-        }else{  // 在最前端显示 相当于调用了onResume();
-            //System.out.println("show");//网络数据刷新
-//            if (getArguments() != null) {
-//                articleBeanList = getArguments().getParcelableArrayList("list");
-//            }
-//            loadData();
-        }
+    public void onDestroyView() {
+        super.onDestroyView();
+        firstLoad=false;//视图销毁将变量置为false
     }
+
     private void loadFragment(){
         FragmentManager fragmentManager = getChildFragmentManager();
         transaction= fragmentManager.beginTransaction();
@@ -203,7 +192,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (isSlideToBottom(recyclerView)) {
-                    dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, true);
+                    dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
                     getContract().requestArticleVP(id,page);
                     //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();
                     page++;
