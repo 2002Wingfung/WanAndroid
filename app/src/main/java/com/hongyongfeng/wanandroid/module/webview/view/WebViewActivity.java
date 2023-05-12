@@ -2,7 +2,9 @@ package com.hongyongfeng.wanandroid.module.webview.view;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -34,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -132,6 +136,58 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                     handler.proceed();
                 }
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                try {
+                    //处理intent协议
+                    if (url.startsWith("intent://")) {
+                        Intent intent;
+                        try {
+                            intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                            intent.addCategory("android.intent.category.BROWSABLE");
+                            intent.setComponent(null);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                                intent.setSelector(null);
+                            }
+                            List<ResolveInfo> resolves = getApplicationContext().getPackageManager().queryIntentActivities(intent,0);
+                            if(resolves.size()>0){
+                                startActivityIfNeeded(intent, -1);
+                            }
+                            return true;
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // 处理自定义scheme协议
+                    if (!url.startsWith("http")) {
+                        //MyLogUtil.LogI("yxx","处理自定义scheme-->" + newurl);
+                        try {
+                            // 以下固定写法
+                            final Intent intent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(url));
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            // 防止没有安装的情况
+                            e.printStackTrace();
+                            Toast.makeText(WebViewActivity.this, "您所打开的第三方App未安装！", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                //view.loadUrl(url);
+                //禁止跳转外部网页
+                return super.shouldOverrideUrlLoading(view, request);
+            }
         });
         webView.setLayerType(View.LAYER_TYPE_HARDWARE,null);//开启硬件加速
 
@@ -208,18 +264,6 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
             case R.id.tv_back:
                 if (webView.canGoBack()) {
                     webView.goBack();//返回上个页面
-//                    webView.setWebChromeClient(new WebChromeClient() {
-//                        @Override
-//                        public void onProgressChanged(WebView view, int newProgress) {
-//                            //显示进度条
-//                            progressBar.setProgress(newProgress);
-//                            if (newProgress == 100) {
-//                                //加载完毕隐藏进度条
-//                                progressBar.setVisibility(View.GONE);
-//                            }
-//                            super.onProgressChanged(view, newProgress);
-//                        }
-//                    });
                 }else{
                     WebViewActivity.this.finish();
                 }
@@ -238,7 +282,6 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                 }
                 count++;
             default:
-            //sendRequestWithHttpURLConnection();
                 String address="http://10.0.2.2/get_data.json";
                 HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
                     @Override
@@ -249,52 +292,10 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
 
                     @Override
                     public void onError(Exception e) {
-
                     }
                 });
                 break;
         }
-    }
-
-    private void sendRequestWithHttpURLConnection() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection=null;
-                BufferedReader reader=null;
-                try{
-                    //URL url=new URL("https://www.baidu.com");
-                    URL url=new URL("http://10.0.2.2/get_data.json");
-                    connection =(HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    InputStream in=connection.getInputStream();
-                    reader=new BufferedReader(new InputStreamReader(in));
-                    StringBuilder response=new StringBuilder();
-                    String line;
-                    while ((line=reader.readLine())!=null){
-                        response.append(line);
-                    }
-                    showResponse(response.toString());
-                    parseJSONWithJSONObject(response.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }finally {
-                    if (reader!=null){
-                        try {
-                            reader.close();
-                        }catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                    if (connection!=null){
-                        connection.disconnect();
-                    }
-                }
-            }
-        }).start();
-
     }
 
     private void parseJSONWithJSONObject(String toString) {
@@ -315,7 +316,7 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         }
     }
 
-    private  void showResponse(final String response){
+    private void showResponse(final String response){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
