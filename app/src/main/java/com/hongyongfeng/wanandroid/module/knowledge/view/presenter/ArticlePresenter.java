@@ -6,9 +6,6 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeArticleFragment;
 import com.hongyongfeng.wanandroid.module.knowledge.view.model.ArticleModel;
-import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
-import com.hongyongfeng.wanandroid.module.query.model.LoadMoreModel;
-import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
             @Override
             public void requestArticleVP(int id, int page) {
                 try {
-                    mModel.getContract().requestLoadMoreM(id,page);
+                    mModel.getContract().requestArticleM(id,page);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

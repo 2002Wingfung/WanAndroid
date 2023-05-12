@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hongyongfeng.wanandroid.R;
@@ -27,6 +29,7 @@ import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.view.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
 import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
+import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
@@ -40,19 +43,21 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             @Override
             public void requestArticleVP(int id, int page) {
                 mPresenter.getContract().requestArticleVP(id,page);
-
             }
 
             @Override
             public void responseArticleVP(List<ArticleBean> articleLists) {
+                System.out.println(articleLists);
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (articleLists.size() != 0){
                             articleList.addAll(articleLists);
-                            adapter.notifyItemInserted(articleList.size());
+                            adapter.notifyDataSetChanged();
+                            //adapter.notifyItemInserted(articleList.size());
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }
                         dialog.dismiss();
                     }
@@ -60,16 +65,15 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             }
         };
     }
-    public List<ArticleBean> articleList=new ArrayList<>();
+    private final List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
-    List<ArticleBean> articleBeanList = null;
-
-    ArticleAdapter adapter=new ArticleAdapter(articleList);
-    RecyclerView recyclerView;
-    static ProgressDialog dialog;
+    private int id;
+    private final ArticleAdapter adapter=new ArticleAdapter(articleList);
+    private RecyclerView recyclerView;
+    private ProgressDialog dialog;
     private int page=1;
-    EditText edtQuery;
     private int count=0;
+    private FragmentTransaction transaction;
     @Override
     protected void destroy() {
 
@@ -82,7 +86,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
             count=1;
         }
-        edtQuery=fragmentActivity.findViewById(R.id.edt_keyword);
     }
     protected boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) {
@@ -91,6 +94,103 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
     }
 
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadData();
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected ArticlePresenter getPresenterInstance() {
+        return new ArticlePresenter();
+    }
+
+    @Override
+    protected <ERROR> void responseError(ERROR error, Throwable throwable) {
+
+    }
+
+    @Override
+    protected int getFragmentView() {
+        return R.layout.fragment_query_article;
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentActivity = requireActivity();
+        if (getArguments() != null) {
+            //articleBeanList = getArguments().getParcelableArrayList("list");
+            id=getArguments().getInt("id");
+            System.out.println("id"+id);
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("fra","oncreate");
+        View view = inflater.inflate(R.layout.fragment_query_article,container, false);
+        recyclerView= view.findViewById(R.id.rv_article);
+        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+        mPresenter=getPresenterInstance();
+        mPresenter.bindView(this);
+        dialog=ProgressDialog.show(requireActivity(), "", "正在加载", false, true);
+        articleList.clear();
+        getContract().requestArticleVP(id,0);
+//        loadFragment();
+//        if (!loadingFragment.isAdded()){
+//            transaction.hide(this).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+//        }else {
+//            transaction.hide(this).show(loadingFragment).commit();
+//        }
+        //transaction.replace(R.id.loading,loadingFragment).commit();
+        return view;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {   // 不在最前端显示 相当于调用了onPause();
+            //System.out.println("hide");;
+        }else{  // 在最前端显示 相当于调用了onResume();
+            //System.out.println("show");//网络数据刷新
+//            if (getArguments() != null) {
+//                articleBeanList = getArguments().getParcelableArrayList("list");
+//            }
+//            loadData();
+        }
+    }
+    private void loadFragment(){
+        FragmentManager fragmentManager = getChildFragmentManager();
+        transaction= fragmentManager.beginTransaction();
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadData() {
+
+//        if (articleList.size()==0){
+//            articleList.addAll(articleBeanList);
+//        }else {
+//            articleList.clear();
+//            articleList.addAll(articleBeanList);
+//        }
+//        adapter.notifyDataSetChanged();
+//        recyclerView.scrollToPosition(0);
+
+        //adapter.notifyItemRangeChanged(0,articleList.size());
+    }
+
+    @Override
+    public void onClick(View v) {
+    }
     @Override
     protected void initListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -103,9 +203,9 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (isSlideToBottom(recyclerView)) {
-                    dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
-                    getContract().requestArticleVP(0,page);
-                    //需要修改id
+                    dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, true);
+                    getContract().requestArticleVP(id,page);
+                    //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();
                     page++;
                 }
             }
@@ -136,93 +236,5 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        loadData();
-    }
-
-    @Override
-    protected void initData() {
-
-    }
-
-    @Override
-    protected ArticlePresenter getPresenterInstance() {
-        return new ArticlePresenter();
-    }
-
-    @Override
-    protected <ERROR> void responseError(ERROR error, Throwable throwable) {
-
-    }
-
-    @Override
-    protected int getFragmentView() {
-        return R.layout.fragment_query_article;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        fragmentActivity = requireActivity();
-        if (getArguments() != null) {
-            articleBeanList = getArguments().getParcelableArrayList("list");
-            System.out.println("id"+getArguments().getInt("id"));
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_query_article,container, false);
-        recyclerView= view.findViewById(R.id.rv_article);
-        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
-        return view;
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden) {   // 不在最前端显示 相当于调用了onPause();
-            //System.out.println("hide");;
-        }else{  // 在最前端显示 相当于调用了onResume();
-            //System.out.println("show");//网络数据刷新
-
-            if (getArguments() != null) {
-                articleBeanList = getArguments().getParcelableArrayList("list");
-//                articleBeanList.remove(0);
-//                articleBeanList.remove(0);
-            }
-            loadData();
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadData() {
-
-//        if (articleList.size()==0){
-//            articleList.addAll(articleBeanList);
-//        }else {
-//            articleList.clear();
-//            articleList.addAll(articleBeanList);
-//        }
-//        adapter.notifyDataSetChanged();
-//        recyclerView.scrollToPosition(0);
-
-        //adapter.notifyItemRangeChanged(0,articleList.size());
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

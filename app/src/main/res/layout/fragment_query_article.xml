@@ -6,6 +6,12 @@
 
 <!--    此处应该换成recyclerview-->
 
+<!--    <fragment-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:name="com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment"-->
+<!--        android:id="@+id/fragment"/>-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_article"
         android:layout_width="match_parent"

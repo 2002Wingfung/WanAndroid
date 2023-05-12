@@ -21,9 +21,8 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
         return new ArticleInterface.M() {
 
             @Override
-            public void requestLoadMoreM(int id, int page) throws Exception {
-                String url="https://www.wanandroid.com/article/list/"+page+"/json?cid="+page;
-
+            public void requestArticleM(int id, int page) throws Exception {
+                String url="https://www.wanandroid.com/article/list/"+page+"/json?cid="+id;
                 HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {
 
                     @Override

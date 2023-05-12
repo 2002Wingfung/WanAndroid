@@ -131,8 +131,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
                     loadFragment();
                     if (!articleFragment.isAdded()){
 //                        transaction.hide(heatedWordsFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
-
-
                     }
 
                     if (!loadingFragment.isAdded()){
@@ -229,5 +227,4 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
         fragmentManager=getSupportFragmentManager();
         transaction=fragmentManager.beginTransaction();
     }
-
 }

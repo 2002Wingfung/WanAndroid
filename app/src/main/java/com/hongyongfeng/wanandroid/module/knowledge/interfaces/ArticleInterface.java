@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ArticleInterface {
     interface M{
-        void requestLoadMoreM(int id,int page)throws Exception;
+        void requestArticleM(int id, int page)throws Exception;
     }
     interface VP{
 
