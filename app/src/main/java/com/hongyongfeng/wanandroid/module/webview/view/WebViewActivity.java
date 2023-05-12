@@ -161,7 +161,6 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                     }
                     // 处理自定义scheme协议
                     if (!url.startsWith("http")) {
-                        //MyLogUtil.LogI("yxx","处理自定义scheme-->" + newurl);
                         try {
                             // 以下固定写法
                             final Intent intent = new Intent(Intent.ACTION_VIEW,
