@@ -2,6 +2,7 @@ package com.hongyongfeng.wanandroid.module.project.presenter;
 
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
+import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.model.ArticleModel;
@@ -39,9 +40,9 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
             }
 
             @Override
-            public void responseTitleResult(List<Map<String,Object>> titleMapList) {
+            public void responseTitleResult(List<ProjectBean> projectList) {
                 //真实开发过程中，是要解析数据的
-                mView.getContract().responseTitleResult(titleMapList);
+                mView.getContract().responseTitleResult(projectList);
             }
         };
     }

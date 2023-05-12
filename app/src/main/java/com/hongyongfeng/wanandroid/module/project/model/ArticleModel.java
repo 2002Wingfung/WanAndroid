@@ -3,6 +3,8 @@ package com.hongyongfeng.wanandroid.module.project.model;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ArticlePresenter;
@@ -26,8 +28,8 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                 HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        List<Map<String,Object>> titleMapList=HttpUtil.parseJsonWithJSONObject(response);
-                        mPresenter.getContract().responseTitleResult(titleMapList);
+                        List<ProjectBean> projectList=HttpUtil.parseJSONWithJSONObject(response, ProjectBean.class);
+                        mPresenter.getContract().responseTitleResult(projectList);
                     }
 
                     @Override

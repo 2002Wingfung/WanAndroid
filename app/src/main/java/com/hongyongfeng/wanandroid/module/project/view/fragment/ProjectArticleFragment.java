@@ -70,8 +70,8 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             }
 
             @Override
-            public void responseTitleResult(List<Map<String,Object>> titleMapList) {
-                System.out.println(titleMapList);
+            public void responseTitleResult(List<ProjectBean> projectList) {
+                System.out.println(projectList);
             }
         };
     }
