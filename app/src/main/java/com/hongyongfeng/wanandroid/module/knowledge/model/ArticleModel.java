@@ -1,12 +1,10 @@
-package com.hongyongfeng.wanandroid.module.knowledge.view.model;
+package com.hongyongfeng.wanandroid.module.knowledge.model;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
-import com.hongyongfeng.wanandroid.module.knowledge.view.presenter.ArticlePresenter;
-import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
-import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
+import com.hongyongfeng.wanandroid.module.knowledge.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
 import java.util.List;

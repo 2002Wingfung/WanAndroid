@@ -21,7 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
+import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
+import com.hongyongfeng.wanandroid.module.project.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.module.project.presenter.ProjectFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
@@ -32,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class ProjectArticleFragment extends BaseFragment<ProjectFragmentPresenter, ProjectFragmentInterface.VP> {
+public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.VP> {
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
 
@@ -52,11 +54,11 @@ public class ProjectArticleFragment extends BaseFragment<ProjectFragmentPresente
         return fragment;
     }
     @Override
-    public ProjectFragmentInterface.VP getContract() {
-        return new ProjectFragmentInterface.VP() {
+    public ArticleInterface.VP getContract() {
+        return new ArticleInterface.VP() {
             @Override
-            public void requestTitleVP() {
-                mPresenter.getContract().requestTitleVP();
+            public void requestTitleVP(int id,int page) {
+                mPresenter.getContract().requestTitleVP(id,page);
             }
 
             @Override
@@ -140,8 +142,8 @@ public class ProjectArticleFragment extends BaseFragment<ProjectFragmentPresente
     }
 
     @Override
-    protected ProjectFragmentPresenter getPresenterInstance() {
-        return new ProjectFragmentPresenter();
+    protected ArticlePresenter getPresenterInstance() {
+        return new ArticlePresenter();
     }
 
     @Override

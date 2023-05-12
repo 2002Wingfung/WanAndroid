@@ -1,11 +1,11 @@
-package com.hongyongfeng.wanandroid.module.knowledge.view.presenter;
+package com.hongyongfeng.wanandroid.module.knowledge.presenter;
 
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeArticleFragment;
-import com.hongyongfeng.wanandroid.module.knowledge.view.model.ArticleModel;
+import com.hongyongfeng.wanandroid.module.knowledge.model.ArticleModel;
 
 import java.util.List;
 

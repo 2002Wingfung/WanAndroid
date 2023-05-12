@@ -23,7 +23,7 @@ import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
-import com.hongyongfeng.wanandroid.module.knowledge.view.presenter.ArticlePresenter;
+import com.hongyongfeng.wanandroid.module.knowledge.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
