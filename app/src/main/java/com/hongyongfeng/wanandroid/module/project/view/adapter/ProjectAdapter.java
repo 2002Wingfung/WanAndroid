@@ -63,6 +63,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         //设置商家图片
         holder.tvTitle.setText(project.getTitle());
         holder.tvDetails.setText(project.getDesc());
+        holder.tvTime.setText(project.getNiceDate());
+        holder.tvAuthor.setText(project.getAuthor());
 
     }
 

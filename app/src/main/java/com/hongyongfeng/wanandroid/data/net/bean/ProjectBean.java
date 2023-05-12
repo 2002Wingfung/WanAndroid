@@ -3,6 +3,10 @@ package com.hongyongfeng.wanandroid.data.net.bean;
 public class ProjectBean {
     //最后把这两个字段删除
     private int articleId;
+
+    public ProjectBean() {
+    }
+
     private int id;
     //下面开始才是有用的
     private String author;

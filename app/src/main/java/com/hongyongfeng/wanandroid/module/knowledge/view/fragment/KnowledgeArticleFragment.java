@@ -51,7 +51,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                             adapter.notifyDataSetChanged();
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
                         }
                         dialog.dismiss();
                     }
@@ -156,6 +155,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                 super.onScrolled(recyclerView, dx, dy);
                 if (isSlideToBottom(recyclerView)){
                     if (loadMore){
+                        //有bug
                         dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
                         getContract().requestArticleVP(id,page);
                         //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();

@@ -70,8 +70,20 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             }
 
             @Override
-            public void responseTitleResult(List<ProjectBean> projectList) {
-                System.out.println(projectList);
+            public void responseTitleResult(List<ProjectBean> projectLists) {
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void run() {
+                        if (projectLists.size()!=0){
+                            projectList.addAll(projectLists);
+                            adapter.notifyDataSetChanged();
+                        }else {
+                            Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    }
+                });
             }
         };
     }
@@ -80,9 +92,13 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentActivity=requireActivity();
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            id=getArguments().getInt("id");
+            System.out.println("id"+id);
         }
     }
     @Nullable
@@ -90,13 +106,12 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_article,container, false);
         recyclerView= view.findViewById(R.id.rv_project);
-        fragmentActivity=requireActivity();
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
-        //dialog= ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+        dialog= ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
         articleList.clear();
-        //getContract().requestTitleVP(id,page);
+        getContract().requestTitleVP(id,page);
         return view;
     }
 
@@ -135,7 +150,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent=new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url", articleList.get(position).getLink());
+                intent.putExtra("url", projectList.get(position).getLink());
                 startActivity(intent);
             }
         });
@@ -157,6 +172,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     }
                 }
                 if (isSlideToBottom(recyclerView)) {
+                    System.out.println("scroll");
                     loadMore=true;
                 }
             }
@@ -170,13 +186,13 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     }
     @Override
     protected void initData() {
-        if (projectList.size()==0){
-            StringBuilder str=new StringBuilder("abc ");
-            for (int i =1;i<11;i++){
-                projectList.add(new ProjectBean("项目"+i,str.toString()));
-                str.append(i).append("nihao  ");
-            }
-        }
+//        if (projectList.size()==0){
+//            StringBuilder str=new StringBuilder("abc ");
+//            for (int i =1;i<11;i++){
+//                projectList.add(new ProjectBean("项目"+i,str.toString()));
+//                str.append(i).append("nihao  ");
+//            }
+//        }
     }
 
     @Override

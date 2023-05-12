@@ -68,6 +68,11 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
                     public void run() {
                         for (Map<String,Object> titleMap:titleMapList) {
                             categoryList.add((String) titleMap.get("name"));
+                            ProjectArticleFragment fragment=new ProjectArticleFragment();
+                            Bundle bundle=new Bundle();
+                            bundle.putInt("id",(int)titleMap.get("id"));
+                            fragment.setArguments(bundle);
+                            fragmentList.add(fragment);
                         }
                         adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
                                 fragmentList,categoryList);
@@ -81,41 +86,10 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         };
     }
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_project, container, false);
-//        //待修改
-//    }
-
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity=requireActivity();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        //Log.d("ProjectFragment","onCreate"+SystemClock.elapsedRealtime());
-        super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //Log.d("ProjectFragment","onCreateView"+SystemClock.elapsedRealtime());
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //Log.d("ProjectFragment","onViewCreated"+SystemClock.elapsedRealtime());
-        super.onViewCreated(view, savedInstanceState);
-//        adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
-//                fragmentList,categoryList);
-//        viewPager.setAdapter(adapter);
-//        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -130,7 +104,6 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
 
     @Override
     protected void destroy() {
-
     }
 
     @Override
@@ -148,28 +121,33 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     protected void initData() {
         fragmentList=new ArrayList<>();
         categoryList=new ArrayList<>();
-        VPFragment fragment1=VPFragment.newInstance("推荐","");
-        VPFragment fragment2=VPFragment.newInstance("关注","");
-        VPFragment fragment3=VPFragment.newInstance("娱乐","");
-        VPFragment fragment4=VPFragment.newInstance("时政","");
-        VPFragment fragment5=VPFragment.newInstance("汽车","");
-        VPFragment fragment6=VPFragment.newInstance("历史","");
-        VPFragment fragment7=VPFragment.newInstance("地理","");
+//        VPFragment fragment1=VPFragment.newInstance("推荐","");
+//        VPFragment fragment2=VPFragment.newInstance("关注","");
+//        VPFragment fragment3=VPFragment.newInstance("娱乐","");
+//        VPFragment fragment4=VPFragment.newInstance("时政","");
+//        VPFragment fragment5=VPFragment.newInstance("汽车","");
+//        VPFragment fragment6=VPFragment.newInstance("历史","");
+//        VPFragment fragment7=VPFragment.newInstance("地理","");
+//        ProjectArticleFragment fragment=new ProjectArticleFragment();
+//        fragmentList.add(fragment);
 
-        fragmentList.add(new ProjectArticleFragment());
         //在new对象时在构造函数中传入url，然后再在articleFragment中根据url初始化recyclerview
-        fragmentList.add(ProjectArticleFragment.newInstance("nihao",""));
+
+//        fragmentList.add(ProjectArticleFragment.newInstance("nihao",""));
+
 //        fragmentList.add(new ProjectArticleFragment());
 //        fragmentList.add(new ProjectArticleFragment());
 //        fragmentList.add(new ProjectArticleFragment());
 //        fragmentList.add(new ProjectArticleFragment());
 //        fragmentList.add(new ProjectArticleFragment());
         //fragmentList.add(fragment2);
-        fragmentList.add(fragment3);
-        fragmentList.add(fragment4);
-        fragmentList.add(fragment5);
-        fragmentList.add(fragment6);
-        fragmentList.add(fragment7);
+
+//        fragmentList.add(fragment3);
+//        fragmentList.add(fragment4);
+//        fragmentList.add(fragment5);
+//        fragmentList.add(fragment6);
+//        fragmentList.add(fragment7);
+
 //        categoryList.add("推荐");
 //        categoryList.add("关注");
 //        categoryList.add("娱乐");
