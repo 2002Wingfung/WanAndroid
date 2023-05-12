@@ -49,13 +49,17 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             public void responseArticleVP(List<ArticleBean> articleLists) {
                 //System.out.println(articleLists);
                 requireActivity().runOnUiThread(new Runnable() {
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
                         if (articleLists.size() != 0){
                             articleList.addAll(articleLists);
                             adapter.notifyDataSetChanged();
+                            System.out.println(articleLists);
+
                             //adapter.notifyItemInserted(articleList.size());
                         }else {
+                            System.out.println(articleLists);
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
@@ -130,7 +134,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         if (getArguments() != null) {
             //articleBeanList = getArguments().getParcelableArrayList("list");
             id=getArguments().getInt("id");
-            System.out.println("id"+id);
+            //System.out.println("id"+id);
         }
     }
 

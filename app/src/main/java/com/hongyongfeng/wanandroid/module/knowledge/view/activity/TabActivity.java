@@ -45,32 +45,32 @@ public class TabActivity extends BaseActivity {
             //获取intent中的参数
             Map<String,Object> childrenMap=(Map<String,Object>)intent.getSerializableExtra("map");
 
-            categoryList.add("test1");
-            KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
-            Bundle bundle=new Bundle();
-            bundle.putInt("id",(int)childrenMap.get("id0"));
-            fragment.setArguments(bundle);
-            fragmentList.add(fragment);
+//            categoryList.add("test1");
+//            KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
+//            Bundle bundle=new Bundle();
+//            bundle.putInt("id",(int)childrenMap.get("id0"));
+//            fragment.setArguments(bundle);
+//            fragmentList.add(fragment);
 
-            categoryList.add("test2");
-            KnowledgeArticleFragment fragment1=new KnowledgeArticleFragment();
-            Bundle bundle1=new Bundle();
-            bundle1.putInt("id",(int)childrenMap.get("id1"));
-            fragment1.setArguments(bundle1);
-            fragmentList.add(fragment1);
+//            categoryList.add("test2");
+//            KnowledgeArticleFragment fragment1=new KnowledgeArticleFragment();
+//            Bundle bundle1=new Bundle();
+//            bundle1.putInt("id",(int)childrenMap.get("id1"));
+//            fragment1.setArguments(bundle1);
+//            fragmentList.add(fragment1);
 
             for (int i=0;i<childrenMap.size()/2;i++){
 
-                System.out.println(childrenMap.get("id"+i));
+                //System.out.println(childrenMap.get("id"+i));
                 String name=(String) childrenMap.get("name"+i);
                 categoryList.add(name);
-                fragmentList.add(VPFragment.newInstance(name,""));
+                //fragmentList.add(VPFragment.newInstance(name,""));
 
-//                KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
-//                Bundle bundle=new Bundle();
-//                bundle.putInt("id",(int)childrenMap.get("id"+i));
-//                fragment.setArguments(bundle);
-//                fragmentList.add(fragment);
+                KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
+                Bundle bundle=new Bundle();
+                bundle.putInt("id",(int)childrenMap.get("id"+i));
+                fragment.setArguments(bundle);
+                fragmentList.add(fragment);
             }
 
             String name=intent.getStringExtra("name");

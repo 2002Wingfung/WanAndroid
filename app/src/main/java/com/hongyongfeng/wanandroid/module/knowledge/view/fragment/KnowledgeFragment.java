@@ -215,7 +215,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
 
                 //ProgressDialog.show(fragmentActivity,"","正在加载",false,true);
                 String name=(String) categoryList.get(position).get("name");
-                Toast.makeText(fragmentActivity, name, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(fragmentActivity, name, Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(activity, TabActivity.class);
                 intent.putExtra("name",name);
                 Map<String,Object> childrenMap=stringListMap.get(position);
