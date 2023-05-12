@@ -127,7 +127,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
 
     @Override
     protected void initView(View view) {
-        recyclerView= fragmentActivity.findViewById(R.id.rv_project);
     }
 
     @Override

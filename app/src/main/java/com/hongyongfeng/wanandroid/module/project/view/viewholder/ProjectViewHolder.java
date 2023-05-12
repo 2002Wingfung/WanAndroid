@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.project.view.viewholder;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder{
      */
     public View articleView;
 
+    public ImageView imageView;
 
     public TextView tvTitle;
     public TextView tvDetails;
@@ -36,7 +38,7 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder{
         tvLikes=itemView.findViewById(R.id.likes);
         tvAuthor=itemView.findViewById(R.id.author);
         tvTime=itemView.findViewById(R.id.time);
-
+        imageView=itemView.findViewById(R.id.iv_recycle_project_item);
 
         final int[] count={0};
         tvLikes.setOnClickListener(view -> {
