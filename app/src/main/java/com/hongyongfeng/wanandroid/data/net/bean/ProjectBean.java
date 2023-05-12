@@ -1,15 +1,32 @@
 package com.hongyongfeng.wanandroid.data.net.bean;
 
 public class ProjectBean {
+    //最后把这两个字段删除
     private int articleId;
     private int id;
+    //下面开始才是有用的
     private String author;
-    private String details;
-    private boolean likes;
-
-    private String url;
+    private String desc;
+    private String envelopePic;
+    private String link;
+    private String niceDate;
     private String title;
-    private long publishTime;
+
+    public String getEnvelopePic() {
+        return envelopePic;
+    }
+
+    public void setEnvelopePic(String envelopePic) {
+        this.envelopePic = envelopePic;
+    }
+
+    public String getNiceDate() {
+        return niceDate;
+    }
+
+    public void setNiceDate(String niceDate) {
+        this.niceDate = niceDate;
+    }
 
     public int getId() {
         return id;
@@ -27,29 +44,21 @@ public class ProjectBean {
         this.author = author;
     }
 
-    public String getDetails() {
-        return details;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public boolean isLikes() {
-        return likes;
-    }
-
-    public void setLikes(boolean likes) {
-        this.likes = likes;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
 
-    public String getUrl() {
-        return url;
+    public String getLink() {
+        return link;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getTitle() {
@@ -60,14 +69,6 @@ public class ProjectBean {
         this.title = title;
     }
 
-    public long getPublishTime() {
-        return publishTime;
-    }
-
-    public void setPublishTime(long publishTime) {
-        this.publishTime = publishTime;
-    }
-
     public int getArticleId() {
         return articleId;
     }
@@ -76,8 +77,8 @@ public class ProjectBean {
         this.articleId = articleId;
     }
 
-    public ProjectBean(String title, String details) {
-        this.details = details;
+    public ProjectBean(String title, String desc) {
+        this.desc = desc;
         this.title = title;
     }
 

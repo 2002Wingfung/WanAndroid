@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.project.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
@@ -38,9 +40,15 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
 
-    List<ProjectBean> projectList =new ArrayList<>();
-    ProjectAdapter adapter=new ProjectAdapter(projectList);
-    RecyclerView recyclerView;
+    private final List<ProjectBean> projectList =new ArrayList<>();
+    private final ProjectAdapter adapter=new ProjectAdapter(projectList);
+    private RecyclerView recyclerView;
+    private final List<ArticleBean> articleList=new ArrayList<>();
+    private ProgressDialog dialog;
+    private int page=1;
+    private int id;
+
+    private boolean loadMore = false;
     private String mParam1;
     private String mParam2;
     private static final String ARG_PARAM1 = "param1";
@@ -68,21 +76,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         };
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        fragmentActivity=requireActivity();
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_project_article,container, false);
-        recyclerView= view.findViewById(R.id.rv_project);
-        fragmentActivity=requireActivity();
-        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
-        return view;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,7 +85,26 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_project_article,container, false);
+        recyclerView= view.findViewById(R.id.rv_project);
+        fragmentActivity=requireActivity();
+        SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
+        mPresenter=getPresenterInstance();
+        mPresenter.bindView(this);
+        //dialog= ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+        articleList.clear();
+        //getContract().requestTitleVP(id,page);
+        return view;
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadMore=false;//视图销毁将变量置为false
+    }
     @Override
     protected void destroy() {
 
@@ -123,13 +135,39 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent=new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url","https://www.baidu.com");
+                intent.putExtra("url", articleList.get(position).getLink());
                 startActivity(intent);
-                Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (isSlideToBottom(recyclerView)){
+                    if (loadMore){
+                        page++;
+                        //System.out.println("load");
+                        dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+                        getContract().requestTitleVP(id,page);
+                    }
+                }
+                if (isSlideToBottom(recyclerView)) {
+                    loadMore=true;
+                }
             }
         });
     }
-
+    protected boolean isSlideToBottom(RecyclerView recyclerView) {
+        if (recyclerView == null) {
+            return false;
+        }
+        return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
+    }
     @Override
     protected void initData() {
         if (projectList.size()==0){

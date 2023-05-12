@@ -9,9 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hongyongfeng.wanandroid.R;
-import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
-import com.hongyongfeng.wanandroid.module.home.view.viewholder.ArticleViewHolder;
 import com.hongyongfeng.wanandroid.module.project.view.viewholder.ProjectViewHolder;
 
 import java.util.List;
@@ -64,7 +62,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         ProjectBean project=articleList.get(position);
         //设置商家图片
         holder.tvTitle.setText(project.getTitle());
-        holder.tvDetails.setText(project.getDetails());
+        holder.tvDetails.setText(project.getDesc());
 
     }
 

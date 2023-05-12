@@ -63,8 +63,6 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
 
             @Override
             public void responseTitleResult(List<Map<String,Object>> titleMapList) {
-
-                System.out.println(titleMapList);
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
