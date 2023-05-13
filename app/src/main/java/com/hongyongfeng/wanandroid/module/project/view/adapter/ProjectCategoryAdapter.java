@@ -1,14 +1,17 @@
 package com.hongyongfeng.wanandroid.module.project.view.adapter;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-public class ProjectCategoryAdapter extends FragmentStatePagerAdapter {
+public class ProjectCategoryAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragmentList;
     private List<String> categoryList;
 
@@ -37,5 +40,11 @@ public class ProjectCategoryAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return categoryList==null?"":categoryList.get(position);
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        //super.destroyItem(container, position, object);
+        //使得不能销毁碎片
     }
 }

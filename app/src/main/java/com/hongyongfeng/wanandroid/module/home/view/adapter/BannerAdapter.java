@@ -47,9 +47,9 @@ public class BannerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position,
+    public void destroyItem(@NonNull ViewGroup container, int position,
                             @NonNull Object object) {
-        container.removeView(viewList.get(position));
+        //container.removeView(viewList.get(position));
     }
 
     @NonNull
