@@ -88,6 +88,7 @@ public class HttpUtil {
                             break;
                         case "class java.lang.String":
                             String value = jsonObject.getString(fieldName);
+                            //这里可以开启另一种容量很大的线程池，用于请求图片
                             if (!"".equals(value)) {
                                 field.set(t, value);
                             }
