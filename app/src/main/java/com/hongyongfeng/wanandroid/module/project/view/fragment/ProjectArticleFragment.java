@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,12 +91,12 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     public void run() {
                         if (projectLists.size()!=0){
                             projectList.addAll(projectLists);
-                            //adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                         }
-                        //dialog.dismiss();
-                        mHandler.sendEmptyMessageDelayed(0,1300);
+                        dialog.dismiss();
+                        //mHandler.sendEmptyMessageDelayed(0,1300);
 
                     }
                 });
@@ -107,10 +108,17 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
-                        //adapter.notifyItemChanged(position);
-                        //position++;
                         bitmapLists.add(bitmap);
-                        adapter.notifyDataSetChanged();
+                        //adapter.notifyDataSetChanged();
+
+//                        System.out.println(position);
+//                        View view = Objects.requireNonNull(recyclerView.getLayoutManager()).findViewByPosition(position);
+//                        ImageView imageView = view.findViewById(R.id.iv_recycle_project_item);
+//                        imageView.setImageBitmap(bitmap);
+//                        adapter.notifyItemChanged(position);
+
+                        position++;
+
 //                        dialog.dismiss();
                     }
                 });
@@ -143,6 +151,12 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         projectList.clear();
         getContract().requestTitleVP(id,page);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -206,6 +220,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                 if (recyclerView.computeVerticalScrollExtent()!=recyclerView.computeVerticalScrollRange()){
                     if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
                         dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+                        page++;
                         getContract().requestTitleVP(id,page);
                     }
                 }

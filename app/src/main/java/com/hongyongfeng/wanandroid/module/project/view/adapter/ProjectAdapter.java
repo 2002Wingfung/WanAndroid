@@ -66,19 +66,19 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         holder.tvDetails.setText(project.getDesc());
         holder.tvTime.setText(project.getNiceDate());
         holder.tvAuthor.setText(project.getAuthor());
-        if (bitmapLists.size()!=0){
-            Bitmap bitmap=bitmapLists.get(position);
-            if (bitmap==null){
-                holder.imageView.setImageResource(R.drawable.project_item_default_bg);
-            }else {
-                holder.imageView.setImageBitmap(bitmap);
-            }
-        }
+//        if (bitmapLists.size()!=0){
+//            Bitmap bitmap=bitmapLists.get(position);
+//            if (bitmap==null){
+//                holder.imageView.setImageResource(R.drawable.project_item_default_bg);
+//            }else {
+//                holder.imageView.setImageBitmap(bitmap);
+//            }
+//        }
     }
 
     @Override
     public int getItemCount() {
-        return bitmapLists.size();
+        return articleList.size();
     }
 
     /**
