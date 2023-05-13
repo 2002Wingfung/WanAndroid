@@ -175,25 +175,6 @@ public class HttpUtil {
                     out.flush();
                     out.close();
                     if (connection.getResponseCode() == 200) {
-//                        // 获取响应的输入流对象
-//                        InputStream is = connection.getInputStream();
-//                        // 创建字节输出流对象
-//                        ByteArrayOutputStream message = new ByteArrayOutputStream();
-//                        // 定义读取的长度
-//                        int len = 0;
-//                        // 定义缓冲区
-//                        byte buffer[] = new byte[1024];
-//                        // 按照缓冲区的大小，循环读取
-//                        while ((len = is.read(buffer)) != -1) {
-//                            // 根据读取的长度写入到os对象中
-//                            message.write(buffer, 0, len);
-//                        }
-//                        // 释放资源
-//                        is.close();
-//                        message.close();
-//                        // 返回字符串
-//                        msg = new String(message.toByteArray());
-//                        return msg;
                         InputStream in=connection.getInputStream();
                         reader=new BufferedReader(new InputStreamReader(in));
                         StringBuilder response=new StringBuilder();
@@ -205,6 +186,9 @@ public class HttpUtil {
                             //回调onFinish()方法
                             listener.onFinish(response.toString());
                         }
+                    }
+                    else {
+                        System.out.println("错误代码:"+connection.getResponseCode());
                     }
 
                 } catch (Exception e) {

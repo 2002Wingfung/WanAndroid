@@ -39,7 +39,6 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
             @Override
             public void requestLoadMoreM(String key,int page) throws Exception {
                 String query="https://www.wanandroid.com/article/query/"+page+"/json";
-
                 HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
 
                     @Override

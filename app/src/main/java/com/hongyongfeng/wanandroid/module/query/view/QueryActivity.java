@@ -178,7 +178,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && articleFragment.isVisible()) {
             loadFragment();
-            System.out.println(true);
             transaction.hide(articleFragment).show(heatedWordsFragment).commit();
             //返回搜索热词页面
             return true;
