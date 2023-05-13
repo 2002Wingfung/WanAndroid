@@ -39,6 +39,11 @@ public class LoadMorePresenter extends BaseFragmentPresenter<LoadMoreModel, Arti
             public void responseLoadMoreVP(List<ArticleBean> articleList) {
                 mView.getContract().responseLoadMoreVP(articleList);
             }
+
+            @Override
+            public void error(Exception e) {
+                mView.getContract().error(e);
+            }
         };
     }
 }

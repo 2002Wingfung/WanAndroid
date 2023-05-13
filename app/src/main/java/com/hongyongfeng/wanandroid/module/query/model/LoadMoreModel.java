@@ -50,6 +50,8 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
 
                     @Override
                     public void onError(Exception e) {
+
+                        mPresenter.getContract().error(e);
                     }
                 });
             }

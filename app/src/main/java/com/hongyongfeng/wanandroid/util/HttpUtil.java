@@ -5,6 +5,8 @@ import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 import android.util.Log;
 
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
+import com.hongyongfeng.wanandroid.exception.HttpException;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.security.auth.login.LoginException;
 
 public class HttpUtil {
     public static List<Map<String,Object>> parseJsonWithJSONObject(String string){
@@ -188,7 +192,7 @@ public class HttpUtil {
                         }
                     }
                     else {
-                        System.out.println("错误代码:"+connection.getResponseCode());
+                        checkHttpCode(connection.getResponseCode());
                     }
 
                 } catch (Exception e) {
@@ -212,4 +216,16 @@ public class HttpUtil {
         });
 
     }
+    public static void checkHttpCode(int code) throws HttpException {
+//        for (String name : names) {
+//            if(name.equals(uname)){//如果名字在这里面 就抛出登陆异常
+//                throw new RegisterException("亲"+name+"已经被注册了！");
+//            }
+//        }
+        if (code!=200){
+            throw new HttpException("请求网络错误:"+code);
+        }
+        //return true;
+    }
+
 }

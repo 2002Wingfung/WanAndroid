@@ -14,5 +14,6 @@ public interface LoadMoreInterface {
     interface VP{
         void requestLoadMoreVP(String key,int page);
         void responseLoadMoreVP(List<ArticleBean> articleList);
+        void error(Exception e);
     }
 }

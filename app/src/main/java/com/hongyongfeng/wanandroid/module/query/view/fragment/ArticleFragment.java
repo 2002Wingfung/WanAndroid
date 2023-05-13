@@ -45,7 +45,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
             @Override
             public void responseLoadMoreVP(List<ArticleBean> articleLists) {
-                requireActivity().runOnUiThread(new Runnable() {
+                fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (articleLists.size() != 0){
@@ -57,6 +57,19 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                         dialog.dismiss();
                     }
                 });
+            }
+
+            @Override
+            public void error(Exception e) {
+                e.printStackTrace();
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
             }
         };
     }
