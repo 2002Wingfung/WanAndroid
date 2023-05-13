@@ -78,7 +78,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 
     @Override
     public int getItemCount() {
-        return articleList.size();
+        return bitmapLists.size();
     }
 
     /**

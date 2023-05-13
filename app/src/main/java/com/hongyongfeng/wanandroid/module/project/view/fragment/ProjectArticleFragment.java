@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +67,13 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         fragment.setArguments(args);
         return fragment;
     }
+    private Handler mHandler=new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            dialog.dismiss();
+        }
+    };
     @Override
     public ArticleInterface.VP getContract() {
         return new ArticleInterface.VP() {
@@ -84,21 +94,24 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                         }
+                        //dialog.dismiss();
+                        mHandler.sendEmptyMessageDelayed(0,1300);
+
                     }
                 });
             }
 
             @Override
-            public void responseImageResult(List<Bitmap> bitmapList) {
+            public void responseImageResult(Bitmap bitmap) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
                         //adapter.notifyItemChanged(position);
                         //position++;
-                        bitmapLists.addAll(bitmapList);
+                        bitmapLists.add(bitmap);
                         adapter.notifyDataSetChanged();
-                        dialog.dismiss();
+//                        dialog.dismiss();
                     }
                 });
             }
@@ -179,16 +192,22 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (isSlideToBottom(recyclerView)){
-                    if (loadMore){
-                        page++;
-                        //System.out.println("load");
+//                if (isSlideToBottom(recyclerView)){
+//                    if (loadMore){
+//                        page++;
+//                        //System.out.println("load");
+////                        dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+////                        getContract().requestTitleVP(id,page);
+//                    }
+//                }
+//                if (isSlideToBottom(recyclerView)) {
+//                    loadMore=true;
+//                }
+                if (recyclerView.computeVerticalScrollExtent()!=recyclerView.computeVerticalScrollRange()){
+                    if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
                         dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
                         getContract().requestTitleVP(id,page);
                     }
-                }
-                if (isSlideToBottom(recyclerView)) {
-                    loadMore=true;
                 }
             }
         });

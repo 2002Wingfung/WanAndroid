@@ -11,7 +11,7 @@ import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
-import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
+import com.hongyongfeng.wanandroid.module.project.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ArticlePresenter;
@@ -49,9 +49,14 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
                             }
 
+//                            @Override
+//                            public void onBitmapFinish(List<Bitmap> bitmapList) {
+//                                mPresenter.getContract().responseImageResult(bitmapList);
+//
+//                            }
                             @Override
-                            public void onBitmapFinish(List<Bitmap> bitmapList) {
-                                mPresenter.getContract().responseImageResult(bitmapList);
+                            public void onBitmapFinish(Bitmap bitmap) {
+                                mPresenter.getContract().responseImageResult(bitmap);
 
                             }
                         });
@@ -82,12 +87,16 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                         conn.connect();
                         is = conn.getInputStream();
                         Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        bitmapList.add(bitmap);
+                        //bitmapList.add(bitmap);
+                        if (listener!=null){
+                            //回调onFinish()方法
+                            listener.onBitmapFinish(bitmap);
+                        }
                     }
-                    if (listener!=null){
-                        //回调onFinish()方法
-                        listener.onBitmapFinish(bitmapList);
-                    }
+//                    if (listener!=null){
+//                        //回调onFinish()方法
+//                        listener.onBitmapFinish(bitmapList);
+//                    }
                 } catch (IOException e) {
                     if (listener!=null){
                         //回调onError()方法

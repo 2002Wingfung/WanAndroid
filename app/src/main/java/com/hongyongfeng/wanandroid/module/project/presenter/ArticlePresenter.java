@@ -48,8 +48,8 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
             }
 
             @Override
-            public void responseImageResult(List<Bitmap> bitmapList) {
-                mView.getContract().responseImageResult(bitmapList);
+            public void responseImageResult(Bitmap bitmap) {
+                mView.getContract().responseImageResult(bitmap);
             }
         };
     }

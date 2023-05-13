@@ -15,6 +15,7 @@ public interface ArticleInterface {
     interface VP{
         void requestTitleVP(int id,int page);
         void responseTitleResult(List<ProjectBean> articleList);
-        void responseImageResult(List<Bitmap> bitmapList);
+        //void responseImageResult(List<Bitmap> bitmapList);
+        void responseImageResult(Bitmap bitmap);
     }
 }
