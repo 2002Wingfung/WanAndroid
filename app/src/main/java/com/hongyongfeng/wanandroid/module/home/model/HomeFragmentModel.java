@@ -190,11 +190,5 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 }
             }
         });
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }).start();
     }
 }

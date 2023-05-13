@@ -1,6 +1,8 @@
 package com.hongyongfeng.wanandroid.module.project.presenter;
 
 
+import android.graphics.Bitmap;
+
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
@@ -43,6 +45,11 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
             public void responseTitleResult(List<ProjectBean> projectList) {
                 //真实开发过程中，是要解析数据的
                 mView.getContract().responseTitleResult(projectList);
+            }
+
+            @Override
+            public void responseImageResult(List<Bitmap> bitmapList) {
+                mView.getContract().responseImageResult(bitmapList);
             }
         };
     }

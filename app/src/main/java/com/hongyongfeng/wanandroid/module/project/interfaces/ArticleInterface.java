@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.project.interfaces;
 
+import android.graphics.Bitmap;
+
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 
@@ -13,5 +15,6 @@ public interface ArticleInterface {
     interface VP{
         void requestTitleVP(int id,int page);
         void responseTitleResult(List<ProjectBean> articleList);
+        void responseImageResult(List<Bitmap> bitmapList);
     }
 }

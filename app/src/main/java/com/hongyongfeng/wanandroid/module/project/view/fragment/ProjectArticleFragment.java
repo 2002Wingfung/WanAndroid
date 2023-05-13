@@ -3,6 +3,7 @@ package com.hongyongfeng.wanandroid.module.project.view.fragment;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,12 +42,14 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     private FragmentActivity fragmentActivity;
 
     private final List<ProjectBean> projectList =new ArrayList<>();
-    private final ProjectAdapter adapter=new ProjectAdapter(projectList);
+    private final List<Bitmap> bitmapLists =new ArrayList<>();
+
+    private final ProjectAdapter adapter=new ProjectAdapter(projectList,bitmapLists);
     private RecyclerView recyclerView;
-    private final List<ArticleBean> articleList=new ArrayList<>();
     private ProgressDialog dialog;
     private int page=1;
     private int id;
+    private int position=0;
 
     private boolean loadMore = false;
     private String mParam1;
@@ -77,10 +80,24 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     public void run() {
                         if (projectLists.size()!=0){
                             projectList.addAll(projectLists);
-                            adapter.notifyDataSetChanged();
+                            //adapter.notifyDataSetChanged();
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                         }
+                    }
+                });
+            }
+
+            @Override
+            public void responseImageResult(List<Bitmap> bitmapList) {
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void run() {
+                        //adapter.notifyItemChanged(position);
+                        //position++;
+                        bitmapLists.addAll(bitmapList);
+                        adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
@@ -110,7 +127,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
         dialog= ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
-        articleList.clear();
+        projectList.clear();
         getContract().requestTitleVP(id,page);
         return view;
     }

@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.project.view.adapter;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
      * 存储DishesInformation对象的List集合
      */
     public List<ProjectBean> articleList;
-
+    List<Bitmap> bitmapLists;
     public interface OnItemClickListener {
         void onLikesClicked(View view, int position, TextView likes, int[] count);
         void onArticleClicked(View view, int position);
@@ -65,7 +66,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         holder.tvDetails.setText(project.getDesc());
         holder.tvTime.setText(project.getNiceDate());
         holder.tvAuthor.setText(project.getAuthor());
-
+        if (bitmapLists.size()!=0){
+            Bitmap bitmap=bitmapLists.get(position);
+            if (bitmap==null){
+                holder.imageView.setImageResource(R.drawable.project_item_default_bg);
+            }else {
+                holder.imageView.setImageBitmap(bitmap);
+            }
+        }
     }
 
     @Override
@@ -76,7 +84,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
     /**
      *
      */
-    public ProjectAdapter(List<ProjectBean> articleList) {
+    public ProjectAdapter(List<ProjectBean> articleList,List<Bitmap> bitmapLists) {
         this.articleList = articleList;
+        this.bitmapLists = bitmapLists;
     }
 }
