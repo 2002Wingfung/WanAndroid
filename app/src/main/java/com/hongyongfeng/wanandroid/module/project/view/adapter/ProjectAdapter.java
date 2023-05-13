@@ -71,7 +71,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         viewHolderMap.put(position,holder.itemView);
         //System.out.println(position);
 
-        if (bitmapLists.size()!=0){
+        if (bitmapLists.size()>position){
             Bitmap bitmap=bitmapLists.get(position);
             if (bitmap==null){
                 holder.imageView.setImageResource(R.drawable.project_item_default_bg);
@@ -83,7 +83,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 
     @Override
     public int getItemCount() {
-        return bitmapLists.size();
+        return articleList.size();
     }
 
     /**

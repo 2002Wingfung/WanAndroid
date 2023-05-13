@@ -95,8 +95,8 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                         }
-                        //dialog.dismiss();
-                        mHandler.sendEmptyMessageDelayed(0,1000);
+                        dialog.dismiss();
+                        //mHandler.sendEmptyMessageDelayed(0,500);
 
                     }
                 });
@@ -109,7 +109,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     @Override
                     public void run() {
                         bitmapLists.add(bitmap);
-                        adapter.notifyDataSetChanged();
+                        //adapter.notifyDataSetChanged();
                         //System.out.println(bitmap);
 
 //                        RecyclerView.ViewHolder viewHolder = recyclerView.getAdapter().createViewHolder(recyclerView,recyclerView.getAdapter().getItemViewType(position));
@@ -123,9 +123,9 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
 //                        ImageView imageView = view.findViewById(R.id.iv_recycle_project_item);
 //                        System.out.println(view);
 //                        imageView.setImageBitmap(bitmap);
-//                        adapter.notifyItemChanged(position);
+                        adapter.notifyItemChanged(position);
 
-                        //position++;
+                        position++;
 
 //                        dialog.dismiss();
                     }
