@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.VP> {
+    private Handler mHandler=new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+        }
+    };
     @Override
     public ArticleInterface.VP getContract() {
         return new ArticleInterface.VP() {
@@ -58,6 +68,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             }
         };
     }
+    private int count=0;
     private final List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
     private int id;
@@ -84,6 +95,12 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         if (recyclerView == null) {
             return false;
         }
+        if (recyclerView.computeVerticalScrollExtent()<recyclerView.computeVerticalScrollRange()){
+            loadMore=true;
+        }
+//        System.out.println("屏幕显示的区域高度"+recyclerView.computeVerticalScrollExtent());
+//        System.out.println("滑过的高度"+recyclerView.computeVerticalScrollOffset());
+//        System.out.println("控件的高度"+recyclerView.computeVerticalScrollRange());
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
     }
 

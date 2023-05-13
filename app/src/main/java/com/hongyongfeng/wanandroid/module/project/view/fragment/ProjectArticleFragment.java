@@ -171,7 +171,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     }
                 }
                 if (isSlideToBottom(recyclerView)) {
-                    System.out.println("scroll");
                     loadMore=true;
                 }
             }
@@ -180,6 +179,9 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     protected boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) {
             return false;
+        }
+        if (recyclerView.computeVerticalScrollExtent()<recyclerView.computeVerticalScrollRange()){
+            loadMore=true;
         }
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
     }
