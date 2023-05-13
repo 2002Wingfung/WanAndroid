@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.project.view.adapter;
 
 import android.graphics.Bitmap;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 
     }
     private OnItemClickListener mOnItemClickListener;
+    public ArrayMap<Integer,View> viewHolderMap=new ArrayMap<>();
 
     public void setOnItemClickListener(OnItemClickListener clickListener) {
         this.mOnItemClickListener = clickListener;
@@ -66,19 +68,22 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         holder.tvDetails.setText(project.getDesc());
         holder.tvTime.setText(project.getNiceDate());
         holder.tvAuthor.setText(project.getAuthor());
-//        if (bitmapLists.size()!=0){
-//            Bitmap bitmap=bitmapLists.get(position);
-//            if (bitmap==null){
-//                holder.imageView.setImageResource(R.drawable.project_item_default_bg);
-//            }else {
-//                holder.imageView.setImageBitmap(bitmap);
-//            }
-//        }
+        viewHolderMap.put(position,holder.itemView);
+        //System.out.println(position);
+
+        if (bitmapLists.size()!=0){
+            Bitmap bitmap=bitmapLists.get(position);
+            if (bitmap==null){
+                holder.imageView.setImageResource(R.drawable.project_item_default_bg);
+            }else {
+                holder.imageView.setImageBitmap(bitmap);
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return articleList.size();
+        return bitmapLists.size();
     }
 
     /**
@@ -87,5 +92,12 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
     public ProjectAdapter(List<ProjectBean> articleList,List<Bitmap> bitmapLists) {
         this.articleList = articleList;
         this.bitmapLists = bitmapLists;
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull ProjectViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        //System.out.println("1"+holder.getAdapterPosition());
+//        viewHolderMap.put(holder.getAdapterPosition(),holder.itemView);
     }
 }

@@ -95,8 +95,8 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                         }
-                        dialog.dismiss();
-                        //mHandler.sendEmptyMessageDelayed(0,1300);
+                        //dialog.dismiss();
+                        mHandler.sendEmptyMessageDelayed(0,1000);
 
                     }
                 });
@@ -109,15 +109,23 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     @Override
                     public void run() {
                         bitmapLists.add(bitmap);
-                        //adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
+                        //System.out.println(bitmap);
 
-//                        System.out.println(position);
+//                        RecyclerView.ViewHolder viewHolder = recyclerView.getAdapter().createViewHolder(recyclerView,recyclerView.getAdapter().getItemViewType(position));
+//                        recyclerView.getAdapter().onBindViewHolder(viewHolder,position);
+//                        viewHolder.itemView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth(),View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
+//                        View view=viewHolder.itemView;
+
+                        //System.out.println(position);
 //                        View view = Objects.requireNonNull(recyclerView.getLayoutManager()).findViewByPosition(position);
+//                        View view=adapter.viewHolderMap.get(position);
 //                        ImageView imageView = view.findViewById(R.id.iv_recycle_project_item);
+//                        System.out.println(view);
 //                        imageView.setImageBitmap(bitmap);
 //                        adapter.notifyItemChanged(position);
 
-                        position++;
+                        //position++;
 
 //                        dialog.dismiss();
                     }
@@ -136,7 +144,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             id=getArguments().getInt("id");
-            System.out.println("id"+id);
         }
     }
     @Nullable
@@ -166,7 +173,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     }
     @Override
     protected void destroy() {
-
+        adapter.viewHolderMap.clear();
     }
 
     @Override
@@ -197,6 +204,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                 startActivity(intent);
             }
         });
+        LinearLayoutManager layoutManager= (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -217,6 +225,24 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
 //                if (isSlideToBottom(recyclerView)) {
 //                    loadMore=true;
 //                }
+                if (layoutManager!=null){
+                    int firstVisible = layoutManager.findFirstVisibleItemPosition();
+                    int lastVisible = layoutManager.findLastVisibleItemPosition();
+
+//                    for (int i=0;i<=lastVisible;i++){
+//                        View view = Objects.requireNonNull(recyclerView.getLayoutManager()).findViewByPosition(position);
+//                        ImageView imageView = view.findViewById(R.id.iv_recycle_project_item);
+//                        imageView.setImageBitmap(bitmapLists.get(i));
+//                        adapter.notifyItemChanged(i);
+//                    }
+//                    int visibleItemCount = lastVisible - firstVisible;
+//                    if (lastVisible == 0) {
+//                        visibleItemCount = 0;
+//                    }
+//                    if (visibleItemCount != 0) {
+//                        dealScrollEvent(firstVisible, lastVisible);
+//                    }
+                }
                 if (recyclerView.computeVerticalScrollExtent()!=recyclerView.computeVerticalScrollRange()){
                     if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
                         dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
