@@ -77,6 +77,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
                         adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
                                 fragmentList,categoryList);
                         viewPager.setAdapter(adapter);
+                        viewPager.setOffscreenPageLimit(0);
                         tabLayout.setupWithViewPager(viewPager);
                         dialog.dismiss();
                     }
