@@ -40,6 +40,11 @@ public class RegisterFragmentPresenter extends BaseFragmentPresenter<RegisterFra
                 //真实开发过程中，是要解析数据的
                 mView.getContract().responseRegisterResult(loginStatusResult);
             }
+
+            @Override
+            public void error(String error) {
+                mView.getContract().error(error);
+            }
         };
     }
 }

@@ -7,5 +7,7 @@ public interface RegisterInterface {
     interface VP{
         void requestRegisterVP(String name, String pwd);
         void responseRegisterResult(boolean loginStatusResult);
+        void error(String error);
+
     }
 }

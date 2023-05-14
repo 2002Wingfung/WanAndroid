@@ -102,8 +102,23 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
 
             @Override
             public void responseRegisterResult(boolean loginStatusResult) {
-                Toast.makeText(fragmentActivity, loginStatusResult?"注册成功":"该用户名已存在", Toast.LENGTH_SHORT).show();
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(fragmentActivity, loginStatusResult?"注册成功":"注册失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+            }
+
+            @Override
+            public void error(String error) {
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(fragmentActivity, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         };
     }
