@@ -7,5 +7,6 @@ public interface ILogin {
     interface VP{
         void requestLoginVP(String name, String pwd);
         void responseLoginResult(boolean loginStatusResult);
+        void error(String error);
     }
 }

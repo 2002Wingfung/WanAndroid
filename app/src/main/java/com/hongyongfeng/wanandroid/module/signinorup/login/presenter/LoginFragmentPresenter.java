@@ -38,6 +38,11 @@ public class LoginFragmentPresenter extends BaseFragmentPresenter<LoginFragmentM
                 //真实开发过程中，是要解析数据的
                 mView.getContract().responseLoginResult(loginStatusResult);
             }
+
+            @Override
+            public void error(String error) {
+                mView.getContract().error(error);
+            }
         };
     }
 }

@@ -53,6 +53,11 @@ public class BaseLogInUpFragment extends BaseFragment<LoginFragmentPresenter, IL
                 Toast.makeText(fragmentActivity, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
 
             }
+
+            @Override
+            public void error(String error) {
+
+            }
         };
     }
 

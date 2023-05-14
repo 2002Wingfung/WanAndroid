@@ -10,6 +10,9 @@ import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresen
 import com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment.LoginFragment;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter, ILogin.M> {
     public LoginFragmentModel(LoginFragmentPresenter mPresenter) {
         super(mPresenter);
@@ -27,6 +30,19 @@ public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter
                     @Override
                     public void onFinish(String response) {
                         System.out.println(response);
+                        try {
+                            JSONObject object=new JSONObject(response);
+                            String errorMsg=object.getString("errorMsg");
+                            int errorCode=object.getInt("errorCode");
+                            if (errorCode==0){
+                                mPresenter.getContract().responseLoginResult(true);
+                            }else {
+                                mPresenter.getContract().error(errorMsg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
 
                     @Override

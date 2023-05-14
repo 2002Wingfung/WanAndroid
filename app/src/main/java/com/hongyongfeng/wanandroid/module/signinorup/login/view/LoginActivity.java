@@ -34,6 +34,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
             public void responseLoginResult(boolean loginStatusResult) {
                 Toast.makeText(LoginActivity.this, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void error(String error) {
+
+            }
         };
     }
 

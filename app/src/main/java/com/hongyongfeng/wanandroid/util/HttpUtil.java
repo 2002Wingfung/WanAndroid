@@ -2,6 +2,7 @@ package com.hongyongfeng.wanandroid.util;
 
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -159,6 +162,8 @@ public class HttpUtil {
                 try {
                     URL url=new URL(strings[0]);
                     connection=(HttpURLConnection) url.openConnection();
+
+
                     // 设置请求方式,请求超时信息
                     connection.setRequestMethod("POST");
                     connection.setConnectTimeout(8000);
@@ -175,7 +180,8 @@ public class HttpUtil {
                     // 我们请求的数据:
                     String data = "username=" + URLEncoder.encode(strings[1], "UTF-8")
                             + "&password=" + URLEncoder.encode(strings[2], "UTF-8");
-                    if (strings[3]!=null){
+                    //System.out.println("str"+strings.length);
+                    if (strings.length==4){
                         data = "username=" + URLEncoder.encode(strings[1], "UTF-8")
                                 + "&password=" + URLEncoder.encode(strings[2], "UTF-8")
                                 + "&repassword=" + URLEncoder.encode(strings[3], "UTF-8");
@@ -186,6 +192,29 @@ public class HttpUtil {
                     out.flush();
                     out.close();
                     if (connection.getResponseCode() == 200) {
+//                        CookieManager manager = new CookieManager();
+//                        CookieHandler.setDefault(manager);
+//
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//
+//                            manager.getCookieStore().getCookies().forEach(httpCookie -> {
+//                                System.out.println("class      : "+httpCookie.getClass());
+//                                System.out.println("comment    : "+httpCookie.getComment());
+//                                System.out.println("commentURL : "+httpCookie.getCommentURL());
+//                                System.out.println("discard    : "+httpCookie.getDiscard());
+//                                System.out.println("domain     : "+httpCookie.getDomain());
+//                                System.out.println("maxAge     : "+httpCookie.getMaxAge());
+//                                System.out.println("name       : "+httpCookie.getName());
+//                                System.out.println("path       : "+httpCookie.getPath());
+//                                System.out.println("portlist   : "+httpCookie.getPortlist());
+//                                System.out.println("secure     : "+httpCookie.getSecure());
+//                                System.out.println("value      : "+httpCookie.getValue());
+//                                System.out.println("version    : "+httpCookie.getVersion());
+//                                System.out.println("httpCookie : "+httpCookie);
+//                            });
+//                        }
+
+                        System.out.println(connection.getHeaderFields().toString());
                         InputStream in=connection.getInputStream();
                         reader=new BufferedReader(new InputStreamReader(in));
                         StringBuilder response=new StringBuilder();
@@ -203,6 +232,7 @@ public class HttpUtil {
                     }
 
                 } catch (Exception e) {
+                    e.printStackTrace();
                     if (listener!=null){
                         //回调onError()方法
                         listener.onError(e);
