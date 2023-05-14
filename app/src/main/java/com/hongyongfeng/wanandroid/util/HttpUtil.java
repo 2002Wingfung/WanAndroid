@@ -213,7 +213,7 @@ public class HttpUtil {
 //                                System.out.println("httpCookie : "+httpCookie);
 //                            });
 //                        }
-
+                        System.out.println(connection.getHeaderField("Set-Cookie"));
                         System.out.println(connection.getHeaderFields().toString());
                         InputStream in=connection.getInputStream();
                         reader=new BufferedReader(new InputStreamReader(in));

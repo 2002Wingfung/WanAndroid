@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -110,10 +111,34 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         home.setOnClickListener(this);
         knowledge.setOnClickListener(this);
         project.setOnClickListener(this);
-        listView.setOnItemClickListener((parent, view, position, id) ->
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this,
-                        "你点击了:"+listData[position],
-                        Toast.LENGTH_SHORT).show());
+                                "你点击了:"+listData[position],
+                                Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(MainActivity.this,MoreActivity.class);
+                if (position!=4){
+                    switch (position){
+                        case 0:
+                            intent.putExtra("title","我的收藏");
+                            break;
+                        case 1:
+                            intent.putExtra("title","浏览历史");
+                            break;
+                        case 2:
+                            intent.putExtra("title","关于");
+                            break;
+                        case 3:
+                            intent.putExtra("title","设置");
+                            break;
+                        default:
+                            break;
+                    }
+                    startActivity(intent);
+                }
+            }
+        });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
