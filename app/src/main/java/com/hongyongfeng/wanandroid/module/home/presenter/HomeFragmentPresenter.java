@@ -58,6 +58,11 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
+            public void error(int error) {
+                mView.getContract().error(error);
+            }
+
+            @Override
             public void requestLoadMoreVP(int page) {
                 try {
                     mModel.getContract().requestLoadMoreM(page);

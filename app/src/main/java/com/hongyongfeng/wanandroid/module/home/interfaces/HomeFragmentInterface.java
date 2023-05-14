@@ -18,6 +18,7 @@ public interface HomeFragmentInterface {
         void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList);
         void requestArticleVP();
         void responseArticleResult(List<ArticleBean> articleList,List<ArticleBean> articleTopList);
+        void error(int error);
         void requestLoadMoreVP(int page);
         void responseLoadMoreVP(List<ArticleBean> articleList);
 

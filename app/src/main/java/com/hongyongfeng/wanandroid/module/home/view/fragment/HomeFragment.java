@@ -91,21 +91,24 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void requestArticleVP() {
-                try {
-                    List<ArticleBean> list= SaveArticle.getData(fragmentActivity,0);  //获取缓存数据
-                    assert list != null;
-                    articleList.addAll(list);
-                    //System.out.println(articleList.get(0).getTitle());
-                } catch (IllegalAccessException | java.lang.InstantiationException e) {
-                    e.printStackTrace();
-                }
-                if(articleList!=null){     //不为空，即缓存中有数据
-                    Log.i("TAG","cache is not null");
-                    adapter.notifyDataSetChanged();
-                }else{   //为空，从网络获取
-                    mPresenter.getContract().requestArticleVP();
-                }
-
+//                try {
+//                    List<ArticleBean> list= SaveArticle.getData(fragmentActivity,0);  //获取缓存数据
+//                    assert list != null;
+//                    articleList.addAll(list);
+//                    errorCode=1;
+//
+//                } catch (IllegalAccessException | java.lang.InstantiationException e) {
+//                    e.printStackTrace();
+//                }
+//                if(articleList!=null){     //不为空，即缓存中有数据
+//                    Log.i("TAG","cache is not null");
+//                    adapter.notifyDataSetChanged();
+//                    dialog.dismiss();
+//                }else{   //为空，从网络获取
+//                    mPresenter.getContract().requestArticleVP();
+//                }
+                mPresenter.getContract().requestArticleVP();
+                //修改：应该是没网的时候才调用读取本地缓存的方法
             }
 
             @Override
@@ -116,16 +119,28 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     @Override
                     public void run() {
                         if ((articleList.size()==0)){
-                            for (ArticleBean article:articleTopLists){
-                                article.setTop(-1);
-                                articleList.add(article);
+                            if (articleTopLists!=null){
+                                if (articleTopLists.size()!=0){
+                                    for (ArticleBean article:articleTopLists){
+                                        article.setTop(-1);
+                                        articleList.add(article);
+                                    }
+                                }
                             }
                             articleList.addAll(articleLists);
                             adapter.notifyDataSetChanged();
+                            if (errorCode==1){
+                                dialog.dismiss();
+                            }
                         }
                     }
                 });
 
+            }
+
+            @Override
+            public void error(int error) {
+                errorCode=error;
             }
 
             @Override
@@ -156,6 +171,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     private List<BannerBean> beanLists;
     private List<Bitmap> bitmapLists;
 
+    private int errorCode=0;
     static ProgressDialog dialog;
     public static List<ArticleBean> articleList = new ArrayList<>();
     @SuppressLint("StaticFieldLeak")
@@ -199,14 +215,22 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @Override
     protected void initListener() {
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {   //scrollY是滑动的距离
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                     //滑动到底部
                     dialog.show();
                     //=ProgressDialog.show(requireActivity(),"","正在加载",false,false);
-                    page++;
-                    getContract().requestLoadMoreVP(page);
+                    if (errorCode==1){
+                        articleList.clear();
+                        adapter.notifyDataSetChanged();
+                        getContract().requestArticleVP();
+                    }else {
+                        page++;
+                        getContract().requestLoadMoreVP(page);
+                    }
+
                     //System.out.println(page);
                     //Toast.makeText(fragmentActivity, "滑动到了底部", Toast.LENGTH_SHORT).show();
 //                    articleList.add(new ArticleBean(-1));
@@ -285,23 +309,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 getContract().requestImageVP();
             }
             //setRetainInstance(true);
-
-//            try {
-//                articleList = SaveArticle.getData(fragmentActivity,0);  //获取缓存数据
-//                //System.out.println(articleList.get(0).getTitle());
-//            } catch (IllegalAccessException | java.lang.InstantiationException e) {
-//                e.printStackTrace();
-//            }
-//            if(articleList!=null){     //不为空，即缓存中有数据
-//                Log.i("TAG","cache is not null");
-//                adapter.notifyDataSetChanged();
-//                mHandler.sendEmptyMessageDelayed(2,2500);
-//            }else{   //为空，从网络获取
-//            }
             getContract().requestArticleVP();
-
             count = 1;
-
         }
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);

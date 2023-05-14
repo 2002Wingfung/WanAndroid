@@ -15,6 +15,7 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.test.Bean;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
+import com.hongyongfeng.wanandroid.util.MyApplication;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
 
 import org.json.JSONArray;
@@ -122,7 +123,18 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 
                     @Override
                     public void onError(Exception e) {
-
+                        e.printStackTrace();
+                        mPresenter.getContract().error(1);
+                        List<ArticleBean> list;
+                        try {
+                            list= SaveArticle.getData(MyApplication.getContext(),0);  //获取缓存数据
+                            if(list!=null){     //不为空，即缓存中有数据
+                                Log.i("TAG","cache is not null");
+                                mPresenter.getContract().responseArticleResult(list,null);
+                            }
+                        } catch (IllegalAccessException | java.lang.InstantiationException exception) {
+                            exception.printStackTrace();
+                        }
                     }
                 });
             }
