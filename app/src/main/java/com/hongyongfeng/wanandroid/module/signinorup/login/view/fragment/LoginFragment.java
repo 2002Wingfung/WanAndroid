@@ -98,7 +98,9 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
                     @Override
                     public void run() {
                         Toast.makeText(fragmentActivity, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
-
+                        if (loginStatusResult){
+                            fragmentActivity.finish();
+                        }
                     }
                 });
 
@@ -110,7 +112,6 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
                     @Override
                     public void run() {
                         Toast.makeText(fragmentActivity, error, Toast.LENGTH_SHORT).show();
-
                     }
                 });
             }

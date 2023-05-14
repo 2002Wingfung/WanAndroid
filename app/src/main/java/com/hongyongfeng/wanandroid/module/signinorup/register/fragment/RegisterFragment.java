@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
+import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.register.interfaces.RegisterInterface;
@@ -106,6 +107,9 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
                     @Override
                     public void run() {
                         Toast.makeText(fragmentActivity, loginStatusResult?"注册成功":"注册失败", Toast.LENGTH_SHORT).show();
+                        if (loginStatusResult){
+                            fragmentActivity.finish();
+                        }
                     }
                 });
 
