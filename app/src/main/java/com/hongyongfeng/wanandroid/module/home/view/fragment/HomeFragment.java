@@ -88,9 +88,24 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 });
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void requestArticleVP() {
-                mPresenter.getContract().requestArticleVP();
+                try {
+                    List<ArticleBean> list= SaveArticle.getData(fragmentActivity,0);  //获取缓存数据
+                    assert list != null;
+                    articleList.addAll(list);
+                    //System.out.println(articleList.get(0).getTitle());
+                } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                }
+                if(articleList!=null){     //不为空，即缓存中有数据
+                    Log.i("TAG","cache is not null");
+                    adapter.notifyDataSetChanged();
+                }else{   //为空，从网络获取
+                    mPresenter.getContract().requestArticleVP();
+                }
+
             }
 
             @Override
@@ -100,17 +115,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
-//                        adapter.notifyDataSetChanged();
-//                        System.out.println(123);
                         if ((articleList.size()==0)){
                             for (ArticleBean article:articleTopLists){
                                 article.setTop(-1);
                                 articleList.add(article);
                             }
                             articleList.addAll(articleLists);
-                            //adapter.notifyItemInserted(0);
                             adapter.notifyDataSetChanged();
-                            //dialogHandler.sendEmptyMessage(1);
                         }
                     }
                 });
