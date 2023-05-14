@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     private EditText edtName;
     private TextView tvAccount;
     private TextView tvPwd;
+    private TextView tvWelcome;
     private int name=0;
     private int password=0;
     private FragmentActivity fragmentActivity;
@@ -102,6 +104,9 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
                     public void run() {
                         Toast.makeText(fragmentActivity, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
                         if (loginStatusResult){
+                            Intent intent = new Intent();
+                            intent.putExtra("name",edtName.getText().toString());
+                            fragmentActivity.setResult(1, intent);
                             fragmentActivity.finish();
                         }
                     }

@@ -44,6 +44,7 @@ import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.VPFragment;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> implements NavigationView.OnNavigationItemSelectedListener{
@@ -71,6 +72,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     private ViewPager viewPager;
     private FragmentVPAdapter adapter;
     private List<Fragment> fragmentList;
+    private TextView tvWelcome;
+    private TextView tvName;
+
     private int stateDefault;
     private int stateStart=0;
     //以上为底部导航栏所需的成员变量
@@ -366,14 +370,33 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         viewPager=findViewById(R.id.vp_main);
         initBottomNavigationView();
         listView=findViewById(R.id.left_drawer_listView);
-
+        tvWelcome=findViewById(R.id.tv_login1);
+        tvName=findViewById(R.id.user_name);
     }
 
     public void headerOnClick(View v) {
         Intent intent=new Intent(MainActivity.this, SignInUpActivity.class);
-        startActivity(intent);
+//        startActivity(intent);
+        startActivityForResult(intent,1);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //判断请求码
+        if (requestCode==1){
+            //结果码
+            if (resultCode==1)
+            {
+                //取数据
+                String name = Objects.requireNonNull(data).getStringExtra("name");
 
+                //给控件赋值
+                tvName.setText(name);
+                tvWelcome.setText("欢迎");
+
+            }
+        }
+    }
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
