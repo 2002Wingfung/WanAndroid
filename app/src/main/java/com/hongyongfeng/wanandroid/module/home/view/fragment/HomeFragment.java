@@ -2,7 +2,9 @@ package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +38,7 @@ import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
+import com.hongyongfeng.wanandroid.util.SaveArticle;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
 import java.util.ArrayList;
@@ -56,6 +59,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
         }
     };
+
 
     @Override
     public HomeFragmentInterface.VP getContract() {
@@ -79,6 +83,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         }
                         //dialogHandler.sendEmptyMessageDelayed(1, 500);
                         dialogHandler.sendEmptyMessage(1);
+                        SaveArticle.setData(fragmentActivity,bitmapList,1);
                     }
                 });
             }
@@ -95,6 +100,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
+//                        adapter.notifyDataSetChanged();
+//                        System.out.println(123);
                         if ((articleList.size()==0)){
                             for (ArticleBean article:articleTopLists){
                                 article.setTop(-1);
@@ -104,7 +111,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             //adapter.notifyItemInserted(0);
                             adapter.notifyDataSetChanged();
                             //dialogHandler.sendEmptyMessage(1);
-
                         }
                     }
                 });
@@ -152,10 +158,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        fragmentActivity = requireActivity();
         super.onViewCreated(view, savedInstanceState);
         Log.d("HomeFragment", "onViewCreated" + SystemClock.elapsedRealtime());
         SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
+
     }
 
     @Override
@@ -168,6 +174,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public void onPause() {
         super.onPause();
         Log.d("home","onPause");
+        SaveArticle.setData(fragmentActivity,articleList,0);
     }
 
     @Override
@@ -224,8 +231,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void onArticleClicked(View view, int position) {
+                ArticleBean article=articleList.get(position);
+                SaveArticle.save(fragmentActivity,article);
                 Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url", articleList.get(position).getLink());
+                intent.putExtra("url", article.getLink());
                 startActivity(intent);
                 //Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
             }
@@ -245,10 +254,43 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mPresenter = getPresenterInstance();
         mPresenter.bindView(this);
+        fragmentActivity = requireActivity();
+//        recyclerView = fragmentActivity.findViewById(R.id.rv_article);
+//        SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
         if (count == 0) {
-            getContract().requestImageVP();
+            try {
+                bitmapLists = SaveArticle.getData(fragmentActivity,1);  //获取缓存数据
+            } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                e.printStackTrace();
+            }
+            if(bitmapLists!=null){     //不为空，即缓存中有数据
+                Log.i("TAG","cache is not null");
+                for (int i = 0; i < viewList.size(); i++) {
+                    View view = viewList.get(i);
+                    ImageView imgBanner = view.findViewById(R.id.img_banner);
+                    imgBanner.setImageBitmap(bitmapLists.get(i));
+                }
+            }else{   //为空，从网络获取
+                getContract().requestImageVP();
+            }
+            //setRetainInstance(true);
+
+//            try {
+//                articleList = SaveArticle.getData(fragmentActivity,0);  //获取缓存数据
+//                //System.out.println(articleList.get(0).getTitle());
+//            } catch (IllegalAccessException | java.lang.InstantiationException e) {
+//                e.printStackTrace();
+//            }
+//            if(articleList!=null){     //不为空，即缓存中有数据
+//                Log.i("TAG","cache is not null");
+//                adapter.notifyDataSetChanged();
+//                mHandler.sendEmptyMessageDelayed(2,2500);
+//            }else{   //为空，从网络获取
+//            }
             getContract().requestArticleVP();
+
             count = 1;
+
         }
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -315,12 +357,18 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
     @SuppressLint("HandlerLeak")
     public static Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @SuppressLint("NotifyDataSetChanged")
         public void handleMessage(Message msg) {
-            int count = 3;
-            int index = viewPager.getCurrentItem();
-            index = (index + 1) % count;
-            viewPager.setCurrentItem(index);
-            mHandler.sendEmptyMessageDelayed(0, 1000 * 3);
+            if (msg.what==0){
+                int count = 3;
+                int index = viewPager.getCurrentItem();
+                index = (index + 1) % count;
+                viewPager.setCurrentItem(index);
+                mHandler.sendEmptyMessageDelayed(0, 1000 * 3);
+            }else {
+                adapter.notifyDataSetChanged();
+            }
+
         }
     };
 

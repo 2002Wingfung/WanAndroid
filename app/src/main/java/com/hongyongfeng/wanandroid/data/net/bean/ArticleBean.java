@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class ArticleBean implements Parcelable {
+import java.io.Serializable;
+
+public class ArticleBean implements Parcelable , Serializable {
     public ArticleBean() {
     }
 

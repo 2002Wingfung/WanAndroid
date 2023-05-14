@@ -15,6 +15,7 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.test.Bean;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
+import com.hongyongfeng.wanandroid.util.SaveArticle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
