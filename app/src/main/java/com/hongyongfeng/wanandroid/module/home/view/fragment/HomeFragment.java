@@ -141,6 +141,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void error(int error) {
                 errorCode=error;
+                Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -226,6 +227,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         articleList.clear();
                         adapter.notifyDataSetChanged();
                         getContract().requestArticleVP();
+                        errorCode=0;
                     }else {
                         page++;
                         getContract().requestLoadMoreVP(page);
