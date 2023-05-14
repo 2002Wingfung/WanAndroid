@@ -1,11 +1,14 @@
 package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
+import static com.hongyongfeng.wanandroid.util.SaveArticle.CACHE_BITMAP;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,6 +44,8 @@ import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,7 +65,15 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         }
     };
 
-
+    public static byte[] getBytes(Bitmap bitmap){
+        //实例化字节数组输出流
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);//压缩位图
+        return baos.toByteArray();//创建分配字节数组
+    }
+    public static Bitmap getBitmap(byte[] data){
+        return BitmapFactory.decodeByteArray(data, 0, data.length);//从字节数组解码位图
+    }
     @Override
     public HomeFragmentInterface.VP getContract() {
         return new HomeFragmentInterface.VP() {
@@ -76,14 +89,27 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < viewList.size(); i++) {
-                            View view = viewList.get(i);
-                            ImageView imgBanner = view.findViewById(R.id.img_banner);
-                            imgBanner.setImageBitmap(bitmapLists.get(i));
+
+                        File file=new File(fragmentActivity.getCacheDir(),CACHE_BITMAP);
+                        if(!file.exists()){
+                            for (int i = 0; i < viewList.size(); i++) {
+                                View view = viewList.get(i);
+                                ImageView imgBanner = view.findViewById(R.id.img_banner);
+                                Bitmap bitmap=bitmapLists.get(i);
+                                imgBanner.setImageBitmap(bitmap);
+                                bitmapByteList.add(getBytes(bitmap));
+                            }
+                            SaveArticle.setData(fragmentActivity,beanList,2);
+                            SaveArticle.setData(fragmentActivity,bitmapByteList,1);
+                        }else {
+                            for (int i = 0; i < viewList.size(); i++) {
+                                View view = viewList.get(i);
+                                ImageView imgBanner = view.findViewById(R.id.img_banner);
+                                Bitmap bitmap=bitmapLists.get(i);
+                                imgBanner.setImageBitmap(bitmap);
+                            }
                         }
-                        //dialogHandler.sendEmptyMessageDelayed(1, 500);
-                        dialogHandler.sendEmptyMessage(1);
-                        SaveArticle.setData(fragmentActivity,bitmapList,1);
+                        //dialogHandler.sendEmptyMessage(1);
                     }
                 });
             }
@@ -91,24 +117,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void requestArticleVP() {
-//                try {
-//                    List<ArticleBean> list= SaveArticle.getData(fragmentActivity,0);  //获取缓存数据
-//                    assert list != null;
-//                    articleList.addAll(list);
-//                    errorCode=1;
-//
-//                } catch (IllegalAccessException | java.lang.InstantiationException e) {
-//                    e.printStackTrace();
-//                }
-//                if(articleList!=null){     //不为空，即缓存中有数据
-//                    Log.i("TAG","cache is not null");
-//                    adapter.notifyDataSetChanged();
-//                    dialog.dismiss();
-//                }else{   //为空，从网络获取
-//                    mPresenter.getContract().requestArticleVP();
-//                }
                 mPresenter.getContract().requestArticleVP();
-                //修改：应该是没网的时候才调用读取本地缓存的方法
             }
 
             @Override
@@ -129,9 +138,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             }
                             articleList.addAll(articleLists);
                             adapter.notifyDataSetChanged();
-                            if (errorCode==1){
-                                dialog.dismiss();
-                            }
+                            dialog.dismiss();
+//                            if (errorCode==1){
+//                                dialog.dismiss();
+//                            }
                         }
                     }
                 });
@@ -141,7 +151,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void error(int error) {
                 errorCode=error;
-                Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show();
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
@@ -171,6 +186,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     static ViewPager viewPager;
     private List<BannerBean> beanLists;
     private List<Bitmap> bitmapLists;
+    List<byte[]> bitmapByteList=new ArrayList<>();
 
     private int errorCode=0;
     static ProgressDialog dialog;
@@ -183,6 +199,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     ConstraintLayout layout;
     RecyclerView recyclerView;
     private int count = 0;
+    private int count1 = 0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -295,21 +312,23 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 //        recyclerView = fragmentActivity.findViewById(R.id.rv_article);
 //        SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
         if (count == 0) {
-            try {
-                bitmapLists = SaveArticle.getData(fragmentActivity,1);  //获取缓存数据
-            } catch (IllegalAccessException | java.lang.InstantiationException e) {
-                e.printStackTrace();
-            }
-            if(bitmapLists!=null){     //不为空，即缓存中有数据
-                Log.i("TAG","cache is not null");
-                for (int i = 0; i < viewList.size(); i++) {
-                    View view = viewList.get(i);
-                    ImageView imgBanner = view.findViewById(R.id.img_banner);
-                    imgBanner.setImageBitmap(bitmapLists.get(i));
-                }
-            }else{   //为空，从网络获取
-                getContract().requestImageVP();
-            }
+//            try {
+//                bitmapByteList = SaveArticle.getData(fragmentActivity,1);  //获取缓存数据
+//            } catch (IllegalAccessException | java.lang.InstantiationException e) {
+//                e.printStackTrace();
+//            }
+//            if(bitmapByteList!=null){     //不为空，即缓存中有数据
+//                Log.i("TAG","cache is not null");
+//                for (int i = 0; i < viewList.size(); i++) {
+//                    View view = viewList.get(i);
+//                    ImageView imgBanner = view.findViewById(R.id.img_banner);
+//                    byte[] data=bitmapByteList.get(i);
+//                    Bitmap bitmap=getBitmap(data);
+//                    imgBanner.setImageBitmap(bitmap);
+//                }
+//            }else{   //为空，从网络获取
+//                getContract().requestImageVP();
+//            }
             //setRetainInstance(true);
             getContract().requestArticleVP();
             count = 1;
@@ -330,7 +349,28 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         viewList.add(view1);
         viewList.add(view2);
         viewList.add(view3);
+        if (count1==0){
+            count1=1;
+            getContract().requestImageVP();
+        }
 
+//        try {
+//            bitmapByteList = SaveArticle.getData(fragmentActivity,1);  //获取缓存数据
+//        } catch (IllegalAccessException | java.lang.InstantiationException e) {
+//            e.printStackTrace();
+//        }
+//        if(bitmapByteList!=null){     //不为空，即缓存中有数据
+//            Log.i("TAG","cache is not null");
+//            for (int i = 0; i < viewList.size(); i++) {
+//                View viewBanner = viewList.get(i);
+//                ImageView imgBanner = viewBanner.findViewById(R.id.img_banner);
+//                byte[] data=bitmapByteList.get(i);
+//                Bitmap bitmap=getBitmap(data);
+//                imgBanner.setImageBitmap(bitmap);
+//            }
+//        }else{   //为空，从网络获取
+//            getContract().requestImageVP();
+//        }
 
 //        BannerAdapter pagerAdapter=new BannerAdapter(viewList,beanLists,new OnLoadImageListener(){
 //

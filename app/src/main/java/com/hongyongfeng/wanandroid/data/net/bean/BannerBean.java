@@ -1,6 +1,8 @@
 package com.hongyongfeng.wanandroid.data.net.bean;
 
-public class BannerBean {
+import java.io.Serializable;
+
+public class BannerBean implements Serializable {
     private String imagePath;
     private String Url;
 

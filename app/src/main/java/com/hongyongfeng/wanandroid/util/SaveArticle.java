@@ -18,6 +18,7 @@ import java.util.List;
 public class SaveArticle {
     public static final String CACHE_HOME="home";
     public static final String CACHE_BITMAP="bitmap";
+    public static final String CACHE_BANNER="BannerBean";
     public static void save(FragmentActivity activity, ArticleBean article){
         SharedPreferences.Editor editor=activity.getSharedPreferences("data", Context.MODE_PRIVATE).edit();
         editor.putString("author",article.getAuthor());
@@ -34,8 +35,11 @@ public class SaveArticle {
         File cache ;
         if (type==0){
             cache =  new File(file, CACHE_HOME);
-        }else {
+        }else if (type==1){
             cache =  new File(file, CACHE_BITMAP);
+        }else {
+            cache =  new File(file, CACHE_BANNER);
+
         }
         if(cache.exists()){
             cache.delete();

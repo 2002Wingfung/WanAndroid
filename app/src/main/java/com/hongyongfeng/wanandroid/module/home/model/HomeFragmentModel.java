@@ -2,10 +2,14 @@ package com.hongyongfeng.wanandroid.module.home.model;
 
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -22,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -62,39 +67,67 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     List<ArticleBean> articleBeanList;
     List<ArticleBean> articleTopList;
     List<ArticleBean> articleMoreList;
+    List<byte[]> bitmapByteList;
 
     List<BannerBean> beanList;
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
     private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
     private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
-
+    private final Context context=MyApplication.getContext();
+    public static byte[] getBytes(Bitmap bitmap){
+        //实例化字节数组输出流
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);//压缩位图
+        return baos.toByteArray();//创建分配字节数组
+    }
+    public static Bitmap getBitmap(byte[] data){
+        return BitmapFactory.decodeByteArray(data, 0, data.length);//从字节数组解码位图
+    }
 
     @Override
     public HomeFragmentInterface.M getContract() {
         return new HomeFragmentInterface.M() {
             @Override
             public void requestImageM()  {
-                HttpUtil.sendHttpRequest(IMAGE_URL, new HttpCallbackListener() {
-                    @Override
-                    public void onFinish(String response) {
-                        beanList= parseJSONWithJSONObject(response);
-                        requestImageBitmap(beanList, new ImageCallbackListener() {
-                            @Override
-                            public void onError(Exception e) {
-                            }
-
-                            @Override
-                            public void onBitmapFinish(List<Bitmap> bitmapList) {
-                                finish(beanList,bitmapList);
-                            }
-                        });
+                try {
+                    bitmapByteList = SaveArticle.getData(context,1);  //获取缓存数据
+                    beanList=SaveArticle.getData(context,2);
+                } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                }
+                if(bitmapByteList!=null&&beanList!=null){     //不为空，即缓存中有数据
+                    Log.i("TAG","cache is not null");
+                    List<Bitmap> bitmapList=new ArrayList<>();
+                    for (int i = 0; i < bitmapByteList.size(); i++) {
+                        byte[] data=bitmapByteList.get(i);
+                        Bitmap bitmap=getBitmap(data);
+                        bitmapList.add(bitmap);
                     }
+                    finish(beanList,bitmapList);
+                }else{   //为空，从网络获取
+                    HttpUtil.sendHttpRequest(IMAGE_URL, new HttpCallbackListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            beanList= parseJSONWithJSONObject(response);
+                            requestImageBitmap(beanList, new ImageCallbackListener() {
+                                @Override
+                                public void onError(Exception e) {
+                                }
 
-                    @Override
-                    public void onError(Exception e) {
+                                @Override
+                                public void onBitmapFinish(List<Bitmap> bitmapList) {
+                                    finish(beanList,bitmapList);
+                                }
+                            });
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+                }
+
             }
 
             @Override
