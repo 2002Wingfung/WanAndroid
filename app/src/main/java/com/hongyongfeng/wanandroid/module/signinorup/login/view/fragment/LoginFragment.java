@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -35,6 +37,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     private String mParam2;
     private Button btnLogin;
     private TextView tvVisibility;
+    private TextView tvSignUp;
     private EditText edtPwd;
     private EditText edtName;
     private TextView tvAccount;
@@ -43,7 +46,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     private int password=0;
     private FragmentActivity fragmentActivity;
     final int[] count = {0};
-
+    private ViewPager viewPager;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -127,17 +130,20 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     @Override
     protected void initView(View view) {
         tvVisibility=fragmentActivity.findViewById(R.id.password_visibility);
+        tvSignUp=fragmentActivity.findViewById(R.id.tv_sign_up);
         edtName =fragmentActivity.findViewById(R.id.edt_login_user_name);
         edtPwd =fragmentActivity.findViewById(R.id.edt_login_password);
         btnLogin=fragmentActivity.findViewById(R.id.login);
         tvAccount=fragmentActivity.findViewById(R.id.account_warning);
         tvPwd=fragmentActivity.findViewById(R.id.password_warning);
         edtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        viewPager=fragmentActivity.findViewById(R.id.vp_login_and_register);
     }
 
     @Override
     protected void initListener() {
         btnLogin.setOnClickListener(this);
+        tvSignUp.setOnClickListener(this);
         edtPwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -253,6 +259,9 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
                 }
                 count[0]++;
+                break;
+            case R.id.tv_sign_up:
+                viewPager.setCurrentItem(1);
                 break;
             case R.id.login:
                 String name= edtName.getText().toString().replaceAll(" ","");

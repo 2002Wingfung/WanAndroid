@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
@@ -52,6 +53,8 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
     private int passwordAgain=0;
     private FragmentActivity fragmentActivity;
     final int[] count = {0,1};
+    private ViewPager viewPager;
+    private TextView tvRegister;
 
 
     public RegisterFragment() {
@@ -146,10 +149,13 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
         tvPwdAgain=fragmentActivity.findViewById(R.id.password_warning_again);
         edtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
         edtPwdAgain.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        viewPager=fragmentActivity.findViewById(R.id.vp_login_and_register);
+        tvRegister=fragmentActivity.findViewById(R.id.tv_register1);
     }
 
     @Override
     protected void initListener() {
+        tvRegister.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         edtPwdAgain.addTextChangedListener(new TextWatcher() {
             @Override
@@ -334,6 +340,9 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
 
                 }
                 count[1]++;
+                break;
+            case R.id.tv_register1:
+                viewPager.setCurrentItem(0);
                 break;
             case R.id.register:
                 String name= edtName.getText().toString().replaceAll(" ","");
