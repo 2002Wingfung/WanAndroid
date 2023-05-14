@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.signinorup.register.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -111,11 +112,13 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
                     public void run() {
                         Toast.makeText(fragmentActivity, loginStatusResult?"注册成功":"注册失败", Toast.LENGTH_SHORT).show();
                         if (loginStatusResult){
+                            Intent intent = new Intent();
+                            intent.putExtra("name",edtName.getText().toString());
+                            fragmentActivity.setResult(1, intent);
                             fragmentActivity.finish();
                         }
                     }
                 });
-
             }
 
             @Override
