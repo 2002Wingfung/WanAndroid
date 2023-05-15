@@ -41,6 +41,7 @@ import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
+import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
@@ -186,13 +187,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     }
     private int page = 0;
     File file=null;
-
     private List<View> viewList;
     static ViewPager viewPager;
     private List<BannerBean> beanLists;
     private List<Bitmap> bitmapLists;
     List<byte[]> bitmapByteList=new ArrayList<>();
-
+    MyDatabaseHelper helper;
     private int errorCode=0;
     static ProgressDialog dialog;
     public static List<ArticleBean> articleList = new ArrayList<>();
@@ -291,7 +291,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void onArticleClicked(View view, int position) {
                 ArticleBean article=articleList.get(position);
-                SaveArticle.save(fragmentActivity,article);
+                //SaveArticle.save(fragmentActivity,article);
+                //插入数据库表
                 Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
                 intent.putExtra("url", article.getLink());
                 startActivity(intent);
@@ -340,6 +341,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             Log.d("onCreateView","onCreateView");
             getContract().requestArticleVP();
             count = 1;
+            helper=new MyDatabaseHelper(fragmentActivity,"History",null,1);
         }
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
