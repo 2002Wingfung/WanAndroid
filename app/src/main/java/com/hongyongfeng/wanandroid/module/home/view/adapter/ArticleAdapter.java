@@ -79,9 +79,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
         }
         holder.tvTitle.setText(Html.fromHtml(tvTitle.toString()));
         try{
-            StringBuilder category=new StringBuilder(article.getSuperChapterName());
-            category.append("-").append(article.getChapterName());
-            holder.tvCategory.setText(category);
+            String superChapterName=article.getSuperChapterName();
+            String chapterName=article.getChapterName();
+            if (superChapterName==null&&chapterName==null){
+                holder.tvCategory.setText("项目");
+            }else {
+                assert superChapterName != null;
+                StringBuilder category=new StringBuilder(superChapterName);
+                category.append("-").append(chapterName);
+                holder.tvCategory.setText(category);
+            }
+
         }catch (Exception e){
             Log.e("StringBuilder",e.toString());
         }
