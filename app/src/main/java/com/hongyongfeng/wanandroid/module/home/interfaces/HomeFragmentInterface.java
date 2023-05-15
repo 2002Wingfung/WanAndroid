@@ -12,6 +12,7 @@ public interface HomeFragmentInterface {
         void requestImageM()throws Exception;
         void requestArticleM()throws Exception;
         void requestLoadMoreM(int page)throws Exception;
+        void saveArticleM(ArticleBean article)throws Exception;
     }
     interface VP{
         void requestImageVP();
@@ -21,6 +22,6 @@ public interface HomeFragmentInterface {
         void error(int error);
         void requestLoadMoreVP(int page);
         void responseLoadMoreVP(List<ArticleBean> articleList);
-
+        void saveHistory(ArticleBean article);
     }
 }

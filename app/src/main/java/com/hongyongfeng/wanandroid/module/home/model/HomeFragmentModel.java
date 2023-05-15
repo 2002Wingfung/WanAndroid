@@ -3,6 +3,8 @@ package com.hongyongfeng.wanandroid.module.home.model;
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.test.Bean;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 import com.hongyongfeng.wanandroid.util.MyApplication;
+import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
 
 import org.json.JSONArray;
@@ -68,11 +71,12 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     List<ArticleBean> articleTopList;
     List<ArticleBean> articleMoreList;
     List<byte[]> bitmapByteList;
-
+    public static MyDatabaseHelper helper=new MyDatabaseHelper(MyApplication.getContext(),"HistoryArticle.db",null,1);
     List<BannerBean> beanList;
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
     private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
     private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
+    public static final String SQL_INSERT_ARTICLE="insert into article_bean values(?,?,?,?,?,?,?,?)";
     private final Context context=MyApplication.getContext();
     public static byte[] getBytes(Bitmap bitmap){
         //实例化字节数组输出流
@@ -187,6 +191,16 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 
                     }
                 });
+            }
+
+            @Override
+            public void saveArticleM(ArticleBean article) throws Exception {
+                SQLiteDatabase db = helper.getWritableDatabase();
+                db.execSQL(SQL_INSERT_ARTICLE,new String[]
+                        {String.valueOf(article.getId()),article.getAuthor(),
+                                article.getChapterName(),article.getLink(),
+                                article.getTitle(),article.getNiceDate(),
+                                article.getSuperChapterName(),String.valueOf(article.getTop())});
             }
         };
     }

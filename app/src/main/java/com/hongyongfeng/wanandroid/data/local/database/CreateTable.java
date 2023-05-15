@@ -12,7 +12,7 @@ public class CreateTable {
                 "id int primary key ,\n" +
                 "author varchar(10),\n" +
                 "chapterName varchar(10),\n" +
-                "link varchar(50) unique,\n" +
+                "link varchar(80) unique,\n" +
                 "title varchar(30),\n"+
                 "niceDate varchar(20),\n"+
                 "superChapterName varchar(10),\n"+

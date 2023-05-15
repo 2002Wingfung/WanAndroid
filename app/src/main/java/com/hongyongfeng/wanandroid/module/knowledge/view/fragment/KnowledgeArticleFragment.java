@@ -45,6 +45,11 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     public ArticleInterface.VP getContract() {
         return new ArticleInterface.VP() {
             @Override
+            public void saveHistory(ArticleBean article) {
+                mPresenter.getContract().saveHistory(article);
+            }
+
+            @Override
             public void requestArticleVP(int id, int page) {
                 mPresenter.getContract().requestArticleVP(id,page);
             }
@@ -207,9 +212,11 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
 
             @Override
             public void onArticleClicked(View view, int position) {
+                ArticleBean article=articleList.get(position);
                 Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url", articleList.get(position).getLink());
+                intent.putExtra("url", article.getLink());
                 startActivity(intent);
+                getContract().saveHistory(article);
             }
         });
     }

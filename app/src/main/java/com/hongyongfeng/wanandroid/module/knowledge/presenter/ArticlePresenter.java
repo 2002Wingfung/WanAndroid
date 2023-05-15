@@ -21,6 +21,15 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
 
 
             @Override
+            public void saveHistory(ArticleBean article) {
+                try {
+                    mModel.getContract().saveArticleM(article);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
             public void requestArticleVP(int id, int page) {
                 try {
                     mModel.getContract().requestArticleM(id,page);

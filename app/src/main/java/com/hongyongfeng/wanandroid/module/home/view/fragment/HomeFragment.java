@@ -183,6 +183,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     }
                 });
             }
+
+            @Override
+            public void saveHistory(ArticleBean article) {
+                mPresenter.getContract().saveHistory(article);
+            }
         };
     }
     private int page = 0;
@@ -296,6 +301,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
                 intent.putExtra("url", article.getLink());
                 startActivity(intent);
+                getContract().saveHistory(article);
                 //Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
             }
         });
@@ -341,7 +347,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             Log.d("onCreateView","onCreateView");
             getContract().requestArticleVP();
             count = 1;
-            helper=new MyDatabaseHelper(fragmentActivity,"History",null,1);
+            //helper=new MyDatabaseHelper(fragmentActivity,"History",null,1);
         }
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);

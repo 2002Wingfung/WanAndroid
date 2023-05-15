@@ -75,6 +75,17 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             public void responseLoadMoreVP(List<ArticleBean> articleList) {
                 mView.getContract().responseLoadMoreVP(articleList);
             }
+
+            @Override
+            public void saveHistory(ArticleBean article) {
+                try {
+                    mModel.getContract().saveArticleM(article);
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
         };
     }
 }
