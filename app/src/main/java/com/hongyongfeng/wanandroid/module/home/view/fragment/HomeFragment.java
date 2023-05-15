@@ -85,6 +85,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void responseImageResult(List<BannerBean> beanList, List<Bitmap> bitmapList) {
+                //System.out.println(beanList);
                 beanLists = beanList;
                 bitmapLists = bitmapList;
                 requireActivity().runOnUiThread(new Runnable() {

@@ -97,6 +97,8 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 try {
                     bitmapByteList = SaveArticle.getData(context,1);  //获取缓存数据
                     beanList=SaveArticle.getData(context,2);
+
+                    //System.out.println(beanList.get(0).getUrl());
                 } catch (IllegalAccessException | java.lang.InstantiationException e) {
                     e.printStackTrace();
                 }

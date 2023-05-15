@@ -39,7 +39,6 @@ public class SaveArticle {
             cache =  new File(file, CACHE_BITMAP);
         }else {
             cache =  new File(file, CACHE_BANNER);
-
         }
         if(cache.exists()){
             cache.delete();
@@ -58,8 +57,11 @@ public class SaveArticle {
         List<T> list;
         if (type==0){
             cache = new File(file, CACHE_HOME);
-        }else {
+        }else if (type==1){
             cache = new File(file, CACHE_BITMAP);
+        }else {
+            cache = new File(file, CACHE_BANNER);
+
         }
         if(!cache.exists()){
             return null;

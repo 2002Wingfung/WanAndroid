@@ -20,7 +20,9 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.CookieStore;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -213,6 +215,14 @@ public class HttpUtil {
 //                                System.out.println("httpCookie : "+httpCookie);
 //                            });
 //                        }
+                        //接收Cookie
+                        CookieManager cookieManager = new CookieManager();
+                        //将地址中返回的数据放入Cookie管理器中
+                        cookieManager.put(new URI(strings[0]),connection.getHeaderFields());
+                        //将数据存入到CookieStore的一个对象中
+                        CookieStore cookieStore = cookieManager.getCookieStore();
+                        //cookieStore.getCookies()返回的是一个HttpCookie的集合，利用接口回调将其抛出到model层
+                        //httpCookieInteraction.getCookie(cookieStore.getCookies());
                         System.out.println(connection.getHeaderField("Set-Cookie"));
                         System.out.println(connection.getHeaderFields().toString());
                         InputStream in=connection.getInputStream();
