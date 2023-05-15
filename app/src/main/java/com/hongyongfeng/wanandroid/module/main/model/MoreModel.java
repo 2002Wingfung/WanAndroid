@@ -59,11 +59,6 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
                         articleBeanList.add(article);
                     }while (cursor.moveToNext());
                 }
-//                db.execSQL(SQL_INSERT_ARTICLE,new String[]
-//                        {String.valueOf(article.getId()),article.getAuthor(),
-//                                article.getChapterName(),article.getLink(),
-//                                article.getTitle(),article.getNiceDate(),
-//                                article.getSuperChapterName(),String.valueOf(article.getTop())});
                 mPresenter.getContract().responseHistoryVP(articleBeanList);
             }
         };
