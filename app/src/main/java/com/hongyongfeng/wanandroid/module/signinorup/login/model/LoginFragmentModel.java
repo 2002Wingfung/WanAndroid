@@ -27,7 +27,7 @@ public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter
         super(mPresenter);
     }
     private static final String Login_URL="https://www.wanandroid.com/user/login";
-    private static final String COOKIE_PREF = "cookies_prefs";
+    public static final String COOKIE_PREF = "cookies_prefs";
 
     @Override
     public ILogin.M getContract() {
@@ -39,7 +39,7 @@ public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter
                 HttpUtil.postLoginRequest(new HttpCookiesListener() {
                     @Override
                     public void onFinish(List<HttpCookie> httpCookieList) {
-                        System.out.println(httpCookieList);
+//                        System.out.println(httpCookieList);
                         StringBuilder builder = new StringBuilder();
                         if (!httpCookieList.isEmpty()){
                             for (int i = 0; i < httpCookieList.size(); i++) {
@@ -51,7 +51,7 @@ public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter
                                 builder.deleteCharAt(last);
                             }
                         }
-                        System.out.println(builder);
+//                        System.out.println(builder);
                         saveCookie("login",builder.toString());
 
                         //最后将拼接后的字符串传回到view层，view层就可以根据这个字符类型的cookie进行使用了
