@@ -9,14 +9,15 @@ import android.database.sqlite.SQLiteDatabase;
 public class CreateTable {
     public static final String ARTICLE_BEAN=
             "create table if not exists article_bean(\n" +
-                "id int primary key ,\n" +
+                "id int ,\n" +
                 "author varchar(10),\n" +
                 "chapterName varchar(10),\n" +
                 "link varchar(80) unique,\n" +
                 "title varchar(30),\n"+
                 "niceDate varchar(20),\n"+
                 "superChapterName varchar(10),\n"+
-                "top int"+
+                "top int,"+
+                "main_id INTEGER primary key autoincrement"+
             ");";
     /**
      * 创建项目中所需要的全部表

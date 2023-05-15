@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.knowledge.model;
 
+import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.SQL_INSERT_ARTICLE;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
 
@@ -46,12 +47,13 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
             @Override
             public void saveArticleM(ArticleBean article) throws Exception {
-                SQLiteDatabase db = helper.getWritableDatabase();
-                db.execSQL(SQL_INSERT_ARTICLE,new String[]
-                        {String.valueOf(article.getId()),article.getAuthor(),
-                                article.getChapterName(),article.getLink(),
-                                article.getTitle(),article.getNiceDate(),
-                                article.getSuperChapterName(),String.valueOf(article.getTop())});
+//                SQLiteDatabase db = helper.getWritableDatabase();
+//                db.execSQL(SQL_INSERT_ARTICLE,new String[]
+//                        {String.valueOf(article.getId()),article.getAuthor(),
+//                                article.getChapterName(),article.getLink(),
+//                                article.getTitle(),article.getNiceDate(),
+//                                article.getSuperChapterName(),String.valueOf(article.getTop())});
+                insert(article);
             }
         };
     }

@@ -135,6 +135,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                             break;
                         case 1:
                             intent.putExtra("title","浏览历史");
+                            intent.putExtra("index",1);
                             break;
                         case 2:
                             intent.putExtra("title","关于");

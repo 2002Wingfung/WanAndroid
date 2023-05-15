@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.home.model;
 
+import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
 import android.content.Context;
@@ -76,7 +77,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
     private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
     private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
-    public static final String SQL_INSERT_ARTICLE="insert into article_bean values(?,?,?,?,?,?,?,?)";
+    public static final String SQL_INSERT_ARTICLE="insert into article_bean (id,author,chapterName,link,title,niceDate,superChapterName,top)values(?,?,?,?,?,?,?,?)";
     private final Context context=MyApplication.getContext();
     public static byte[] getBytes(Bitmap bitmap){
         //实例化字节数组输出流
@@ -195,12 +196,13 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 
             @Override
             public void saveArticleM(ArticleBean article) throws Exception {
-                SQLiteDatabase db = helper.getWritableDatabase();
-                db.execSQL(SQL_INSERT_ARTICLE,new String[]
-                        {String.valueOf(article.getId()),article.getAuthor(),
-                                article.getChapterName(),article.getLink(),
-                                article.getTitle(),article.getNiceDate(),
-                                article.getSuperChapterName(),String.valueOf(article.getTop())});
+//                SQLiteDatabase db = helper.getWritableDatabase();
+//                db.execSQL(SQL_INSERT_ARTICLE,new String[]
+//                        {String.valueOf(article.getId()),article.getAuthor(),
+//                                article.getChapterName(),article.getLink(),
+//                                article.getTitle(),article.getNiceDate(),
+//                                article.getSuperChapterName(),String.valueOf(article.getTop())});
+                insert(article);
             }
         };
     }

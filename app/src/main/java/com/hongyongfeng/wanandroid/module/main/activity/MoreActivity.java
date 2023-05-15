@@ -47,6 +47,25 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
                 handler.sendEmptyMessageDelayed(0,500);
                 articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
             }
+
+            @Override
+            public void requestHistoryVP() {
+                mPresenter.getContract().requestHistoryVP();
+            }
+
+            @Override
+            public void responseHistoryVP(List<ArticleBean> articleBeanList) {
+//                for (ArticleBean article:articleBeanList) {
+//                    System.out.println(article.getTitle());
+//                }
+                articleBeanLists.addAll(articleBeanList);
+                MoreActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
         };
     }
     Handler handler=new Handler(Looper.getMainLooper()){
@@ -148,6 +167,16 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
         if (intent!=null){
             String title=intent.getStringExtra("title");
             tvTitle.setText(title);
+            int index=intent.getIntExtra("index",-1);
+            switch (index){
+                case 0:
+                    break;
+                case 1:
+                    getContract().requestHistoryVP();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

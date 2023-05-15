@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 public abstract class BaseFragment <P extends BaseFragmentPresenter,CONTRACT> extends Fragment implements View.OnClickListener{
 
     public abstract CONTRACT getContract();
+
     public P mPresenter;
 
     @Nullable
