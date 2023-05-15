@@ -2,12 +2,16 @@ package com.hongyongfeng.wanandroid.module.signinorup.register.model;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
+import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.HttpCookiesListener;
 import com.hongyongfeng.wanandroid.module.signinorup.register.interfaces.RegisterInterface;
 import com.hongyongfeng.wanandroid.module.signinorup.register.presenter.RegisterFragmentPresenter;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.HttpCookie;
+import java.util.List;
 
 public class RegisterFragmentModel extends BaseFragmentModel<RegisterFragmentPresenter, RegisterInterface.M> {
     public RegisterFragmentModel(RegisterFragmentPresenter mPresenter) {
@@ -20,7 +24,17 @@ public class RegisterFragmentModel extends BaseFragmentModel<RegisterFragmentPre
         return new RegisterInterface.M() {
             @Override
             public void requestRegisterM(String name, String pwd) throws Exception {
-                HttpUtil.postLoginRequest(new HttpCallbackListener() {
+                HttpUtil.postLoginRequest(new HttpCookiesListener() {
+                    @Override
+                    public void onFinish(List<HttpCookie> httpCookieList) {
+
+                    }
+
+                    @Override
+                    public void error(Exception e) {
+
+                    }
+                },new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
                         System.out.println(response);

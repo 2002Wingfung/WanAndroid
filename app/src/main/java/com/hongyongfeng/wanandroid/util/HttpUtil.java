@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.exception.HttpException;
+import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.HttpCookiesListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -155,7 +156,7 @@ public class HttpUtil {
         });
 
     }
-    public static void postLoginRequest( final HttpCallbackListener listener,String...strings){
+    public static void postLoginRequest(final HttpCookiesListener cookiesListener, final HttpCallbackListener listener, String...strings){
         es.execute(new Runnable() {
             @Override
             public void run() {
@@ -222,9 +223,9 @@ public class HttpUtil {
                         //将数据存入到CookieStore的一个对象中
                         CookieStore cookieStore = cookieManager.getCookieStore();
                         //cookieStore.getCookies()返回的是一个HttpCookie的集合，利用接口回调将其抛出到model层
-                        //httpCookieInteraction.getCookie(cookieStore.getCookies());
-                        System.out.println(connection.getHeaderField("Set-Cookie"));
-                        System.out.println(connection.getHeaderFields().toString());
+                        cookiesListener.onFinish(cookieStore.getCookies());
+//                        System.out.println(connection.getHeaderField("Set-Cookie"));
+//                        System.out.println(connection.getHeaderFields().toString());
                         InputStream in=connection.getInputStream();
                         reader=new BufferedReader(new InputStreamReader(in));
                         StringBuilder response=new StringBuilder();
