@@ -89,8 +89,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                        File file=new File(fragmentActivity.getCacheDir(),CACHE_BITMAP);
                         if(!file.exists()){
                             for (int i = 0; i < viewList.size(); i++) {
                                 View view = viewList.get(i);
@@ -101,6 +99,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             }
                             SaveArticle.setData(fragmentActivity,beanList,2);
                             SaveArticle.setData(fragmentActivity,bitmapByteList,1);
+                            dialogHandler.sendEmptyMessage(1);
                         }else {
                             for (int i = 0; i < viewList.size(); i++) {
                                 View view = viewList.get(i);
@@ -138,7 +137,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             }
                             articleList.addAll(articleLists);
                             adapter.notifyDataSetChanged();
-                            dialog.dismiss();
+                            if (file.exists()){
+                                dialog.dismiss();
+                            }
 //                            if (errorCode==1){
 //                                dialog.dismiss();
 //                            }
@@ -182,6 +183,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         };
     }
     private int page = 0;
+    File file=null;
+
     private List<View> viewList;
     static ViewPager viewPager;
     private List<BannerBean> beanLists;
@@ -309,6 +312,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         mPresenter = getPresenterInstance();
         mPresenter.bindView(this);
         fragmentActivity = requireActivity();
+        file=new File(fragmentActivity.getCacheDir(),CACHE_BITMAP);
+
 //        recyclerView = fragmentActivity.findViewById(R.id.rv_article);
 //        SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
         if (count == 0) {
