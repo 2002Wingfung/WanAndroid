@@ -1,10 +1,12 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
+import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -289,6 +291,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);
         listView.setAdapter(listViewAdapter);
 
+        readSharedPreference();
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -315,6 +318,22 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 //        }
         //StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
 
+    }
+
+    private void readSharedPreference() {
+        try {
+            SharedPreferences preferences=getSharedPreferences(COOKIE_PREF,MODE_PRIVATE);
+            String cookies=preferences.getString("login","");
+            System.out.println(cookies);
+            int first=cookies.indexOf(";")+1;
+            int last=cookies.lastIndexOf(";");
+            cookies=cookies.substring(first,last);
+            first=cookies.indexOf("=")+1;
+            tvWelcome.setText("欢迎");
+            tvName.setText(cookies.substring(first));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initEvent() {
