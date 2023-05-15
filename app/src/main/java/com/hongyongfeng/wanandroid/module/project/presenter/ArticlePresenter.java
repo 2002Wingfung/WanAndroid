@@ -51,6 +51,15 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
             public void responseImageResult(Bitmap bitmap) {
                 mView.getContract().responseImageResult(bitmap);
             }
+
+            @Override
+            public void saveProject(ProjectBean project) {
+                try {
+                    mModel.getContract().saveProjectM(project);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         };
     }
 }

@@ -131,6 +131,11 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     }
                 });
             }
+
+            @Override
+            public void saveProject(ProjectBean project) {
+                mPresenter.getContract().saveProject(project);
+            }
         };
     }
 
@@ -200,8 +205,10 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent=new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url", projectList.get(position).getLink());
+                ProjectBean project=projectList.get(position);
+                intent.putExtra("url", project.getLink());
                 startActivity(intent);
+                getContract().saveProject(project);
             }
         });
         LinearLayoutManager layoutManager= (LinearLayoutManager) recyclerView.getLayoutManager();

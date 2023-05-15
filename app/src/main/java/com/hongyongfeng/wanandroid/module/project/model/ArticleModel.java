@@ -1,8 +1,11 @@
 
 package com.hongyongfeng.wanandroid.module.project.model;
 
+import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.SQL_INSERT_ARTICLE;
+import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -67,6 +70,16 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
                     }
                 });
+            }
+
+            @Override
+            public void saveProjectM(ProjectBean project) throws Exception {
+                SQLiteDatabase db = helper.getWritableDatabase();
+                db.execSQL(SQL_INSERT_ARTICLE,new String[]
+                        {String.valueOf(project.getId()),project.getAuthor(),
+                                null,project.getLink(),
+                                project.getTitle(),project.getNiceDate(),
+                                null,null});
             }
         };
     }
