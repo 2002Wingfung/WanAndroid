@@ -5,6 +5,7 @@ import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -82,6 +84,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     ListView listView;
     private String[] listData={"我的收藏","浏览历史","关于","设置","退出登录"};
     private int count=0;
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        //AppCompatDelegate.MODE_NIGHT_NO
+    }
+
     @Override
     public MainInterface.VP getContract() {
         return null;

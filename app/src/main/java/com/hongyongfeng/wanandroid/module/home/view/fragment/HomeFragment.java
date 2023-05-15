@@ -143,6 +143,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 //                            if (errorCode==1){
 //                                dialog.dismiss();
 //                            }
+                        }else {
+                            dialog.dismiss();
                         }
                     }
                 });
@@ -303,7 +305,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("HomeFragment", "onCreate" + SystemClock.elapsedRealtime());
-        dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
     }
 
     @Nullable
@@ -313,7 +314,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         mPresenter.bindView(this);
         fragmentActivity = requireActivity();
         file=new File(fragmentActivity.getCacheDir(),CACHE_BITMAP);
-
 //        recyclerView = fragmentActivity.findViewById(R.id.rv_article);
 //        SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
         if (count == 0) {
@@ -335,6 +335,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 //                getContract().requestImageVP();
 //            }
             //setRetainInstance(true);
+            dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
+            //dialog.dismiss();
+            Log.d("onCreateView","onCreateView");
             getContract().requestArticleVP();
             count = 1;
         }
