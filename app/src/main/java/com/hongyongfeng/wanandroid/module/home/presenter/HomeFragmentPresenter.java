@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
@@ -22,18 +23,18 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
     public HomeFragmentInterface.VP getContract() {
         return new HomeFragmentInterface.VP() {
             @Override
-            public void collectVP(int id) {
+            public void collectVP(int id, CollectListener listener) {
                 try {
-                    mModel.getContract().collectM(id);
+                    mModel.getContract().collectM(id,listener);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void unCollectVP(int id) {
+            public void unCollectVP(int id, CollectListener listener) {
                 try {
-                    mModel.getContract().unCollectM(id);
+                    mModel.getContract().unCollectM(id,listener);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

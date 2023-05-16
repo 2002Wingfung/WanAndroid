@@ -17,6 +17,7 @@ import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
@@ -208,7 +209,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             }
 
             @Override
-            public void collectM(int id) throws Exception {
+            public void collectM(int id, CollectListener listener) throws Exception {
                 String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
@@ -229,7 +230,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             }
 
             @Override
-            public void unCollectM(int id) throws Exception {
+            public void unCollectM(int id, CollectListener listener) throws Exception {
                 String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
@@ -238,6 +239,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().unCollectResponse(0);
+                            listener.onFinish();
                         }
 
                         @Override

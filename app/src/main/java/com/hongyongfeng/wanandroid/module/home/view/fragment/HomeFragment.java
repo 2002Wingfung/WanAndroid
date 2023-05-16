@@ -36,6 +36,7 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
@@ -80,13 +81,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public HomeFragmentInterface.VP getContract() {
         return new HomeFragmentInterface.VP() {
             @Override
-            public void collectVP(int id) {
-                mPresenter.getContract().collectVP(id);
+            public void collectVP(int id,CollectListener listener) {
+                mPresenter.getContract().collectVP(id,listener);
             }
 
             @Override
-            public void unCollectVP(int id) {
-                mPresenter.getContract().unCollectVP(id);
+            public void unCollectVP(int id,CollectListener listener) {
+                mPresenter.getContract().unCollectVP(id,listener);
             }
 
             @Override
@@ -329,11 +330,29 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 int number2 = 2;
                 int number0 = 0;
                 if (count[0] % number2 == number0) {
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
-                    getContract().collectVP(articleList.get(position).getId());
+                    getContract().collectVP(articleList.get(position).getId(), new CollectListener() {
+                        @Override
+                        public void onFinish() {
+                            likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
                 } else {
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
-                    getContract().unCollectVP(articleList.get(position).getId());
+                    getContract().unCollectVP(articleList.get(position).getId(), new CollectListener() {
+                        @Override
+                        public void onFinish() {
+                            likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
                 }
                 count[0]++;
             }
@@ -351,7 +370,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
         });
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

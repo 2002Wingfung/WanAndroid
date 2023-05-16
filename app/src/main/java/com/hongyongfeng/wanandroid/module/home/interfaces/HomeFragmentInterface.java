@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.interfaces;
 
 import android.graphics.Bitmap;
+import android.widget.TextView;
 
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
@@ -13,12 +14,12 @@ public interface HomeFragmentInterface {
         void requestArticleM()throws Exception;
         void requestLoadMoreM(int page)throws Exception;
         void saveArticleM(ArticleBean article)throws Exception;
-        void collectM(int id)throws Exception;
-        void unCollectM(int id)throws Exception;
+        void collectM(int id, CollectListener listener)throws Exception;
+        void unCollectM(int id, CollectListener listener)throws Exception;
     }
     interface VP{
-        void collectVP(int id);
-        void unCollectVP(int id);
+        void collectVP(int id, CollectListener listener);
+        void unCollectVP(int id, CollectListener listener);
         void collectResponse(int code);
         void unCollectResponse(int code);
         void requestImageVP();
