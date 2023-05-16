@@ -21,6 +21,7 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.test.Bean;
+import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 import com.hongyongfeng.wanandroid.util.MyApplication;
 import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
@@ -75,6 +76,11 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     public static MyDatabaseHelper helper=new MyDatabaseHelper(MyApplication.getContext(),"HistoryArticle.db",null,1);
     List<BannerBean> beanList;
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
+    private static final String DOMAIN_URL="https://www.wanandroid.com/";
+    private static final String COLLECT_URL="lg/collect/";
+    private static final String UNCOLLECT_URL="lg/uncollect_originId/";
+
+    private static final String JSON_URL="/json";
     private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
     private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
     public static final String SQL_INSERT_ARTICLE="insert into article_bean (id,author,chapterName,link,title,niceDate,superChapterName,top)values(?,?,?,?,?,?,?,?)";
@@ -205,6 +211,39 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
 //                                article.getTitle(),article.getNiceDate(),
 //                                article.getSuperChapterName(),String.valueOf(article.getTop())});
                 insert(article);
+            }
+
+            @Override
+            public void collectM(int id) throws Exception {
+                HttpUtil.postCollectRequest(DOMAIN_URL + COLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        //System.out.println(response);
+                        mPresenter.getContract().collectResponse(true);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        mPresenter.getContract().collectResponse(false);
+                    }
+                });
+            }
+
+            @Override
+            public void unCollectM(int id) throws Exception {
+                //mPresenter.getContract().unCollectResponse();
+                HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        System.out.println(response);
+                        mPresenter.getContract().unCollectResponse(true);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        mPresenter.getContract().unCollectResponse(false);
+                    }
+                });
             }
         };
     }

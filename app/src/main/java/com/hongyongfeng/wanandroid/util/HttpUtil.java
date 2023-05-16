@@ -264,6 +264,71 @@ public class HttpUtil {
         });
 
     }
+    public static void postCollectRequest(final String address,String cookies, final HttpCallbackListener listener){
+        es.execute(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection connection=null;
+                BufferedReader reader=null;
+                try {
+                    URL url=new URL(address);
+                    connection=(HttpURLConnection) url.openConnection();
+                    // 设置请求方式,请求超时信息
+                    connection.setRequestMethod("POST");
+                    connection.setConnectTimeout(8000);
+                    connection.setReadTimeout(8000);
+                    // 设置运行输入,输出:
+                    // 设置是否从httpUrlConnection读入，默认情况下是true;
+
+                    connection.setDoInput(true);
+                    // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
+
+                    connection.setDoOutput(true);
+                    // Post方式不能缓存,需手动设置为false
+                    connection.setUseCaches(false);
+                    // 我们请求的数据:
+                    if (cookies != null){
+                        connection.setRequestProperty("Cookie", cookies);
+                        System.out.println(cookies);
+                    }
+                    connection.connect();
+                    if (connection.getResponseCode() == 200) {
+                        InputStream in=connection.getInputStream();
+                        reader=new BufferedReader(new InputStreamReader(in));
+                        StringBuilder response=new StringBuilder();
+                        String line;
+                        while ((line=reader.readLine())!=null){
+                            response.append(line);
+                        }
+                        if (listener!=null){
+                            //回调onFinish()方法
+                            listener.onFinish(response.toString());
+                        }
+                    }
+                    else {
+                        checkHttpCode(connection.getResponseCode());
+                    }
+
+                } catch (Exception e) {
+                    if (listener!=null){
+                        //回调onError()方法
+                        listener.onError(e);
+                    }
+                }finally {
+                    if (reader!=null&&listener!=null){
+                        try {
+                            reader.close();
+                        }catch (IOException e){
+                            listener.onError(e);
+                        }
+                    }
+                    if (connection!=null){
+                        connection.disconnect();
+                    }
+                }
+            }
+        });
+    }
     public static void postQueryRequest(final String address,String key, final HttpCallbackListener listener){
         es.execute(new Runnable() {
             @Override
@@ -329,7 +394,6 @@ public class HttpUtil {
                 }
             }
         });
-
     }
     public static void checkHttpCode(int code) throws HttpException {
 //        for (String name : names) {

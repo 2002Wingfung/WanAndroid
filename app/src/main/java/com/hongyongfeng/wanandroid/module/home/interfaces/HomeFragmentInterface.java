@@ -13,8 +13,14 @@ public interface HomeFragmentInterface {
         void requestArticleM()throws Exception;
         void requestLoadMoreM(int page)throws Exception;
         void saveArticleM(ArticleBean article)throws Exception;
+        void collectM(int id)throws Exception;
+        void unCollectM(int id)throws Exception;
     }
     interface VP{
+        void collectVP(int id);
+        void unCollectVP(int id);
+        void collectResponse(boolean bool);
+        void unCollectResponse(boolean bool);
         void requestImageVP();
         void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList);
         void requestArticleVP();
