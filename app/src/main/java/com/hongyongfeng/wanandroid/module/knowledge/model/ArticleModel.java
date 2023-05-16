@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.util.GetCookies;
@@ -62,7 +63,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
             }
 
             @Override
-            public void collectM(int id) throws Exception {
+            public void collectM(int id, CollectListener listener) throws Exception {
                 String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
@@ -71,6 +72,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().collectResponse(0);
+                            listener.onFinish();
                         }
 
                         @Override
@@ -82,7 +84,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
             }
 
             @Override
-            public void unCollectM(int id) throws Exception {
+            public void unCollectM(int id, CollectListener listener) throws Exception {
                 String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
@@ -91,6 +93,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().unCollectResponse(0);
+                            listener.onFinish();
                         }
 
                         @Override

@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.ArticlePresenter;
@@ -44,13 +45,13 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             }
 
             @Override
-            public void collectVP(int id) {
-                mPresenter.getContract().collectVP(id);
+            public void collectVP(int id, CollectListener listener) {
+                mPresenter.getContract().collectVP(id,listener);
             }
 
             @Override
-            public void unCollectVP(int id) {
-                mPresenter.getContract().unCollectVP(id);
+            public void unCollectVP(int id, CollectListener listener) {
+                mPresenter.getContract().unCollectVP(id,listener);
 
             }
 
@@ -239,11 +240,25 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                 int number2 = 2;
                 int number0 = 0;
                 if (count[0] % number2 == number0) {
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
-                    getContract().collectVP(articleList.get(position).getId());
+                    getContract().collectVP(articleList.get(position).getId(), new CollectListener() {
+                        @Override
+                        public void onFinish() {
+                            likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
+                        }
+                        @Override
+                        public void onError() {
+                        }
+                    });
                 } else {
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
-                    getContract().unCollectVP(articleList.get(position).getId());
+                    getContract().unCollectVP(articleList.get(position).getId(), new CollectListener() {
+                        @Override
+                        public void onFinish() {
+                            likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
+                        }
+                        @Override
+                        public void onError() {
+                        }
+                    });
                 }
                 count[0]++;
             }

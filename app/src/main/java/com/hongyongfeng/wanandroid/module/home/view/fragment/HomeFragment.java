@@ -335,10 +335,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
                         }
-
                         @Override
                         public void onError() {
-
                         }
                     });
                 } else {
@@ -347,10 +345,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
                         }
-
                         @Override
                         public void onError() {
-
                         }
                     });
                 }
