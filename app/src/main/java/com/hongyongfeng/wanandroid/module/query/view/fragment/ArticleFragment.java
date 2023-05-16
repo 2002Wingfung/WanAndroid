@@ -28,6 +28,7 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
 import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
+import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
@@ -83,24 +84,35 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             }
 
             @Override
-            public void collectResponse(boolean bool) {
+            public void collectResponse(int code) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (bool) {
+                        if (code==0){
                             Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                        }else if (code==1){
+                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
             }
 
             @Override
-            public void unCollectResponse(boolean bool) {
+            public void unCollectResponse(int code) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (bool) {
+                        if (code==0){
                             Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                        }else if (code==1){
+                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

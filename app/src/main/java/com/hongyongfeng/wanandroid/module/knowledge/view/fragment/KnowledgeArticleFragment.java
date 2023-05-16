@@ -239,7 +239,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                 int number2 = 2;
                 int number0 = 0;
                 if (count[0] % number2 == number0) {
-
                     likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
                     getContract().collectVP(articleList.get(position).getId());
                 } else {
