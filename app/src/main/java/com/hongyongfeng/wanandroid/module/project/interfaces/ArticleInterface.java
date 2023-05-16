@@ -23,7 +23,7 @@ public interface ArticleInterface {
         void saveProject(ProjectBean project);
         void collectVP(int id);
         void unCollectVP(int id);
-        void collectResponse(boolean bool);
-        void unCollectResponse(boolean bool);
+        void collectResponse(int code);
+        void unCollectResponse(int code);
     }
 }

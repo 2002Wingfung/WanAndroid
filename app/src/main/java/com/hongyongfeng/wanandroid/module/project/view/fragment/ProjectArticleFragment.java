@@ -33,6 +33,7 @@ import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInte
 import com.hongyongfeng.wanandroid.module.project.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.module.project.presenter.ProjectFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectAdapter;
+import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.test.VPFragment;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
@@ -68,13 +69,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         fragment.setArguments(args);
         return fragment;
     }
-    private Handler mHandler=new Handler(Looper.myLooper()){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            dialog.dismiss();
-        }
-    };
+
     @Override
     public ArticleInterface.VP getContract() {
         return new ArticleInterface.VP() {
@@ -148,25 +143,35 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             }
 
             @Override
-            public void collectResponse(boolean bool) {
+            public void collectResponse(int code) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (bool) {
+                        if (code==0){
                             Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                        }else if (code==1){
+                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
             }
 
             @Override
-            public void unCollectResponse(boolean bool) {
+            public void unCollectResponse(int code) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (bool) {
+                        if (code==0){
                             Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
-
+                        }else if (code==1){
+                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
