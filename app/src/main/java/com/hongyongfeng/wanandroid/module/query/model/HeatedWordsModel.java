@@ -26,14 +26,13 @@ public class HeatedWordsModel extends BaseFragmentModel<HeatedWordsPresenter, He
                     public void onFinish(String response) {
                         heatedWordsListMap =HttpUtil.parseJsonWithJSONObject(response);
                         mPresenter.getContract().responseHeatedWordsResult(heatedWordsListMap);
-
                     }
 
                     @Override
                     public void onError(Exception e) {
 
                     }
-                });
+                },null);
 
 
             }

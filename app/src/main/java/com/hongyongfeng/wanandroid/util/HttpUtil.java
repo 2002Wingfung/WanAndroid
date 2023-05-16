@@ -93,10 +93,15 @@ public class HttpUtil {
                             }
                             break;
                         case "class java.lang.String":
-                            String value = jsonObject.getString(fieldName);
-                            //这里可以开启另一种容量很大的线程池，用于请求图片
-                            if (!"".equals(value)) {
-                                field.set(t, value);
+                            try {
+                                String value = jsonObject.getString(fieldName);
+                                //这里可以开启另一种容量很大的线程池，用于请求图片
+                                if (!"".equals(value)) {
+                                    field.set(t, value);
+                                }
+                            }catch (Exception e){
+                                //e.printStackTrace();
+                                break;
                             }
                             break;
                         default:
@@ -110,7 +115,7 @@ public class HttpUtil {
         }
         return list;
     }
-    public static void sendHttpRequest(final String address,final HttpCallbackListener listener){
+    public static void sendHttpRequest(final String address,final HttpCallbackListener listener,String parameter){
         es.execute(new Runnable() {
             @Override
             public void run() {
@@ -123,7 +128,10 @@ public class HttpUtil {
                     connection.setConnectTimeout(1000);
                     connection.setReadTimeout(1000);
                     connection.setDoInput(true);
-//                    connection.setDoOutput(true);
+                    if (parameter!=null){
+                        connection.setRequestProperty("Cookie", parameter);
+                    }
+                    connection.connect();
                     InputStream in=connection.getInputStream();
                     reader=new BufferedReader(new InputStreamReader(in));
                     StringBuilder response=new StringBuilder();
@@ -154,7 +162,6 @@ public class HttpUtil {
                 }
             }
         });
-
     }
     public static void postLoginRequest(final HttpCookiesListener cookiesListener, final HttpCallbackListener listener, String...strings){
         es.execute(new Runnable() {
@@ -165,18 +172,14 @@ public class HttpUtil {
                 try {
                     URL url=new URL(strings[0]);
                     connection=(HttpURLConnection) url.openConnection();
-
-
                     // 设置请求方式,请求超时信息
                     connection.setRequestMethod("POST");
                     connection.setConnectTimeout(8000);
                     connection.setReadTimeout(8000);
                     // 设置运行输入,输出:
                     // 设置是否从httpUrlConnection读入，默认情况下是true;
-
                     connection.setDoInput(true);
                     // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
-
                     connection.setDoOutput(true);
                     // Post方式不能缓存,需手动设置为false
                     connection.setUseCaches(false);
@@ -195,27 +198,6 @@ public class HttpUtil {
                     out.flush();
                     out.close();
                     if (connection.getResponseCode() == 200) {
-//                        CookieManager manager = new CookieManager();
-//                        CookieHandler.setDefault(manager);
-//
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//
-//                            manager.getCookieStore().getCookies().forEach(httpCookie -> {
-//                                System.out.println("class      : "+httpCookie.getClass());
-//                                System.out.println("comment    : "+httpCookie.getComment());
-//                                System.out.println("commentURL : "+httpCookie.getCommentURL());
-//                                System.out.println("discard    : "+httpCookie.getDiscard());
-//                                System.out.println("domain     : "+httpCookie.getDomain());
-//                                System.out.println("maxAge     : "+httpCookie.getMaxAge());
-//                                System.out.println("name       : "+httpCookie.getName());
-//                                System.out.println("path       : "+httpCookie.getPath());
-//                                System.out.println("portlist   : "+httpCookie.getPortlist());
-//                                System.out.println("secure     : "+httpCookie.getSecure());
-//                                System.out.println("value      : "+httpCookie.getValue());
-//                                System.out.println("version    : "+httpCookie.getVersion());
-//                                System.out.println("httpCookie : "+httpCookie);
-//                            });
-//                        }
                         //接收Cookie
                         CookieManager cookieManager = new CookieManager();
                         //将地址中返回的数据放入Cookie管理器中
@@ -224,8 +206,6 @@ public class HttpUtil {
                         CookieStore cookieStore = cookieManager.getCookieStore();
                         //cookieStore.getCookies()返回的是一个HttpCookie的集合，利用接口回调将其抛出到model层
                         cookiesListener.onFinish(cookieStore.getCookies());
-//                        System.out.println(connection.getHeaderField("Set-Cookie"));
-//                        System.out.println(connection.getHeaderFields().toString());
                         InputStream in=connection.getInputStream();
                         reader=new BufferedReader(new InputStreamReader(in));
                         StringBuilder response=new StringBuilder();
@@ -262,7 +242,6 @@ public class HttpUtil {
                 }
             }
         });
-
     }
     public static void postCollectRequest(final String address,String cookies, final HttpCallbackListener listener){
         es.execute(new Runnable() {
@@ -279,10 +258,8 @@ public class HttpUtil {
                     connection.setReadTimeout(8000);
                     // 设置运行输入,输出:
                     // 设置是否从httpUrlConnection读入，默认情况下是true;
-
                     connection.setDoInput(true);
                     // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
-
                     connection.setDoOutput(true);
                     // Post方式不能缓存,需手动设置为false
                     connection.setUseCaches(false);
@@ -307,7 +284,6 @@ public class HttpUtil {
                     else {
                         checkHttpCode(connection.getResponseCode());
                     }
-
                 } catch (Exception e) {
                     if (listener!=null){
                         //回调onError()方法
@@ -343,10 +319,8 @@ public class HttpUtil {
                     connection.setReadTimeout(8000);
                     // 设置运行输入,输出:
                     // 设置是否从httpUrlConnection读入，默认情况下是true;
-
                     connection.setDoInput(true);
                     // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
-
                     connection.setDoOutput(true);
                     // Post方式不能缓存,需手动设置为false
                     connection.setUseCaches(false);
@@ -373,7 +347,6 @@ public class HttpUtil {
                     else {
                         checkHttpCode(connection.getResponseCode());
                     }
-
                 } catch (Exception e) {
                     if (listener!=null){
                         //回调onError()方法
@@ -395,15 +368,8 @@ public class HttpUtil {
         });
     }
     public static void checkHttpCode(int code) throws HttpException {
-//        for (String name : names) {
-//            if(name.equals(uname)){//如果名字在这里面 就抛出登陆异常
-//                throw new RegisterException("亲"+name+"已经被注册了！");
-//            }
-//        }
         if (code!=200){
             throw new HttpException("请求网络错误:"+code);
         }
-        //return true;
     }
-
 }

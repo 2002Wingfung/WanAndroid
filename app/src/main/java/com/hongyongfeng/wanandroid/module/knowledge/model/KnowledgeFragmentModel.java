@@ -37,7 +37,7 @@ public class KnowledgeFragmentModel extends BaseFragmentModel<KnowledgeFragmentP
                     public void onError(Exception e) {
 
                     }
-                });
+                },null);
             }
         };
     }

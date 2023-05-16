@@ -84,10 +84,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
             if (superChapterName==null&&chapterName==null){
                 holder.tvCategory.setText("项目");
             }else {
-                assert superChapterName != null;
-                StringBuilder category=new StringBuilder(superChapterName);
-                category.append("-").append(chapterName);
-                holder.tvCategory.setText(category);
+                //assert superChapterName != null;
+                if (superChapterName!=null){
+                    StringBuilder category=new StringBuilder(superChapterName);
+                    category.append("-").append(chapterName);
+                    holder.tvCategory.setText(category);
+                }else {
+                    holder.tvCategory.setText(chapterName);
+                }
+
             }
 
         }catch (Exception e){

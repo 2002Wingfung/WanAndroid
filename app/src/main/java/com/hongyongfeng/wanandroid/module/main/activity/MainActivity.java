@@ -142,14 +142,15 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this,
-                                "你点击了:"+listData[position],
-                                Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this,
+//                                "你点击了:"+listData[position],
+//                                Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(MainActivity.this,MoreActivity.class);
                 if (position!=4){
                     switch (position){
                         case 0:
                             intent.putExtra("title","我的收藏");
+                            intent.putExtra("index",0);
                             break;
                         case 1:
                             intent.putExtra("title","浏览历史");
@@ -165,6 +166,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                             break;
                     }
                     startActivity(intent);
+                }else {
+                    Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
                 }
             }
         });

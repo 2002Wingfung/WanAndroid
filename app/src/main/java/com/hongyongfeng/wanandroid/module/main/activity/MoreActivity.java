@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,23 +32,11 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
     //可以是网络获取的bean,也可以是本地获取的bean
     ArrayList<ArticleBean> articleBeanLists=new ArrayList<>();
     ArticleAdapter adapter=new ArticleAdapter(articleBeanLists);
+    static ProgressDialog dialog;
 
     @Override
     public MoreInterface.VP getContract() {
         return new MoreInterface.VP() {
-            @Override
-            public void requestQueryVP(String key,int page) {
-                //System.out.println(key);
-
-                mPresenter.getContract().requestQueryVP(key,page);
-            }
-
-            @Override
-            public void responseQueryResult(List<ArticleBean> articleBeanList) {
-                handler.sendEmptyMessageDelayed(0,500);
-                articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
-            }
-
             @Override
             public void requestHistoryVP() {
                 mPresenter.getContract().requestHistoryVP();
@@ -60,20 +49,34 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
 //                }
                 articleBeanLists.addAll(articleBeanList);
                 MoreActivity.this.runOnUiThread(new Runnable() {
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
                         adapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+            }
+
+            @Override
+            public void requestCollectVP() {
+                mPresenter.getContract().requestCollectVP();
+            }
+
+            @Override
+            public void responseCollectVP(List<ArticleBean> article) {
+                articleBeanLists.addAll(article);
+                MoreActivity.this.runOnUiThread(new Runnable() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                        dialog.dismiss();
                     }
                 });
             }
         };
     }
-    Handler handler=new Handler(Looper.getMainLooper()){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-        }
-    };
 
     @Override
     public void initListener() {
@@ -170,8 +173,11 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
             int index=intent.getIntExtra("index",-1);
             switch (index){
                 case 0:
+                    dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
+                    getContract().requestCollectVP();
                     break;
                 case 1:
+                    dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
                     getContract().requestHistoryVP();
                     break;
                 default:

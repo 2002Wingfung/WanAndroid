@@ -292,7 +292,7 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                     @Override
                     public void onError(Exception e) {
                     }
-                });
+                },null);
                 break;
         }
     }

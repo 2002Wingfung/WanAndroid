@@ -33,7 +33,7 @@ public class ProjectFragmentModel extends BaseFragmentModel<ProjectFragmentPrese
                     public void onError(Exception e) {
 
                     }
-                });
+                },null);
             }
         };
     }

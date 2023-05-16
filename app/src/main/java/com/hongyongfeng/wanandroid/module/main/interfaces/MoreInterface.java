@@ -6,14 +6,16 @@ import java.util.List;
 
 public interface MoreInterface {
     interface M{
-        void requestQueryM(String key,int page)throws Exception;
         void requestHistoryM()throws Exception;
+        void requestCollectM()throws Exception;
+
     }
     interface VP{
-        void requestQueryVP(String key,int page);
-        void responseQueryResult(List<ArticleBean> queryResult);
+
         void requestHistoryVP();
         void responseHistoryVP(List<ArticleBean> article);
+        void requestCollectVP();
+        void responseCollectVP(List<ArticleBean> article);
 
     }
 }

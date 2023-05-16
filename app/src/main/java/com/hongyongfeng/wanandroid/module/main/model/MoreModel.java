@@ -2,6 +2,7 @@
 package com.hongyongfeng.wanandroid.module.main.model;
 
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
+import static com.hongyongfeng.wanandroid.util.Constant.COLLECTION_URL;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ import com.hongyongfeng.wanandroid.module.main.interfaces.MoreInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MorePresenter;
 import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
 import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
+import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
 import java.util.ArrayList;
@@ -28,26 +30,7 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
     @Override
     public MoreInterface.M getContract() {
         return new MoreInterface.M() {
-            @Override
-            public void requestQueryM(String key,int page) throws Exception {
-                String query="https://www.wanandroid.com/article/query/"+page+"/json";
 
-
-                HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
-
-                    @Override
-                    public void onFinish(String response) {
-                        List<ArticleBean> articleBeanList = HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
-                        if (articleBeanList.size()!=0){
-                            mPresenter.getContract().responseQueryResult(articleBeanList);
-                        }
-                    }
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
-            }
 
             @Override
             public void requestHistoryM() throws Exception {
@@ -60,6 +43,23 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
                     }while (cursor.moveToNext());
                 }
                 mPresenter.getContract().responseHistoryVP(articleBeanList);
+            }
+
+            @Override
+            public void requestCollectM() throws Exception {
+                HttpUtil.sendHttpRequest(COLLECTION_URL, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        System.out.println(response);
+                        List<ArticleBean> articleBeanList =HttpUtil.parseJSONWithJSONObject(response,ArticleBean.class);
+                        mPresenter.getContract().responseCollectVP(articleBeanList);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                }, GetCookies.get());
             }
         };
     }

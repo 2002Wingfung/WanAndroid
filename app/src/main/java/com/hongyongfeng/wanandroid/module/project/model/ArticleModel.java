@@ -75,7 +75,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                     public void onError(Exception e) {
 
                     }
-                });
+                },null);
             }
 
             @Override

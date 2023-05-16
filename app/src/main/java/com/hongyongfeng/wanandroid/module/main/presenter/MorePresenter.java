@@ -21,19 +21,6 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
     @Override
     public MoreInterface.VP getContract() {
         return new MoreInterface.VP() {
-            @Override
-            public void requestQueryVP(String key,int page) {
-                try {
-                    mModel.getContract().requestQueryM(key,page);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            @Override
-            public void responseQueryResult(List<ArticleBean> queryResult) {
-                mView.getContract().responseQueryResult(queryResult);
-            }
 
             @Override
             public void requestHistoryVP() {
@@ -47,6 +34,20 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             @Override
             public void responseHistoryVP(List<ArticleBean> article) {
                 mView.getContract().responseHistoryVP(article);
+            }
+
+            @Override
+            public void requestCollectVP() {
+                try {
+                    mModel.getContract().requestCollectM();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void responseCollectVP(List<ArticleBean> article) {
+                mView.getContract().responseCollectVP(article);
             }
 
         };

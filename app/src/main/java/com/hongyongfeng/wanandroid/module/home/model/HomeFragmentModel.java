@@ -132,7 +132,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                         public void onError(Exception e) {
 
                         }
-                    });
+                    },null);
                 }
 
             }
@@ -151,7 +151,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     public void onError(Exception e) {
 
                     }
-                });
+                },null);
                 HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
@@ -176,7 +176,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                             exception.printStackTrace();
                         }
                     }
-                });
+                },null);
             }
 
             @Override
@@ -193,7 +193,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     public void onError(Exception e) {
 
                     }
-                });
+                },null);
             }
 
             @Override
