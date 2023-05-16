@@ -335,7 +335,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         listView.setAdapter(listViewAdapter);
 
         //readSharedPreference();
-        getContract().requestVP();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
@@ -361,6 +360,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 //        }
         //StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getContract().requestVP();
     }
 
     private void readSharedPreference() {
