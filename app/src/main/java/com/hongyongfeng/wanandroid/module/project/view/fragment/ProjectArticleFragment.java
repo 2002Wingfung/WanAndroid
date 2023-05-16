@@ -28,6 +28,7 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ArticlePresenter;
@@ -133,13 +134,13 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             }
 
             @Override
-            public void collectVP(int id) {
-                mPresenter.getContract().collectVP(id);
+            public void collectVP(int id, CollectListener listener) {
+                mPresenter.getContract().collectVP(id,listener);
             }
 
             @Override
-            public void unCollectVP(int id) {
-                mPresenter.getContract().unCollectVP(id);
+            public void unCollectVP(int id, CollectListener listener) {
+                mPresenter.getContract().unCollectVP(id,listener);
             }
 
             @Override
@@ -232,12 +233,26 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
                 int number2=2;
                 int number0=0;
-                if (count[0]%number2==number0){
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes,null));
-                    getContract().collectVP(projectList.get(position).getId());
-                }else {
-                    likes.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_likes_gray,null));
-                    getContract().unCollectVP(projectList.get(position).getId());
+                if (count[0] % number2 == number0) {
+                    getContract().collectVP(projectList.get(position).getId(), new CollectListener() {
+                        @Override
+                        public void onFinish() {
+                            likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
+                        }
+                        @Override
+                        public void onError() {
+                        }
+                    });
+                } else {
+                    getContract().unCollectVP(projectList.get(position).getId(), new CollectListener() {
+                        @Override
+                        public void onFinish() {
+                            likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
+                        }
+                        @Override
+                        public void onError() {
+                        }
+                    });
                 }
                 count[0]++;
             }

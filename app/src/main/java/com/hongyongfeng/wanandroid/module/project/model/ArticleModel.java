@@ -19,6 +19,7 @@ import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
@@ -96,7 +97,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
             }
 
             @Override
-            public void collectM(int id) throws Exception {
+            public void collectM(int id, CollectListener listener) throws Exception {
                 String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
@@ -104,7 +105,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                     HttpUtil.postCollectRequest(DOMAIN_URL + COLLECT_URL + id + JSON_URL,cookies, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
-                            //System.out.println(response);
+                            listener.onFinish();
                             mPresenter.getContract().collectResponse(0);
                         }
 
@@ -117,7 +118,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
             }
 
             @Override
-            public void unCollectM(int id) throws Exception {
+            public void unCollectM(int id, CollectListener listener) throws Exception {
                 String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
@@ -126,6 +127,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().unCollectResponse(0);
+                            listener.onFinish();
                         }
 
                         @Override
