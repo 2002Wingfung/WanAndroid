@@ -29,9 +29,10 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                     .setSmallIcon(R.drawable.ic_launcher_android)
                     .setAutoCancel(true); //设置这个标志当用户单击面板就可以将通知取消
             Intent mIntent=new Intent(context, MainActivity.class);  //绑定intent，点击图标能够进入某activity
-            PendingIntent mPendingIntent=PendingIntent.getActivity(context, 0, mIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent mPendingIntent=PendingIntent.getActivity(context, 0, mIntent,PendingIntent.FLAG_IMMUTABLE);
             builder.setContentIntent(mPendingIntent);
             manager.notify(0, builder.build());  //绑定Notification，发送通知请求
+            System.out.println(true);
         }
     }
 

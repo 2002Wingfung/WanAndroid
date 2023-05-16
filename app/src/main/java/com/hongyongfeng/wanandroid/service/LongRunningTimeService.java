@@ -29,27 +29,12 @@ public class LongRunningTimeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        es.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                //在这里执行具体的逻辑操作
-//
-//            }
-//        });
-
-//        long time=System.currentTimeMillis();
-//
         AlarmManager manager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        time+=24*60*60*1000;
-//        //一天的毫秒数
-//        Intent intent1=new Intent(this,LongRunningTimeService.class);
-//        PendingIntent pendingIntent=PendingIntent.getService(this,0,intent1,0);
-//        manager.set(AlarmManager.RTC_WAKEUP,time,pendingIntent);
-        Long secondsNextMorning =getSecondsNext(10,0);
+        Long secondsNextMorning =getSecondsNext(1,10);
         Intent intentMorning = new Intent(this, AlarmBroadcastReceiver.class);
         intentMorning.setAction("CLOCK_IN");
         //获取到PendingIntent的意图对象
-        PendingIntent piMorning = PendingIntent.getBroadcast(this, 0, intentMorning, PendingIntent.FLAG_UPDATE_CURRENT);     //设置事件
+        PendingIntent piMorning = PendingIntent.getBroadcast(this, 0, intentMorning, PendingIntent.FLAG_IMMUTABLE);     //设置事件
         manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + secondsNextMorning, piMorning); //提交事件，发送给 广播接收器
         return super.onStartCommand(intent, flags, startId);
     }

@@ -30,6 +30,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <service android:name=".service.LongRunningTimeService"
+            android:exported="true"
+            android:enabled="true">
+            
+        </service>
         <activity
             android:name=".test.TestViewPagerFragmentActivity"
             android:exported="true" >

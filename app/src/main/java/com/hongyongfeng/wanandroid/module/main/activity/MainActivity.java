@@ -48,6 +48,7 @@ import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
+import com.hongyongfeng.wanandroid.service.LongRunningTimeService;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.VPFragment;
 import java.util.ArrayList;
@@ -334,6 +335,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);
         listView.setAdapter(listViewAdapter);
 
+        Intent intent=new Intent(this, LongRunningTimeService.class);
+        startService(intent);
+
+        //stopService(intent);
         //readSharedPreference();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -478,9 +483,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     }
 
     public void headerOnClick(View v) {
-        Intent intent=new Intent(MainActivity.this, SignInUpActivity.class);
+        if (tvName.getText().toString().equals("玩安卓")){
+            Intent intent=new Intent(MainActivity.this, SignInUpActivity.class);
 //        startActivity(intent);
-        startActivityForResult(intent,1);
+            startActivityForResult(intent,1);
+        }
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
