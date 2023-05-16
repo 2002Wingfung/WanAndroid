@@ -120,8 +120,8 @@ public class HttpUtil {
                     URL url=new URL(address);
                     connection=(HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(500);
-                    connection.setReadTimeout(500);
+                    connection.setConnectTimeout(1000);
+                    connection.setReadTimeout(1000);
                     connection.setDoInput(true);
 //                    connection.setDoOutput(true);
                     InputStream in=connection.getInputStream();
