@@ -180,6 +180,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.clear();
                             editor.apply();
+                            tvName.setText("玩安卓");
+                            tvWelcome.setText("欢迎");
                             Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -489,7 +491,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                 //给控件赋值
                 tvName.setText(name);
                 tvWelcome.setText("欢迎");
-
             }
         }
     }

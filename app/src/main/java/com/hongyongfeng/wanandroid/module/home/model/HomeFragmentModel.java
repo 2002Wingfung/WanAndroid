@@ -219,6 +219,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                         public void onFinish(String response) {
                             //System.out.println(response);
                             mPresenter.getContract().collectResponse(0);
+                            listener.onFinish();
                         }
 
                         @Override

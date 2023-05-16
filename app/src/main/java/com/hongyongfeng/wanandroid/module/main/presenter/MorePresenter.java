@@ -2,6 +2,7 @@ package com.hongyongfeng.wanandroid.module.main.presenter;
 
 import com.hongyongfeng.wanandroid.base.BasePresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.main.activity.MoreActivity;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MoreInterface;
 import com.hongyongfeng.wanandroid.module.main.model.MoreModel;
@@ -26,6 +27,24 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             public void saveHistory(ArticleBean article) {
                 try {
                     mModel.getContract().saveArticleM(article);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void collectVP(int id, CollectListener listener) {
+                try {
+                    mModel.getContract().collectM(id,listener);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void unCollectVP(int id, CollectListener listener) {
+                try {
+                    mModel.getContract().unCollectM(id,listener);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -57,6 +76,16 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             @Override
             public void responseCollectVP(List<ArticleBean> article) {
                 mView.getContract().responseCollectVP(article);
+            }
+
+            @Override
+            public void collectResponse(int code) {
+                mView.getContract().collectResponse(code);
+            }
+
+            @Override
+            public void unCollectResponse(int code) {
+                mView.getContract().unCollectResponse(code);
             }
 
         };
