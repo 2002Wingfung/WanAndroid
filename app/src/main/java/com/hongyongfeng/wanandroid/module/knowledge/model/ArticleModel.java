@@ -3,6 +3,10 @@ package com.hongyongfeng.wanandroid.module.knowledge.model;
 import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.SQL_INSERT_ARTICLE;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
+import static com.hongyongfeng.wanandroid.util.Constant.COLLECT_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.UNCOLLECT_URL;
 
 import android.database.sqlite.SQLiteDatabase;
 
@@ -11,6 +15,7 @@ import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.ArticlePresenter;
+import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 import com.hongyongfeng.wanandroid.util.MyApplication;
 import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
@@ -54,6 +59,36 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 //                                article.getTitle(),article.getNiceDate(),
 //                                article.getSuperChapterName(),String.valueOf(article.getTop())});
                 insert(article);
+            }
+
+            @Override
+            public void collectM(int id) throws Exception {
+                HttpUtil.postCollectRequest(DOMAIN_URL + COLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        mPresenter.getContract().collectResponse(true);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        mPresenter.getContract().collectResponse(false);
+                    }
+                });
+            }
+
+            @Override
+            public void unCollectM(int id) throws Exception {
+                HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        mPresenter.getContract().unCollectResponse(true);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        mPresenter.getContract().unCollectResponse(false);
+                    }
+                });
             }
         };
     }
