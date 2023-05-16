@@ -38,15 +38,17 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
     public MoreInterface.VP getContract() {
         return new MoreInterface.VP() {
             @Override
+            public void saveHistory(ArticleBean article) {
+                mPresenter.getContract().saveHistory(article);
+            }
+
+            @Override
             public void requestHistoryVP() {
                 mPresenter.getContract().requestHistoryVP();
             }
 
             @Override
             public void responseHistoryVP(List<ArticleBean> articleBeanList) {
-//                for (ArticleBean article:articleBeanList) {
-//                    System.out.println(article.getTitle());
-//                }
                 articleBeanLists.addAll(articleBeanList);
                 MoreActivity.this.runOnUiThread(new Runnable() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -122,8 +124,10 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
-                intent.putExtra("url", articleBeanLists.get(position).getLink());
+                ArticleBean article=articleBeanLists.get(position);
+                intent.putExtra("url", article.getLink());
                 startActivity(intent);
+                getContract().saveHistory(article);
             }
         });
     }

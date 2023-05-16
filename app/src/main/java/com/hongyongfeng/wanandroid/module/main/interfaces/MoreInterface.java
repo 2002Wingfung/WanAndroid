@@ -8,9 +8,11 @@ public interface MoreInterface {
     interface M{
         void requestHistoryM()throws Exception;
         void requestCollectM()throws Exception;
+        void saveArticleM(ArticleBean article)throws Exception;
 
     }
     interface VP{
+        void saveHistory(ArticleBean article);
 
         void requestHistoryVP();
         void responseHistoryVP(List<ArticleBean> article);

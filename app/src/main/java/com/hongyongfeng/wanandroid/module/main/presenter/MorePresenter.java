@@ -23,6 +23,15 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
         return new MoreInterface.VP() {
 
             @Override
+            public void saveHistory(ArticleBean article) {
+                try {
+                    mModel.getContract().saveArticleM(article);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
             public void requestHistoryVP() {
                 try {
                     mModel.getContract().requestHistoryM();

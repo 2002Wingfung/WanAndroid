@@ -1,6 +1,7 @@
 
 package com.hongyongfeng.wanandroid.module.main.model;
 
+import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
 import static com.hongyongfeng.wanandroid.util.Constant.COLLECTION_URL;
 
@@ -60,6 +61,12 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
 
                     }
                 }, GetCookies.get());
+            }
+
+            @Override
+            public void saveArticleM(ArticleBean article) throws Exception {
+                insert(article);
+
             }
         };
     }
