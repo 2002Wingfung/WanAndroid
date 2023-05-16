@@ -5,6 +5,9 @@ import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFra
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -167,7 +170,28 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                     }
                     startActivity(intent);
                 }else {
-                    Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog=new AlertDialog.Builder(MainActivity.this);
+                    dialog.setTitle("确认退出登录?");
+                    dialog.setCancelable(false);
+                    dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences preferences = MainActivity.this.getSharedPreferences(COOKIE_PREF, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.clear();
+
+                            editor.apply();
+
+                            Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dialog.show();
                 }
             }
         });
