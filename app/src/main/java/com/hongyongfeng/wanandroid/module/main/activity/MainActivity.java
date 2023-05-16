@@ -96,7 +96,23 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 
     @Override
     public MainInterface.VP getContract() {
-        return null;
+        return new MainInterface.VP() {
+            @Override
+            public void requestVP() {
+                mPresenter.getContract().requestVP();
+            }
+
+            @Override
+            public void responseResult(String name) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvName.setText(name);
+                        tvWelcome.setText("欢迎");
+                    }
+                });
+            }
+        };
     }
     public static void makeStatusBarTransparent(Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
@@ -291,8 +307,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);
         listView.setAdapter(listViewAdapter);
 
-        readSharedPreference();
-
+        //readSharedPreference();
+        getContract().requestVP();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色

@@ -13,6 +13,20 @@ public class MainPresenter extends BasePresenter<MainModel, MainActivity, MainIn
 
     @Override
     public MainInterface.VP getContract() {
-        return null;
+        return new MainInterface.VP() {
+            @Override
+            public void requestVP() {
+                try {
+                    mModel.getContract().requestM();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void responseResult(String name) {
+                mView.getContract().responseResult(name);
+            }
+        };
     }
 }

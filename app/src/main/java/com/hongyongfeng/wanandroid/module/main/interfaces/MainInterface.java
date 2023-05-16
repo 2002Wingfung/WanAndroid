@@ -2,10 +2,10 @@ package com.hongyongfeng.wanandroid.module.main.interfaces;
 
 public interface MainInterface {
     interface M{
-        void requestM(String name, String pwd)throws Exception;
+        void requestM()throws Exception;
     }
     interface VP{
-        void requestVP(String name, String pwd);
-        void responseResult(boolean loginStatusResult);
+        void requestVP();
+        void responseResult(String name);
     }
 }
