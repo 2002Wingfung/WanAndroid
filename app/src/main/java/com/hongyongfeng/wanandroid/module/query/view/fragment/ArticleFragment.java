@@ -71,6 +71,40 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                 });
 
             }
+
+            @Override
+            public void collectVP(int id) {
+                mPresenter.getContract().collectVP(id);
+            }
+
+            @Override
+            public void unCollectVP(int id) {
+                mPresenter.getContract().unCollectVP(id);
+            }
+
+            @Override
+            public void collectResponse(boolean bool) {
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bool) {
+                            Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void unCollectResponse(boolean bool) {
+                fragmentActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bool) {
+                            Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
         };
     }
     public List<ArticleBean> articleList=new ArrayList<>();
@@ -133,10 +167,10 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                 int number0 = 0;
                 if (count[0] % number2 == number0) {
                     likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
-                    Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                    getContract().collectVP(articleList.get(position).getId());
                 } else {
                     likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
-                    Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                    getContract().unCollectVP(articleList.get(position).getId());
                 }
                 count[0]++;
             }

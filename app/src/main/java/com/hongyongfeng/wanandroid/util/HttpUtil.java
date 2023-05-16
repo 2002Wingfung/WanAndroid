@@ -289,7 +289,6 @@ public class HttpUtil {
                     // 我们请求的数据:
                     if (cookies != null){
                         connection.setRequestProperty("Cookie", cookies);
-                        System.out.println(cookies);
                     }
                     connection.connect();
                     if (connection.getResponseCode() == 200) {

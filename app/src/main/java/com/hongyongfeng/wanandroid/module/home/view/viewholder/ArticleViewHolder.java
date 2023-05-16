@@ -43,8 +43,6 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
                 int position = getAdapterPosition();
                 //确保position值有效
                 if (position != RecyclerView.NO_POSITION) {
-                    System.out.println(tvLikes);
-
                     onClickListener.onLikesClicked(view, position,tvLikes,count);
                 }
             }

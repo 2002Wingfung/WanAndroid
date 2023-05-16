@@ -34,13 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.VP> {
-    private Handler mHandler=new Handler(Looper.myLooper()){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-
-        }
-    };
     @Override
     public ArticleInterface.VP getContract() {
         return new ArticleInterface.VP() {
@@ -109,7 +102,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             }
         };
     }
-    private int count=0;
     private final List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
     private int id;
@@ -244,6 +236,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                     likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
                     getContract().unCollectVP(articleList.get(position).getId());
                 }
+                count[0]++;
                 count[0]++;
             }
 

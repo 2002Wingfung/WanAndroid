@@ -10,10 +10,16 @@ import java.util.List;
 public interface LoadMoreInterface {
     interface M{
         void requestLoadMoreM(String key,int page)throws Exception;
+        void collectM(int id)throws Exception;
+        void unCollectM(int id)throws Exception;
     }
     interface VP{
         void requestLoadMoreVP(String key,int page);
         void responseLoadMoreVP(List<ArticleBean> articleList);
         void error(Exception e);
+        void collectVP(int id);
+        void unCollectVP(int id);
+        void collectResponse(boolean bool);
+        void unCollectResponse(boolean bool);
     }
 }

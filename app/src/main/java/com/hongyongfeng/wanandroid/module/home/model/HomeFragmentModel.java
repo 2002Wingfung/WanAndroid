@@ -85,12 +85,6 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
     public static final String SQL_INSERT_ARTICLE="insert into article_bean (id,author,chapterName,link,title,niceDate,superChapterName,top)values(?,?,?,?,?,?,?,?)";
     private final Context context=MyApplication.getContext();
-    public static byte[] getBytes(Bitmap bitmap){
-        //实例化字节数组输出流
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);//压缩位图
-        return baos.toByteArray();//创建分配字节数组
-    }
     public static Bitmap getBitmap(byte[] data){
         return BitmapFactory.decodeByteArray(data, 0, data.length);//从字节数组解码位图
     }
@@ -235,7 +229,6 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        System.out.println(response);
                         mPresenter.getContract().unCollectResponse(true);
                     }
 
