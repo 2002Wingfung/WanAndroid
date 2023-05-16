@@ -234,7 +234,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
                 }else {
-                    HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
+                    HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().unCollectResponse(0);
@@ -246,7 +246,6 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                         }
                     });
                 }
-
             }
         };
     }

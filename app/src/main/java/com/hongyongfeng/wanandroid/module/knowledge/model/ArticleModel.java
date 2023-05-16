@@ -63,32 +63,42 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
             @Override
             public void collectM(int id) throws Exception {
-                HttpUtil.postCollectRequest(DOMAIN_URL + COLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
-                    @Override
-                    public void onFinish(String response) {
-                        mPresenter.getContract().collectResponse(true);
-                    }
+                String cookies=GetCookies.get();
+                if (cookies == null||"".equals(cookies)) {
+                    mPresenter.getContract().collectResponse(1);
+                }else {
+                    HttpUtil.postCollectRequest(DOMAIN_URL + COLLECT_URL + id + JSON_URL,cookies, new HttpCallbackListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            mPresenter.getContract().collectResponse(0);
+                        }
 
-                    @Override
-                    public void onError(Exception e) {
-                        mPresenter.getContract().collectResponse(false);
-                    }
-                });
+                        @Override
+                        public void onError(Exception e) {
+                            mPresenter.getContract().collectResponse(2);
+                        }
+                    });
+                }
             }
 
             @Override
             public void unCollectM(int id) throws Exception {
-                HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, GetCookies.get(), new HttpCallbackListener() {
-                    @Override
-                    public void onFinish(String response) {
-                        mPresenter.getContract().unCollectResponse(true);
-                    }
+                String cookies=GetCookies.get();
+                if (cookies == null||"".equals(cookies)) {
+                    mPresenter.getContract().collectResponse(1);
+                }else {
+                    HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            mPresenter.getContract().unCollectResponse(0);
+                        }
 
-                    @Override
-                    public void onError(Exception e) {
-                        mPresenter.getContract().unCollectResponse(false);
-                    }
-                });
+                        @Override
+                        public void onError(Exception e) {
+                            mPresenter.getContract().unCollectResponse(2);
+                        }
+                    });
+                }
             }
         };
     }

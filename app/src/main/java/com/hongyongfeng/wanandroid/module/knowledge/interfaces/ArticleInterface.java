@@ -15,8 +15,8 @@ public interface ArticleInterface {
         void saveHistory(ArticleBean article);
         void collectVP(int id);
         void unCollectVP(int id);
-        void collectResponse(boolean bool);
-        void unCollectResponse(boolean bool);
+        void collectResponse(int code);
+        void unCollectResponse(int code);
         void requestArticleVP(int id,int page);
         void responseArticleVP(List<ArticleBean> articleList);
     }

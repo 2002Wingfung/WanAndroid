@@ -48,13 +48,13 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
             }
 
             @Override
-            public void collectResponse(boolean bool) {
-                mView.getContract().collectResponse(bool);
+            public void collectResponse(int code) {
+                mView.getContract().collectResponse(code);
             }
 
             @Override
-            public void unCollectResponse(boolean bool) {
-                mView.getContract().unCollectResponse(bool);
+            public void unCollectResponse(int code) {
+                mView.getContract().unCollectResponse(code);
             }
 
             @Override
