@@ -19,8 +19,8 @@ public interface HomeFragmentInterface {
     interface VP{
         void collectVP(int id);
         void unCollectVP(int id);
-        void collectResponse(boolean bool);
-        void unCollectResponse(boolean bool);
+        void collectResponse(int code);
+        void unCollectResponse(int code);
         void requestImageVP();
         void responseImageResult(List<BannerBean> beanList,List<Bitmap> bitmapList);
         void requestArticleVP();

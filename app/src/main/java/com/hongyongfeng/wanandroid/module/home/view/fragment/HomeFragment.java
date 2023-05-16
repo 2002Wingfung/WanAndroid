@@ -40,6 +40,7 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
+import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
@@ -86,16 +87,21 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void unCollectVP(int id) {
                 mPresenter.getContract().unCollectVP(id);
-
             }
 
             @Override
-            public void collectResponse(boolean bool) {
+            public void collectResponse(int code) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (bool){
+                        if (code==0){
                             Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                        }else if (code==1){
+                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -103,12 +109,16 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
 
             @Override
-            public void unCollectResponse(boolean bool) {
+            public void unCollectResponse(int code) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (bool){
+                        if (code==0){
                             Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                        }else if (code==1){
+                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

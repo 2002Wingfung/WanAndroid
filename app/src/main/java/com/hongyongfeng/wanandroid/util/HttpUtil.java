@@ -268,6 +268,7 @@ public class HttpUtil {
                         connection.setRequestProperty("Cookie", cookies);
                     }
                     connection.connect();
+                    //System.out.println(connection.getResponseCode());
                     if (connection.getResponseCode() == 200) {
                         InputStream in=connection.getInputStream();
                         reader=new BufferedReader(new InputStreamReader(in));
