@@ -60,6 +60,34 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void collectVP(int id) {
+                try {
+                    mModel.getContract().collectM(id);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void unCollectVP(int id) {
+                try {
+                    mModel.getContract().unCollectM(id);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void collectResponse(boolean bool) {
+                mView.getContract().collectResponse(bool);
+            }
+
+            @Override
+            public void unCollectResponse(boolean bool) {
+                mView.getContract().unCollectResponse(bool);
+            }
         };
     }
 }

@@ -251,9 +251,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("HomeFragment", "onViewCreated" + SystemClock.elapsedRealtime());
         SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
-
     }
 
     @Override

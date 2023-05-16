@@ -12,7 +12,8 @@ public interface ArticleInterface {
     interface M{
         void requestTitleM(int id,int page)throws Exception;
         void saveProjectM(ProjectBean project)throws Exception;
-
+        void collectM(int id)throws Exception;
+        void unCollectM(int id)throws Exception;
     }
     interface VP{
         void requestTitleVP(int id,int page);
@@ -20,6 +21,9 @@ public interface ArticleInterface {
         //void responseImageResult(List<Bitmap> bitmapList);
         void responseImageResult(Bitmap bitmap);
         void saveProject(ProjectBean project);
-
+        void collectVP(int id);
+        void unCollectVP(int id);
+        void collectResponse(boolean bool);
+        void unCollectResponse(boolean bool);
     }
 }
