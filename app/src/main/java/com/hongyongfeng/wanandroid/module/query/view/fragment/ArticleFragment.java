@@ -105,6 +105,11 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                     }
                 });
             }
+
+            @Override
+            public void saveHistory(ArticleBean article) {
+                mPresenter.getContract().saveHistory(article);
+            }
         };
     }
     public List<ArticleBean> articleList=new ArrayList<>();
@@ -178,8 +183,10 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url", articleList.get(position).getLink());
+                ArticleBean article=articleList.get(position);
+                intent.putExtra("url", article.getLink());
                 startActivity(intent);
+                getContract().saveHistory(article);
             }
         });
     }

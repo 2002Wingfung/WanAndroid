@@ -12,6 +12,8 @@ public interface LoadMoreInterface {
         void requestLoadMoreM(String key,int page)throws Exception;
         void collectM(int id)throws Exception;
         void unCollectM(int id)throws Exception;
+        void saveArticleM(ArticleBean article)throws Exception;
+
     }
     interface VP{
         void requestLoadMoreVP(String key,int page);
@@ -21,5 +23,7 @@ public interface LoadMoreInterface {
         void unCollectVP(int id);
         void collectResponse(boolean bool);
         void unCollectResponse(boolean bool);
+        void saveHistory(ArticleBean article);
+
     }
 }

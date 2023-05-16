@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 
 public class Insert {
+    static SQLiteDatabase db = helper.getWritableDatabase();
     public static void insert(ArticleBean article){
-        SQLiteDatabase db = helper.getWritableDatabase();
         Cursor cursor=db.rawQuery("select id from article_bean where id=?",new String[]{String.valueOf(article.getId())});
         if (cursor.moveToFirst()){
             int id=cursor.getInt(0);
@@ -22,6 +22,6 @@ public class Insert {
                         article.getTitle(),article.getNiceDate(),
                         article.getSuperChapterName(),String.valueOf(article.getTop())});
         cursor.close();
-        db.close();
+        //db.close();
     }
 }

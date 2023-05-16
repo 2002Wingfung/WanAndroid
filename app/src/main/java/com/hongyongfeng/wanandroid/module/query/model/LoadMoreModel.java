@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.query.model;
 
+import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
 import static com.hongyongfeng.wanandroid.util.Constant.COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
@@ -90,6 +91,11 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
                         mPresenter.getContract().unCollectResponse(false);
                     }
                 });
+            }
+
+            @Override
+            public void saveArticleM(ArticleBean article) throws Exception {
+                insert(article);
             }
         };
     }

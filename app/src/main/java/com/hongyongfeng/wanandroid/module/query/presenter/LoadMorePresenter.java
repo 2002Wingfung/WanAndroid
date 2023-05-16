@@ -72,6 +72,15 @@ public class LoadMorePresenter extends BaseFragmentPresenter<LoadMoreModel, Arti
             public void unCollectResponse(boolean bool) {
                 mView.getContract().unCollectResponse(bool);
             }
+
+            @Override
+            public void saveHistory(ArticleBean article) {
+                try {
+                    mModel.getContract().saveArticleM(article);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         };
     }
 }

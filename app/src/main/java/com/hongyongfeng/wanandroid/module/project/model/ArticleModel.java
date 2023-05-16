@@ -9,6 +9,7 @@ import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.UNCOLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -80,11 +81,18 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
             @Override
             public void saveProjectM(ProjectBean project) throws Exception {
                 SQLiteDatabase db = helper.getWritableDatabase();
+                Cursor cursor=db.rawQuery("select id from article_bean where id=?",new String[]{String.valueOf(project.getId())});
+                if (cursor.moveToFirst()){
+                    int id=cursor.getInt(0);
+                    db.execSQL("delete from article_bean where id=?",new String[]{String.valueOf(id)});
+                }
                 db.execSQL(SQL_INSERT_ARTICLE,new String[]
                         {String.valueOf(project.getId()),project.getAuthor(),
                                 null,project.getLink(),
                                 project.getTitle(),project.getNiceDate(),
                                 null,null});
+                cursor.close();
+                db.close();
             }
 
             @Override
