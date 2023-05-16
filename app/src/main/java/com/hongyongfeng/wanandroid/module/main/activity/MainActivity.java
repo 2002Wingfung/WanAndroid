@@ -179,9 +179,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                             SharedPreferences preferences = MainActivity.this.getSharedPreferences(COOKIE_PREF, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.clear();
-
                             editor.apply();
-
                             Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
                         }
                     });

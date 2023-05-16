@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.hongyongfeng.wanandroid.base.BaseModel;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
@@ -30,7 +31,8 @@ public class MainModel extends BaseModel<MainPresenter, MainInterface.M> {
                     first=cookies.indexOf("=")+1;
                     mPresenter.getContract().responseResult(cookies.substring(first));
                 }catch (Exception e){
-                    e.printStackTrace();
+                    Log.d("MainModel","还没登录");
+                    //e.printStackTrace();
                 }
             }
         };
