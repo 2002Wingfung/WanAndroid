@@ -93,7 +93,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                         }
                         dialog.dismiss();
                         //mHandler.sendEmptyMessageDelayed(0,500);
-
                     }
                 });
             }

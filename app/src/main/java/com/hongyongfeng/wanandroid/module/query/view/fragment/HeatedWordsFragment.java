@@ -64,7 +64,7 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
             drawableDefault.setShape(shape);
             drawableDefault.setCornerRadius(radius);
             drawableDefault.setStroke(strokeWeight, stokeColor);
-            drawableDefault.setColor(ContextCompat.getColor(activity, android.R.color.transparent));
+            drawableDefault.setColor(ContextCompat.getColor(activity,R.color.transparent1));
 
             GradientDrawable drawableChecked = new GradientDrawable();
             drawableChecked.setShape(shape);
