@@ -8,11 +8,13 @@ import android.view.WindowManager;
 
 /**
  * 状态栏相关工具类
- *
+ * @author Wingfung Hung
  */
 public class StatusBarUtils {
 
-    //设置Activity对应的顶部状态栏的颜色
+    /**
+     * 设置Activity对应的顶部状态栏的颜色
+     */
     public static void setWindowStatusBarColor(Activity activity, int colorResId) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -26,13 +28,19 @@ public class StatusBarUtils {
     }
 
 
-    //设置Dialog对应的顶部状态栏的颜色
+    /**
+     * 设置Dialog对应的顶部状态栏的颜色
+     */
     public static void setWindowStatusBarColor(Dialog dialog, int colorResId) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = dialog.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(dialog.getContext().getResources().getColor(colorResId));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    window.setStatusBarColor(dialog.getContext().getResources().getColor(colorResId,null));
+                }else {
+                    window.setStatusBarColor(dialog.getContext().getResources().getColor(colorResId));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

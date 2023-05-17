@@ -17,6 +17,9 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.util.KeyboardUtils;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
 
+/**
+ * @author Wingfung Hung
+ */
 public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends AppCompatActivity implements View.OnClickListener {
 
     public abstract CONTRACT getContract();
@@ -29,6 +32,8 @@ public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends App
                 View view = getCurrentFocus();
                 //调用方法判断是否需要隐藏键盘
                 KeyboardUtils.hideKeyboard(ev, view, this);
+                break;
+            default:
                 break;
         }
         return super.dispatchTouchEvent(ev);

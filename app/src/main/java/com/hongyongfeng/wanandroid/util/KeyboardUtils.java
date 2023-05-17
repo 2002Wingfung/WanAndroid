@@ -24,18 +24,17 @@ public class KeyboardUtils {
      *
      * @param view  控件view
      * @param event 焦点位置
-     * @return 是否隐藏
      */
     public static void hideKeyboard(MotionEvent event, View view, Activity activity) {
         try {
-            if (view != null && view instanceof EditText) {
+            if (view instanceof EditText) {
                 int[] location = {0, 0};
                 view.getLocationInWindow(location);
                 int left = location[0], top = location[1], right = left
-                        + view.getWidth(), bootom = top + view.getHeight();
+                        + view.getWidth(), bottom = top + view.getHeight();
                 // （判断是不是EditText获得焦点）判断焦点位置坐标是否在控件所在区域内，如果位置在控件区域外，则隐藏键盘
                 if (event.getRawX() < left || event.getRawX() > right
-                        || event.getY() < top || event.getRawY() > bootom) {
+                        || event.getY() < top || event.getRawY() > bottom) {
                     // 隐藏键盘
                     IBinder token = view.getWindowToken();
                     InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -46,6 +45,4 @@ public class KeyboardUtils {
             e.printStackTrace();
         }
     }
-
-
 }
