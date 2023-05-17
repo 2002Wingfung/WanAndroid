@@ -1,14 +1,11 @@
 package com.hongyongfeng.wanandroid.util;
 
-
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 /**
  * 屏幕尺寸及其单位转换工具类
- *
- * 本文作者：谷哥的小弟
- * 博客地址：http://blog.csdn.net/lfdfhl
+ * @author Wingfung Hung
  */
 public class DisplayUtils {
     /**
@@ -57,8 +54,7 @@ public class DisplayUtils {
     public static int getWindowWidth() {
         Resources resources = Resources.getSystem();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-        int widthPixels = displayMetrics.widthPixels;
-        return widthPixels;
+        return displayMetrics.widthPixels;
     }
 
     /**
@@ -67,8 +63,7 @@ public class DisplayUtils {
     public static int getWindowHeight() {
         Resources resources = Resources.getSystem();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-        int heightPixels = displayMetrics.heightPixels;
-        return heightPixels;
+        return displayMetrics.heightPixels;
     }
 }
 

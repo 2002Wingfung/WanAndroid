@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * 设置RecyclerView
+ * @author Wingfung Hung
+ */
 public class SetRecyclerView {
     public static void setRecyclerViewScroll(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter){
         LinearLayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false) {
@@ -33,7 +37,7 @@ public class SetRecyclerView {
         recyclerView.scrollToPosition(0);
     }
     public static void setRecyclerView(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter) {
-        //获取LinearLayoutManager实例，设置布局方式
+        //获取LinearLayoutManager实例，设置布局方式,默认为可以垂直滚动
         LinearLayoutManager layoutManager=new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
         recyclerView(layoutManager,context,recyclerView,adapter);
     }

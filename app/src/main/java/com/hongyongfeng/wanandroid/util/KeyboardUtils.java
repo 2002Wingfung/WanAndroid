@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+/**
+ * @author Wingfung Hung
+ */
 public class KeyboardUtils {
     public static void hideKeyboardWithQuery(View view) {
         InputMethodManager manager = (InputMethodManager) view.getContext()
