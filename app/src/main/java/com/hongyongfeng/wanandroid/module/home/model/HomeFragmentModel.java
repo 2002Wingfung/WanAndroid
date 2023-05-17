@@ -1,18 +1,12 @@
 package com.hongyongfeng.wanandroid.module.home.model;
 
 import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
-import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
+import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -21,26 +15,20 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
-import com.hongyongfeng.wanandroid.test.Bean;
 import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 import com.hongyongfeng.wanandroid.util.MyApplication;
 import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, HomeFragmentInterface.M> {
     public HomeFragmentModel(HomeFragmentPresenter mPresenter) {
@@ -259,7 +247,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         mPresenter.getContract().responseImageResult(beanList,bitmapList);
     }
     public void requestImageBitmap(List<BannerBean> beanList,final ImageCallbackListener listener) {
-        es.execute(new Runnable() {
+        threadPools.es.execute(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection conn=null;

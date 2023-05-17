@@ -1,25 +1,18 @@
 package com.hongyongfeng.wanandroid.util;
 
-import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
-
-import android.os.Build;
-import android.util.Log;
-
+import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.exception.HttpException;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.HttpCookiesListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookieStore;
 import java.net.HttpURLConnection;
@@ -32,8 +25,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.login.LoginException;
-
+/**
+ * @author Wingfung Hung
+ */
 public class HttpUtil {
     public static List<Map<String,Object>> parseJsonWithJSONObject(String string){
         List<Map<String,Object>> stringListMap=new ArrayList<>();
@@ -123,7 +117,7 @@ public class HttpUtil {
         return list;
     }
     public static void sendHttpRequest(final String address,final HttpCallbackListener listener,String parameter){
-        es.execute(new Runnable() {
+        threadPools.es.execute(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connection=null;
@@ -171,7 +165,7 @@ public class HttpUtil {
         });
     }
     public static void postLoginRequest(final HttpCookiesListener cookiesListener, final HttpCallbackListener listener, String...strings){
-        es.execute(new Runnable() {
+        threadPools.es.execute(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connection=null;
@@ -251,7 +245,7 @@ public class HttpUtil {
         });
     }
     public static void postCollectRequest(final String address,String cookies, final HttpCallbackListener listener){
-        es.execute(new Runnable() {
+        threadPools.es.execute(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connection=null;
@@ -313,7 +307,7 @@ public class HttpUtil {
         });
     }
     public static void postQueryRequest(final String address,String key, final HttpCallbackListener listener){
-        es.execute(new Runnable() {
+        threadPools.es.execute(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connection=null;

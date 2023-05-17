@@ -1,21 +1,17 @@
 package com.hongyongfeng.wanandroid.service;
 
-import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-
 import androidx.annotation.Nullable;
-
-import java.security.Provider;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * @author Wingfung Hung
+ */
 public class LongRunningTimeService extends Service {
     @Nullable
     @Override

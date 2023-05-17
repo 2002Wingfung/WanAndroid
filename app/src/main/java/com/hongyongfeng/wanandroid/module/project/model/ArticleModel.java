@@ -1,19 +1,16 @@
-
 package com.hongyongfeng.wanandroid.module.project.model;
 
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.SQL_INSERT_ARTICLE;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
+import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
 import static com.hongyongfeng.wanandroid.util.Constant.COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.CANCEL_COLLECT_URL;
-import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
@@ -23,7 +20,6 @@ import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -136,7 +132,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
     }
 
     public void responseImageBitmap(List<ProjectBean> beanList, final ImageCallbackListener listener) {
-        es.execute(new Runnable() {
+        threadPools.es.execute(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection conn=null;

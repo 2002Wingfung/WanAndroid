@@ -56,12 +56,16 @@ import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.service.LongRunningTimeService;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.VPFragment;
+import com.hongyongfeng.wanandroid.util.ThreadPools;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
 public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> {
+    public static ThreadPools threadPools=new ThreadPools();
+
     NavigationView navigationView;
     TextView tvQuery;
     float percent1 =1.0F;
