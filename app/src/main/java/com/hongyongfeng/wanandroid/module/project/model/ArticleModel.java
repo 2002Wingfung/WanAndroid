@@ -42,7 +42,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                 HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        List<ProjectBean> projectList=HttpUtil.parseJSONWithJSONObject(response, ProjectBean.class);
+                        List<ProjectBean> projectList=HttpUtil.parseJsonWithObject(response, ProjectBean.class);
                         mPresenter.getContract().responseTitleResult(projectList);
                         responseImageBitmap(projectList, new ImageCallbackListener() {
                             @Override

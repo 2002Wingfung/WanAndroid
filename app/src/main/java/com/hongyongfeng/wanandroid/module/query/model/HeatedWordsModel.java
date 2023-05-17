@@ -28,7 +28,7 @@ public class HeatedWordsModel extends BaseFragmentModel<HeatedWordsPresenter, He
                 HttpUtil.sendHttpRequest(HOT_KEY_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        heatedWordsListMap =HttpUtil.parseJsonWithJSONObject(response);
+                        heatedWordsListMap =HttpUtil.parseJsonWithJsonObject(response);
                         mPresenter.getContract().responseHeatedWordsResult(heatedWordsListMap);
                     }
 
@@ -48,7 +48,7 @@ public class HeatedWordsModel extends BaseFragmentModel<HeatedWordsPresenter, He
 
                     @Override
                     public void onFinish(String response) {
-                        List<ArticleBean> articleBeanList = HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                         if (articleBeanList.size()!=0){
                             mPresenter.getContract().responseQueryResult(articleBeanList);
                         }

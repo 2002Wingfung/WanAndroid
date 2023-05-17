@@ -131,7 +131,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 HttpUtil.sendHttpRequest(ARTICLE_TOP_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        articleTopList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        articleTopList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                         if (articleBeanList.size()!=0){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
                         }
@@ -145,7 +145,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         //System.out.println(response);
-                        articleBeanList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        articleBeanList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                         if (articleTopList.size()!=0){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
                         }
@@ -175,7 +175,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 HttpUtil.sendHttpRequest(loadMore, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        articleMoreList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        articleMoreList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                         mPresenter.getContract().responseLoadMoreVP(articleMoreList);
                     }
 

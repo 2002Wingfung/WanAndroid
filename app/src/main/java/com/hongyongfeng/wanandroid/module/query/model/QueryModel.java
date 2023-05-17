@@ -28,7 +28,7 @@ public class QueryModel extends BaseModel<QueryPresenter, Query.M> {
 
                     @Override
                     public void onFinish(String response) {
-                        List<ArticleBean> articleBeanList = HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                         if (articleBeanList.size()!=0){
 
                             mPresenter.getContract().responseQueryResult(articleBeanList);

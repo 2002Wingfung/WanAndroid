@@ -1,6 +1,8 @@
 package com.hongyongfeng.wanandroid.util;
 
 import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
+import static com.hongyongfeng.wanandroid.util.Constant.FOUR;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO_HUNDRED;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.exception.HttpException;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.HttpCookiesListener;
@@ -29,7 +31,7 @@ import java.util.Map;
  * @author Wingfung Hung
  */
 public class HttpUtil {
-    public static List<Map<String,Object>> parseJsonWithJSONObject(String string){
+    public static List<Map<String,Object>> parseJsonWithJsonObject(String string){
         List<Map<String,Object>> stringListMap=new ArrayList<>();
         try {
             int indexStart=string.indexOf('[');
@@ -44,10 +46,9 @@ public class HttpUtil {
             }
             for (int i=0;i<jsonArray.length();i++){
                 jsonObject=jsonArray.getJSONObject(i);
-                Map<String,Object> stringMap = new HashMap<String,Object>();
+                Map<String,Object> stringMap = new HashMap<>(1);
                 for (String field:jsonFieldList){
                     stringMap.put(field,jsonObject.get(field));
-                    //System.out.println(jsonObject.get(field));
                 }
                 stringListMap.add(stringMap);
             }
@@ -59,7 +60,7 @@ public class HttpUtil {
     }
 
 
-    public static <T> List<T> parseJSONWithJSONObject(String toString,Class<T> c) {
+    public static <T> List<T> parseJsonWithObject(String toString, Class<T> c) {
         List<T> list=new ArrayList<>();
         try {
             int indexStart=toString.indexOf('[');
@@ -73,17 +74,14 @@ public class HttpUtil {
                 for (Field field : fields) {
                     field.setAccessible(true);
                     String fieldName = field.getName();
-//                    field.set(t,jsonObject.get(fieldName));
                     Class<?> type = field.getType();
                     String classType = type.toString();
-                    //System.out.println(classType);
                     switch (classType) {
                         case "int":
                             try {
                                 int valueInt=jsonObject.getInt(fieldName);
                                 field.set(t, valueInt);
                             }catch (Exception e){
-                                //Log.d("No fields",e.toString());
                                 break;
                             }
                             break;
@@ -95,7 +93,6 @@ public class HttpUtil {
                                     field.set(t, value);
                                 }
                             }catch (Exception e){
-                                //e.printStackTrace();
                                 break;
                             }
                             break;
@@ -117,22 +114,91 @@ public class HttpUtil {
         return list;
     }
     public static void sendHttpRequest(final String address,final HttpCallbackListener listener,String parameter){
-        threadPools.es.execute(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection=null;
-                BufferedReader reader=null;
-                try {
-                    URL url=new URL(address);
-                    connection=(HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(3000);
-                    connection.setReadTimeout(3000);
-                    connection.setDoInput(true);
-                    if (parameter!=null){
-                        connection.setRequestProperty("Cookie", parameter);
+        threadPools.es.execute(() -> {
+            HttpURLConnection connection=null;
+            BufferedReader reader=null;
+            try {
+                URL url=new URL(address);
+                connection=(HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(3000);
+                connection.setReadTimeout(3000);
+                connection.setDoInput(true);
+                if (parameter!=null){
+                    connection.setRequestProperty("Cookie", parameter);
+                }
+                connection.connect();
+                InputStream in=connection.getInputStream();
+                reader=new BufferedReader(new InputStreamReader(in));
+                StringBuilder response=new StringBuilder();
+                String line;
+                while ((line=reader.readLine())!=null){
+                    response.append(line);
+                }
+                if (listener!=null){
+                    //回调onFinish()方法
+                    listener.onFinish(response.toString());
+                }
+            } catch (Exception e) {
+                if (listener!=null){
+                    //回调onError()方法
+                    listener.onError(e);
+                }
+            }finally {
+                if (reader!=null&&listener!=null){
+                    try {
+                        reader.close();
+                    }catch (IOException e){
+                        listener.onError(e);
                     }
-                    connection.connect();
+                }
+                if (connection!=null){
+                    connection.disconnect();
+                }
+            }
+        });
+    }
+    public static void postLoginRequest(final HttpCookiesListener cookiesListener, final HttpCallbackListener listener, String...strings){
+        threadPools.es.execute(() -> {
+            HttpURLConnection connection=null;
+            BufferedReader reader=null;
+            try {
+                URL url=new URL(strings[0]);
+                connection=(HttpURLConnection) url.openConnection();
+                // 设置请求方式,请求超时信息
+                connection.setRequestMethod("POST");
+                connection.setConnectTimeout(8000);
+                connection.setReadTimeout(8000);
+                // 设置运行输入,输出:
+                // 设置是否从httpUrlConnection读入，默认情况下是true;
+                connection.setDoInput(true);
+                // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
+                connection.setDoOutput(true);
+                // Post方式不能缓存,需手动设置为false
+                connection.setUseCaches(false);
+                // 我们请求的数据:
+                String data = "username=" + URLEncoder.encode(strings[1], "UTF-8")
+                        + "&password=" + URLEncoder.encode(strings[2], "UTF-8");
+                //System.out.println("str"+strings.length);
+                if (strings.length==FOUR){
+                    data = "username=" + URLEncoder.encode(strings[1], "UTF-8")
+                            + "&password=" + URLEncoder.encode(strings[2], "UTF-8")
+                            + "&repassword=" + URLEncoder.encode(strings[3], "UTF-8");
+                }
+                // 获取输出流
+                OutputStream out = connection.getOutputStream();
+                out.write(data.getBytes());
+                out.flush();
+                out.close();
+                if (connection.getResponseCode() == TWO_HUNDRED) {
+                    //接收Cookie
+                    CookieManager cookieManager = new CookieManager();
+                    //将地址中返回的数据放入Cookie管理器中
+                    cookieManager.put(new URI(strings[0]),connection.getHeaderFields());
+                    //将数据存入到CookieStore的一个对象中
+                    CookieStore cookieStore = cookieManager.getCookieStore();
+                    //cookieStore.getCookies()返回的是一个HttpCookie的集合，利用接口回调将其抛出到model层
+                    cookiesListener.onFinish(cookieStore.getCookies());
                     InputStream in=connection.getInputStream();
                     reader=new BufferedReader(new InputStreamReader(in));
                     StringBuilder response=new StringBuilder();
@@ -144,233 +210,152 @@ public class HttpUtil {
                         //回调onFinish()方法
                         listener.onFinish(response.toString());
                     }
-                } catch (Exception e) {
-                    if (listener!=null){
-                        //回调onError()方法
+                }
+                else {
+                    checkHttpCode(connection.getResponseCode());
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (listener!=null){
+                    //回调onError()方法
+                    listener.onError(e);
+                }
+            }finally {
+                if (reader!=null&&listener!=null){
+                    try {
+                        reader.close();
+                    }catch (IOException e){
                         listener.onError(e);
-                    }
-                }finally {
-                    if (reader!=null&&listener!=null){
-                        try {
-                            reader.close();
-                        }catch (IOException e){
-                            listener.onError(e);
-                        }
-                    }
-                    if (connection!=null){
-                        connection.disconnect();
                     }
                 }
-            }
-        });
-    }
-    public static void postLoginRequest(final HttpCookiesListener cookiesListener, final HttpCallbackListener listener, String...strings){
-        threadPools.es.execute(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection=null;
-                BufferedReader reader=null;
-                try {
-                    URL url=new URL(strings[0]);
-                    connection=(HttpURLConnection) url.openConnection();
-                    // 设置请求方式,请求超时信息
-                    connection.setRequestMethod("POST");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    // 设置运行输入,输出:
-                    // 设置是否从httpUrlConnection读入，默认情况下是true;
-                    connection.setDoInput(true);
-                    // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
-                    connection.setDoOutput(true);
-                    // Post方式不能缓存,需手动设置为false
-                    connection.setUseCaches(false);
-                    // 我们请求的数据:
-                    String data = "username=" + URLEncoder.encode(strings[1], "UTF-8")
-                            + "&password=" + URLEncoder.encode(strings[2], "UTF-8");
-                    //System.out.println("str"+strings.length);
-                    if (strings.length==4){
-                        data = "username=" + URLEncoder.encode(strings[1], "UTF-8")
-                                + "&password=" + URLEncoder.encode(strings[2], "UTF-8")
-                                + "&repassword=" + URLEncoder.encode(strings[3], "UTF-8");
-                    }
-                    // 获取输出流
-                    OutputStream out = connection.getOutputStream();
-                    out.write(data.getBytes());
-                    out.flush();
-                    out.close();
-                    if (connection.getResponseCode() == 200) {
-                        //接收Cookie
-                        CookieManager cookieManager = new CookieManager();
-                        //将地址中返回的数据放入Cookie管理器中
-                        cookieManager.put(new URI(strings[0]),connection.getHeaderFields());
-                        //将数据存入到CookieStore的一个对象中
-                        CookieStore cookieStore = cookieManager.getCookieStore();
-                        //cookieStore.getCookies()返回的是一个HttpCookie的集合，利用接口回调将其抛出到model层
-                        cookiesListener.onFinish(cookieStore.getCookies());
-                        InputStream in=connection.getInputStream();
-                        reader=new BufferedReader(new InputStreamReader(in));
-                        StringBuilder response=new StringBuilder();
-                        String line;
-                        while ((line=reader.readLine())!=null){
-                            response.append(line);
-                        }
-                        if (listener!=null){
-                            //回调onFinish()方法
-                            listener.onFinish(response.toString());
-                        }
-                    }
-                    else {
-                        checkHttpCode(connection.getResponseCode());
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (listener!=null){
-                        //回调onError()方法
-                        listener.onError(e);
-                    }
-                }finally {
-                    if (reader!=null&&listener!=null){
-                        try {
-                            reader.close();
-                        }catch (IOException e){
-                            listener.onError(e);
-                        }
-                    }
-                    if (connection!=null){
-                        connection.disconnect();
-                    }
+                if (connection!=null){
+                    connection.disconnect();
                 }
             }
         });
     }
     public static void postCollectRequest(final String address,String cookies, final HttpCallbackListener listener){
-        threadPools.es.execute(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection=null;
-                BufferedReader reader=null;
-                try {
-                    URL url=new URL(address);
-                    connection=(HttpURLConnection) url.openConnection();
-                    // 设置请求方式,请求超时信息
-                    connection.setRequestMethod("POST");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    // 设置运行输入,输出:
-                    // 设置是否从httpUrlConnection读入，默认情况下是true;
-                    connection.setDoInput(true);
-                    // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
-                    connection.setDoOutput(true);
-                    // Post方式不能缓存,需手动设置为false
-                    connection.setUseCaches(false);
-                    // 我们请求的数据:
-                    if (cookies != null){
-                        connection.setRequestProperty("Cookie", cookies);
+        threadPools.es.execute(() -> {
+            HttpURLConnection connection=null;
+            BufferedReader reader=null;
+            try {
+                URL url=new URL(address);
+                connection=(HttpURLConnection) url.openConnection();
+                // 设置请求方式,请求超时信息
+                connection.setRequestMethod("POST");
+                connection.setConnectTimeout(8000);
+                connection.setReadTimeout(8000);
+                // 设置运行输入,输出:
+                // 设置是否从httpUrlConnection读入，默认情况下是true;
+                connection.setDoInput(true);
+                // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
+                connection.setDoOutput(true);
+                // Post方式不能缓存,需手动设置为false
+                connection.setUseCaches(false);
+                // 我们请求的数据:
+                if (cookies != null){
+                    connection.setRequestProperty("Cookie", cookies);
+                }
+                connection.connect();
+                //System.out.println(connection.getResponseCode());
+                if (connection.getResponseCode() == TWO_HUNDRED) {
+                    InputStream in=connection.getInputStream();
+                    reader=new BufferedReader(new InputStreamReader(in));
+                    StringBuilder response=new StringBuilder();
+                    String line;
+                    while ((line=reader.readLine())!=null){
+                        response.append(line);
                     }
-                    connection.connect();
-                    //System.out.println(connection.getResponseCode());
-                    if (connection.getResponseCode() == 200) {
-                        InputStream in=connection.getInputStream();
-                        reader=new BufferedReader(new InputStreamReader(in));
-                        StringBuilder response=new StringBuilder();
-                        String line;
-                        while ((line=reader.readLine())!=null){
-                            response.append(line);
-                        }
-                        if (listener!=null){
-                            //回调onFinish()方法
-                            listener.onFinish(response.toString());
-                        }
-                    }
-                    else {
-                        checkHttpCode(connection.getResponseCode());
-                    }
-                } catch (Exception e) {
                     if (listener!=null){
-                        //回调onError()方法
+                        //回调onFinish()方法
+                        listener.onFinish(response.toString());
+                    }
+                }
+                else {
+                    checkHttpCode(connection.getResponseCode());
+                }
+            } catch (Exception e) {
+                if (listener!=null){
+                    //回调onError()方法
+                    listener.onError(e);
+                }
+            }finally {
+                if (reader!=null&&listener!=null){
+                    try {
+                        reader.close();
+                    }catch (IOException e){
                         listener.onError(e);
                     }
-                }finally {
-                    if (reader!=null&&listener!=null){
-                        try {
-                            reader.close();
-                        }catch (IOException e){
-                            listener.onError(e);
-                        }
-                    }
-                    if (connection!=null){
-                        connection.disconnect();
-                    }
+                }
+                if (connection!=null){
+                    connection.disconnect();
                 }
             }
         });
     }
     public static void postQueryRequest(final String address,String key, final HttpCallbackListener listener){
-        threadPools.es.execute(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection=null;
-                BufferedReader reader=null;
-                try {
-                    URL url=new URL(address);
-                    connection=(HttpURLConnection) url.openConnection();
-                    // 设置请求方式,请求超时信息
-                    connection.setRequestMethod("POST");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    // 设置运行输入,输出:
-                    // 设置是否从httpUrlConnection读入，默认情况下是true;
-                    connection.setDoInput(true);
-                    // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
-                    connection.setDoOutput(true);
-                    // Post方式不能缓存,需手动设置为false
-                    connection.setUseCaches(false);
-                    // 我们请求的数据:
-                    String data = "k=" + URLEncoder.encode(key, "UTF-8");
-                    // 获取输出流
-                    OutputStream out = connection.getOutputStream();
-                    out.write(data.getBytes());
-                    out.flush();
-                    out.close();
-                    if (connection.getResponseCode() == 200) {
-                        InputStream in=connection.getInputStream();
-                        reader=new BufferedReader(new InputStreamReader(in));
-                        StringBuilder response=new StringBuilder();
-                        String line;
-                        while ((line=reader.readLine())!=null){
-                            response.append(line);
-                        }
-                        if (listener!=null){
-                            //回调onFinish()方法
-                            listener.onFinish(response.toString());
-                        }
+        threadPools.es.execute(() -> {
+            HttpURLConnection connection=null;
+            BufferedReader reader=null;
+            try {
+                URL url=new URL(address);
+                connection=(HttpURLConnection) url.openConnection();
+                // 设置请求方式,请求超时信息
+                connection.setRequestMethod("POST");
+                connection.setConnectTimeout(8000);
+                connection.setReadTimeout(8000);
+                // 设置运行输入,输出:
+                // 设置是否从httpUrlConnection读入，默认情况下是true;
+                connection.setDoInput(true);
+                // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
+                connection.setDoOutput(true);
+                // Post方式不能缓存,需手动设置为false
+                connection.setUseCaches(false);
+                // 我们请求的数据:
+                String data = "k=" + URLEncoder.encode(key, "UTF-8");
+                // 获取输出流
+                OutputStream out = connection.getOutputStream();
+                out.write(data.getBytes());
+                out.flush();
+                out.close();
+                if (connection.getResponseCode() == TWO_HUNDRED) {
+                    InputStream in=connection.getInputStream();
+                    reader=new BufferedReader(new InputStreamReader(in));
+                    StringBuilder response=new StringBuilder();
+                    String line;
+                    while ((line=reader.readLine())!=null){
+                        response.append(line);
                     }
-                    else {
-                        checkHttpCode(connection.getResponseCode());
-                    }
-                } catch (Exception e) {
                     if (listener!=null){
-                        //回调onError()方法
+                        //回调onFinish()方法
+                        listener.onFinish(response.toString());
+                    }
+                }
+                else {
+                    checkHttpCode(connection.getResponseCode());
+                }
+            } catch (Exception e) {
+                if (listener!=null){
+                    //回调onError()方法
+                    listener.onError(e);
+                }
+            }finally {
+                if (reader!=null&&listener!=null){
+                    try {
+                        reader.close();
+                    }catch (IOException e){
                         listener.onError(e);
                     }
-                }finally {
-                    if (reader!=null&&listener!=null){
-                        try {
-                            reader.close();
-                        }catch (IOException e){
-                            listener.onError(e);
-                        }
-                    }
-                    if (connection!=null){
-                        connection.disconnect();
-                    }
+                }
+                if (connection!=null){
+                    connection.disconnect();
                 }
             }
         });
     }
     public static void checkHttpCode(int code) throws HttpException {
-        if (code!=200){
+        if (code!=TWO_HUNDRED){
             throw new HttpException("请求网络错误:"+code);
         }
     }

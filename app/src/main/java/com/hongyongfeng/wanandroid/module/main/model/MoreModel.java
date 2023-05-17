@@ -59,7 +59,7 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
                         @Override
                         public void onFinish(String response) {
                             System.out.println(response);
-                            List<ArticleBean> articleBeanList =HttpUtil.parseJSONWithJSONObject(response,ArticleBean.class);
+                            List<ArticleBean> articleBeanList =HttpUtil.parseJsonWithObject(response,ArticleBean.class);
                             mPresenter.getContract().responseCollectVP(articleBeanList);
                         }
 

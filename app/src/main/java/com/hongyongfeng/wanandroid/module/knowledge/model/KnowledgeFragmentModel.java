@@ -26,7 +26,7 @@ public class KnowledgeFragmentModel extends BaseFragmentModel<KnowledgeFragmentP
                 HttpUtil.sendHttpRequest(Knowledge_Tree_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        treeMapList =HttpUtil.parseJsonWithJSONObject(response);
+                        treeMapList =HttpUtil.parseJsonWithJsonObject(response);
 
                         if (treeMapList.size()!=0){
                             mPresenter.getContract().responseTitleResult(treeMapList);

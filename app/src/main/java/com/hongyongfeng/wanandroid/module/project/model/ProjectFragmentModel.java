@@ -3,7 +3,6 @@ package com.hongyongfeng.wanandroid.module.project.model;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
-import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ProjectFragmentPresenter;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
@@ -25,7 +24,7 @@ public class ProjectFragmentModel extends BaseFragmentModel<ProjectFragmentPrese
                 HttpUtil.sendHttpRequest(TREE_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
-                        List<Map<String,Object>> titleMapList=HttpUtil.parseJsonWithJSONObject(response);
+                        List<Map<String,Object>> titleMapList=HttpUtil.parseJsonWithJsonObject(response);
                         mPresenter.getContract().responseTitleResult(titleMapList);
                     }
 

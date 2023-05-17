@@ -33,7 +33,7 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
 
                     @Override
                     public void onFinish(String response) {
-                        List<ArticleBean> articleBeanList = HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
+                        List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                         mPresenter.getContract().responseLoadMoreVP(articleBeanList);
                     }
 
