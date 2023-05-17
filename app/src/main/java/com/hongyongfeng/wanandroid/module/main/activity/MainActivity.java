@@ -192,6 +192,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                                 tvName.setText("玩安卓");
                                 tvWelcome.setText("欢迎");
 
+
+                                Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
                                 NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                 PendingIntent pendingIntent;
                                 Intent intent=new Intent(MainActivity.this,MainActivity.class);
@@ -210,17 +217,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                                         .setContentTitle("This is content title")
                                         .setContentText("This is content text")
                                         .setWhen(System.currentTimeMillis())
-                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                        .setSmallIcon(R.drawable.ic_notification)
                                         .setContentIntent(pendingIntent)
                                         .build();
                                 manager.notify(1,notification);
-                                Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
                             }
                         });
                         dialog.show();

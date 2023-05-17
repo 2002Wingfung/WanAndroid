@@ -132,8 +132,8 @@ public class HttpUtil {
                     URL url=new URL(address);
                     connection=(HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(1000);
-                    connection.setReadTimeout(1000);
+                    connection.setConnectTimeout(3000);
+                    connection.setReadTimeout(3000);
                     connection.setDoInput(true);
                     if (parameter!=null){
                         connection.setRequestProperty("Cookie", parameter);
