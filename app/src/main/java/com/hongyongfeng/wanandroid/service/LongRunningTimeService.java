@@ -17,10 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class LongRunningTimeService extends Service {
-
-    //第一次执行时的具体时间
-
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

@@ -61,7 +61,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> {
     NavigationView navigationView;
     TextView tvQuery;
     float percent1 =1.0F;
@@ -211,8 +211,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                                 } else {
                                     pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
                                 }
-                                //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                                 Notification notification=new NotificationCompat.Builder(MainActivity.this,"channelId")
                                         .setContentTitle("This is content title")
                                         .setContentText("This is content text")
@@ -368,8 +366,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);
         listView.setAdapter(listViewAdapter);
 
-        Intent intent=new Intent(this, LongRunningTimeService.class);
-        startService(intent);
+        //Intent intent=new Intent(this, LongRunningTimeService.class);
+
+        //startService(intent);
 
         //stopService(intent);
         //readSharedPreference();
@@ -577,34 +576,5 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
             default:
                 break;
         }
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.fragment_05:
-                Toast.makeText(MainActivity.this, "界面1", Toast.LENGTH_SHORT).show();
-                //加载碎片
-                //getSupportFragmentManager().beginTransaction().replace(R.id.content,new Fragment_05()).commit();
-                drawer.closeDrawer(GravityCompat.START);//关闭侧滑栏
-                break;
-            case R.id.fragment_06:
-                Toast.makeText(MainActivity.this, "界面2", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.fragment_07:
-                Toast.makeText(MainActivity.this, "界面3", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.fragment_08:
-                Toast.makeText(MainActivity.this, "界面4", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.fragment_09:
-                Toast.makeText(MainActivity.this, "界面5", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.fragment_10:
-                Toast.makeText(MainActivity.this, "界面6", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return false;
     }
 }
