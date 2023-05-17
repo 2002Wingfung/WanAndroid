@@ -128,12 +128,12 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
             @Override
             public void responseQueryResult(List<ArticleBean> queryResult) {
 
-                System.out.println(queryResult);
+                //System.out.println(queryResult);
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mHandler.sendEmptyMessageDelayed(0,500);
-                        articleBeanLists=(ArrayList<ArticleBean>) queryResult;
+//                        mHandler.sendEmptyMessageDelayed(0,500);
+//                        articleBeanLists=(ArrayList<ArticleBean>) queryResult;
                         //listener.sendValue();
                     }
                 });
@@ -147,13 +147,13 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
             @Override
             public void responseHeatedWordsResult(List<Map<String,Object>> heatedWordsListMap) {
                 StringBuilder words=new StringBuilder();
-                for (Map<String,Object> heatedWordsMap:heatedWordsListMap) {
-                    words.append(heatedWordsMap.get("name")).append(" ");
-                }
+//                for (Map<String,Object> heatedWordsMap:heatedWordsListMap) {
+//                    words.append(heatedWordsMap.get("name")).append(" ");
+//                }
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvHeatedWords.setText(words.toString());
+                        //tvHeatedWords.setText(words.toString());
                         displayUI(flowLayout,heatedWordsListMap);
                     }
                 });
@@ -185,23 +185,14 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
     protected void destroy() {
 
     }
-    private void loadFragment(){
-        fragmentManager=getChildFragmentManager();
-        transaction=fragmentManager.beginTransaction();
-    }
-    private ArrayList<ArticleBean> articleBeanLists;
-    FragmentTransaction transaction;
-    FragmentManager fragmentManager;
-    ArticleFragment articleFragment=new ArticleFragment();
 
     ProgressDialog dialog;
     FlowLayout flowLayout;
     EditText edtKeyword;
     FragmentActivity activity;
-    TextView tvHeatedWords;
     @Override
     protected void initView(View view) {
-        tvHeatedWords=view.findViewById(R.id.tv_words);
+//        tvHeatedWords=view.findViewById(R.id.tv_words);
         edtKeyword=activity.findViewById(R.id.edt_keyword);
         flowLayout = (FlowLayout) view.findViewById(R.id.flowlayout);
         flowLayout.setSpace(DisplayUtils.dp2px(15), DisplayUtils.dp2px( 15));
