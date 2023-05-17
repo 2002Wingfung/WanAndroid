@@ -120,7 +120,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
 //                        System.out.println(view);
 //                        imageView.setImageBitmap(bitmap);
                         adapter.notifyItemChanged(position);
-
                         position++;
 
 //                        dialog.dismiss();
@@ -233,6 +232,9 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
                 int number2=2;
                 int number0=0;
+                if (projectList.get(position).isCollect()){
+                    number0=1;
+                }
                 if (count[0] % number2 == number0) {
                     getContract().collectVP(projectList.get(position).getId(), new CollectListener() {
                         @Override

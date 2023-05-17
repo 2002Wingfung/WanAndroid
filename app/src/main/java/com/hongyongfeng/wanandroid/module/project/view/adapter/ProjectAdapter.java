@@ -1,19 +1,19 @@
 package com.hongyongfeng.wanandroid.module.project.view.adapter;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.project.view.viewholder.ProjectViewHolder;
-
+import com.hongyongfeng.wanandroid.util.MyApplication;
 import java.util.List;
 
 /**
@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 
+    public static final Resources resource= MyApplication.getContext().getResources();
     /**
      * 存储DishesInformation对象的List集合
      */
@@ -70,7 +71,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         holder.tvAuthor.setText(project.getAuthor());
         viewHolderMap.put(position,holder.itemView);
         //System.out.println(position);
-
+        if (project.isCollect()){
+            holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes, null));
+        }else {
+            holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes_gray, null));
+        }
         if (bitmapLists.size()>position){
             Bitmap bitmap=bitmapLists.get(position);
             if (bitmap==null){
@@ -79,6 +84,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
                 holder.imageView.setImageBitmap(bitmap);
             }
         }
+
     }
 
     @Override

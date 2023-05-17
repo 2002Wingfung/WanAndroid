@@ -15,6 +15,15 @@ public class ProjectBean {
     private String link;
     private String niceDate;
     private String title;
+    private boolean collect;
+
+    public boolean isCollect() {
+        return collect;
+    }
+
+    public void setCollect(boolean collect) {
+        this.collect = collect;
+    }
 
     public String getEnvelopePic() {
         return envelopePic;

@@ -6,6 +6,10 @@ import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFra
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -186,6 +191,29 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                                 editor.apply();
                                 tvName.setText("玩安卓");
                                 tvWelcome.setText("欢迎");
+
+                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                PendingIntent pendingIntent;
+                                Intent intent=new Intent(MainActivity.this,MainActivity.class);
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                    NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
+                                    manager.createNotificationChannel(mChannel);
+                                }
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                                    pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                                } else {
+                                    pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                                }
+                                //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                Notification notification=new NotificationCompat.Builder(MainActivity.this,"channelId")
+                                        .setContentTitle("This is content title")
+                                        .setContentText("This is content text")
+                                        .setWhen(System.currentTimeMillis())
+                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                        .setContentIntent(pendingIntent)
+                                        .build();
+                                manager.notify(1,notification);
                                 Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
                             }
                         });
