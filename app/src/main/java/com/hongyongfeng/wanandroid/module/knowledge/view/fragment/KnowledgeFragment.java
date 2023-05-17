@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,31 +13,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
-import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
-import com.hongyongfeng.wanandroid.data.net.bean.KnowledgeCategoryBean;
-import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
-import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
-import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.KnowledgeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.KnowledgeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.knowledge.view.activity.TabActivity;
 import com.hongyongfeng.wanandroid.module.knowledge.view.adapter.KnowledgeAdapter;
-import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

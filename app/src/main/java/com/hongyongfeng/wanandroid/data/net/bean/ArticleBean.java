@@ -3,11 +3,12 @@ package com.hongyongfeng.wanandroid.data.net.bean;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 
+/**
+ * 文章实体类
+ */
 public class ArticleBean implements Parcelable , Serializable {
     public ArticleBean() {
     }
@@ -110,8 +111,6 @@ public class ArticleBean implements Parcelable , Serializable {
         this.niceDate = niceDate;
     }
 
-
-
     public ArticleBean(int id) {
         this.id = id;
     }
@@ -121,6 +120,12 @@ public class ArticleBean implements Parcelable , Serializable {
         return 0;
     }
 
+    /**
+     * 重写Parcelable的写入方法
+     * @param dest The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     * May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(id);

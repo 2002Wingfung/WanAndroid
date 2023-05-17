@@ -2,13 +2,23 @@ package com.hongyongfeng.wanandroid.data.net.bean;
 
 import java.io.Serializable;
 
+/**
+ *轮播图实体类
+ * @author Wingfung Hung
+ */
 public class BannerBean implements Serializable {
+    /**
+     * 图片地址
+     */
     private String imagePath;
-    private String Url;
+    /**
+     * 图片所对应的链接
+     */
+    private String url;
 
     public BannerBean(String imagePath, String url) {
         this.imagePath = imagePath;
-        Url = url;
+        this.url = url;
     }
 
     public String getImagePath() {
@@ -20,10 +30,10 @@ public class BannerBean implements Serializable {
     }
 
     public String getUrl() {
-        return Url;
+        return url;
     }
 
     public void setUrl(String url) {
-        Url = url;
+        this.url = url;
     }
 }

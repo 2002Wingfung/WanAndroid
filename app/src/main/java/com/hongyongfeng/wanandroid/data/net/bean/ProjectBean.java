@@ -1,20 +1,42 @@
 package com.hongyongfeng.wanandroid.data.net.bean;
 
+/**
+ * @author Wingfung Hung
+ */
 public class ProjectBean {
-    //最后把这两个字段删除
-    private int articleId;
-
     public ProjectBean() {
     }
-
+    /**
+     * 项目id
+     */
     private int id;
-    //下面开始才是有用的
+    /**
+     * 项目作者
+     */
     private String author;
+    /**
+     * 项目详情
+     */
     private String desc;
+    /**
+     * 项目图片地址
+     */
     private String envelopePic;
+    /**
+     * 项目链接
+     */
     private String link;
+    /**
+     * 项目发布时间
+     */
     private String niceDate;
+    /**
+     * 项目标题
+     */
     private String title;
+    /**
+     * 是否点赞
+     */
     private boolean collect;
 
     public boolean isCollect() {
@@ -65,7 +87,6 @@ public class ProjectBean {
         this.desc = desc;
     }
 
-
     public String getLink() {
         return link;
     }
@@ -80,22 +101,5 @@ public class ProjectBean {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getArticleId() {
-        return articleId;
-    }
-
-    public ProjectBean(int articleId) {
-        this.articleId = articleId;
-    }
-
-    public ProjectBean(String title, String desc) {
-        this.desc = desc;
-        this.title = title;
-    }
-
-    public void setArticleId(int articleId) {
-        this.articleId = articleId;
     }
 }

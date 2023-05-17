@@ -3,15 +3,10 @@ package com.hongyongfeng.wanandroid.module.knowledge.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.hongyongfeng.wanandroid.R;
-import com.hongyongfeng.wanandroid.data.net.bean.KnowledgeCategoryBean;
 import com.hongyongfeng.wanandroid.module.knowledge.view.viewholder.KnowledgeViewHolder;
-
 import java.util.List;
 import java.util.Map;
 

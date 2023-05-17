@@ -1,8 +1,12 @@
-package com.hongyongfeng.wanandroid.data.net.bean;
+package com.hongyongfeng.wanandroid.deprecated;
 
+/**
+ * @author Wingfung Hung
+ */
+@Deprecated
 public class KnowledgeCategoryBean {
-    private int id;
 
+    private int id;
     private String detailedCategory;
     private String category;
 
@@ -45,6 +49,4 @@ public class KnowledgeCategoryBean {
     public void setCategory(String category) {
         this.category = category;
     }
-
-
 }

@@ -1,5 +1,8 @@
 package com.hongyongfeng.wanandroid.exception;
 
+/**
+ * @author Wingfung Hung
+ */
 public class HttpException extends Exception{
 
     /**
@@ -9,8 +12,8 @@ public class HttpException extends Exception{
     }
 
     /**
-     *
-     * @param message 表示异常提示
+     *请求网络异常
+     * @param message 表示异常的提示,如errorMsg
      */
     public HttpException(String message) {
         super(message);
