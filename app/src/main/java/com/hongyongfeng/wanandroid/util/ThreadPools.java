@@ -6,13 +6,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author 86186
+ *
+ * @author Wingfung Hung
  */
 public class ThreadPools {
     /**
      * 新建了线程池
      */
-    public ThreadPoolExecutor es =new ThreadPoolExecutor(5,10,30, TimeUnit.MINUTES,new ArrayBlockingQueue<>(10),
+    public ThreadPoolExecutor es =new ThreadPoolExecutor(10,10,30, TimeUnit.MINUTES,new ArrayBlockingQueue<>(10),
             Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     //public static ExecutorService es = Executors.newFixedThreadPool(10);
 }

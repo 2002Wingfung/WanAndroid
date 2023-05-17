@@ -135,6 +135,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 //System.out.println(beanList);
                 beanLists = beanList;
                 bitmapLists = bitmapList;
+                //file.delete();
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -146,6 +147,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                                 imgBanner.setImageBitmap(bitmap);
                                 bitmapByteList.add(getBytes(bitmap));
                             }
+                            System.out.println("exists");
                             SaveArticle.setData(fragmentActivity,beanList,2);
                             SaveArticle.setData(fragmentActivity,bitmapByteList,1);
                             dialogHandler.sendEmptyMessage(1);
@@ -156,6 +158,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                                 Bitmap bitmap=bitmapLists.get(i);
                                 imgBanner.setImageBitmap(bitmap);
                             }
+                            //file.delete();
                         }
                         //dialogHandler.sendEmptyMessage(1);
                     }
