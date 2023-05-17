@@ -36,7 +36,7 @@ import com.hongyongfeng.wanandroid.util.KeyboardUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
+public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> implements HeatedWordsFragment.CallBackListener {
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
     HeatedWordsFragment heatedWordsFragment=new HeatedWordsFragment();
@@ -225,5 +225,16 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP>{
     private void loadFragment(){
         fragmentManager=getSupportFragmentManager();
         transaction=fragmentManager.beginTransaction();
+    }
+
+    @Override
+    public void sendValue(String value) {
+        loadFragment();
+        if (!loadingFragment.isAdded()){
+            transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+        }else {
+            transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
+        }
+        getContract().requestQueryVP(value,0);
     }
 }

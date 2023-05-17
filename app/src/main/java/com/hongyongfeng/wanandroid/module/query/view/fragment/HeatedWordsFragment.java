@@ -1,15 +1,20 @@
 package com.hongyongfeng.wanandroid.module.query.view.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,15 +22,19 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
+import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.query.interfaces.HeatedWords;
 import com.hongyongfeng.wanandroid.module.query.presenter.HeatedWordsPresenter;
 import com.hongyongfeng.wanandroid.module.query.view.FlowLayout;
 import com.hongyongfeng.wanandroid.test.TestFlowLayoutActivity;
 import com.hongyongfeng.wanandroid.util.DisplayUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,15 +84,61 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println(tv.getText().toString());
+                    String key=tv.getText().toString();
+                    //System.out.println(key);
+                    edtKeyword.setText(key);
+                    listener.sendValue(key);
+                    //dialog = ProgressDialog.show(activity, "", "正在加载", false, false);
+                    //getContract().requestQueryVP(key,0);
                 }
             });
             flowLayout.addView(tv);
         }
     }
+    public interface CallBackListener{
+        public void sendValue(String value);
+    }
+
+    private CallBackListener listener;
+    private final Handler mHandler=new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            dialog.dismiss();
+//            Bundle bundle=new Bundle();
+//            bundle.putParcelableArrayList("list",  articleBeanLists);
+            //loadFragment();
+//            if (!articleFragment.isAdded()){
+//                articleFragment.setArguments(bundle);
+//                transaction.add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+//            }else {
+//                articleFragment.setArguments(bundle);
+//                transaction.show(articleFragment).commit();
+//            }
+        }
+    };
     @Override
     public HeatedWords.VP getContract() {
         return new HeatedWords.VP() {
+            @Override
+            public void requestQueryVP(String key, int page) {
+                mPresenter.getContract().requestQueryVP(key,page);
+            }
+
+            @Override
+            public void responseQueryResult(List<ArticleBean> queryResult) {
+
+                System.out.println(queryResult);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mHandler.sendEmptyMessageDelayed(0,500);
+                        articleBeanLists=(ArrayList<ArticleBean>) queryResult;
+                        //listener.sendValue();
+                    }
+                });
+            }
+
             @Override
             public void requestHeatedWordsVP() {
                 mPresenter.getContract().requestHeatedWordsVP();
@@ -110,6 +165,7 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity=requireActivity();
+        listener=(CallBackListener) activity;
     }
 
 //    @Nullable
@@ -129,17 +185,29 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
     protected void destroy() {
 
     }
-    FlowLayout flowLayout;
+    private void loadFragment(){
+        fragmentManager=getChildFragmentManager();
+        transaction=fragmentManager.beginTransaction();
+    }
+    private ArrayList<ArticleBean> articleBeanLists;
+    FragmentTransaction transaction;
+    FragmentManager fragmentManager;
+    ArticleFragment articleFragment=new ArticleFragment();
 
+    ProgressDialog dialog;
+    FlowLayout flowLayout;
+    EditText edtKeyword;
     FragmentActivity activity;
     TextView tvHeatedWords;
     @Override
     protected void initView(View view) {
         tvHeatedWords=view.findViewById(R.id.tv_words);
+        edtKeyword=activity.findViewById(R.id.edt_keyword);
         flowLayout = (FlowLayout) view.findViewById(R.id.flowlayout);
         flowLayout.setSpace(DisplayUtils.dp2px(15), DisplayUtils.dp2px( 15));
         flowLayout.setPadding(DisplayUtils.dp2px(5), DisplayUtils.dp2px( 5),
                 DisplayUtils.dp2px( 5), DisplayUtils.dp2px( 5));
+
     }
 
     @Override
