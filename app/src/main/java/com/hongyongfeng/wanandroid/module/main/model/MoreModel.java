@@ -7,7 +7,7 @@ import static com.hongyongfeng.wanandroid.util.Constant.COLLECTION_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
-import static com.hongyongfeng.wanandroid.util.Constant.UNCOLLECT_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.CANCEL_COLLECT_URL;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,8 +18,6 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MoreInterface;
 import com.hongyongfeng.wanandroid.module.main.presenter.MorePresenter;
-import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
-import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
 import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
@@ -108,7 +106,7 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
                 }else {
-                    HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
+                    HttpUtil.postCollectRequest(DOMAIN_URL + CANCEL_COLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().unCollectResponse(0);

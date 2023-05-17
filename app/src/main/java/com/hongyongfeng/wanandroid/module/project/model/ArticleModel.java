@@ -6,7 +6,7 @@ import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.he
 import static com.hongyongfeng.wanandroid.util.Constant.COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
-import static com.hongyongfeng.wanandroid.util.Constant.UNCOLLECT_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.CANCEL_COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
 import android.database.Cursor;
@@ -16,15 +16,11 @@ import android.graphics.BitmapFactory;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
-import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
-import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ImageCallbackListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
-import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ArticlePresenter;
-import com.hongyongfeng.wanandroid.module.project.presenter.ProjectFragmentPresenter;
 import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 
@@ -34,7 +30,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInterface.M> {
     public ArticleModel(ArticlePresenter mPresenter) {
@@ -123,7 +118,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
                 }else {
-                    HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
+                    HttpUtil.postCollectRequest(DOMAIN_URL + CANCEL_COLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().unCollectResponse(0);

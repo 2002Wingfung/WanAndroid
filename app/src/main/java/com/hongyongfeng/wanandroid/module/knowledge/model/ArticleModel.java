@@ -1,14 +1,10 @@
 package com.hongyongfeng.wanandroid.module.knowledge.model;
 
 import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
-import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.SQL_INSERT_ARTICLE;
-import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
 import static com.hongyongfeng.wanandroid.util.Constant.COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
-import static com.hongyongfeng.wanandroid.util.Constant.UNCOLLECT_URL;
-
-import android.database.sqlite.SQLiteDatabase;
+import static com.hongyongfeng.wanandroid.util.Constant.CANCEL_COLLECT_URL;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
@@ -18,8 +14,6 @@ import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
-import com.hongyongfeng.wanandroid.util.MyApplication;
-import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
 
 import java.util.List;
 
@@ -89,7 +83,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
                 }else {
-                    HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
+                    HttpUtil.postCollectRequest(DOMAIN_URL + CANCEL_COLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
                             mPresenter.getContract().unCollectResponse(0);
