@@ -31,7 +31,7 @@ public class MainModel extends BaseModel<MainPresenter, MainInterface.M> {
                     first=cookies.indexOf("=")+1;
                     mPresenter.getContract().responseResult(cookies.substring(first));
                 }catch (Exception e){
-                    Log.d("MainModel","还没登录");
+                    //Log.d("MainModel","还没登录");
                     //e.printStackTrace();
                 }
             }

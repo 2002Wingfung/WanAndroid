@@ -48,7 +48,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                     @Override
                     public void onError(Exception e) {
                     }
-                },null);
+                },GetCookies.get());
             }
 
             @Override

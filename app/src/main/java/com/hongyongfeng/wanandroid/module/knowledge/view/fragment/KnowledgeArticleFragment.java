@@ -239,6 +239,9 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
                 int number2 = 2;
                 int number0 = 0;
+                if (articleList.get(position).isCollect()){
+                    number0=1;
+                }
                 if (count[0] % number2 == number0) {
                     getContract().collectVP(articleList.get(position).getId(), new CollectListener() {
                         @Override

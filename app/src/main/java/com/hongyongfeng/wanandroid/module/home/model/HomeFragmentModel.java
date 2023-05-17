@@ -152,10 +152,11 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     public void onError(Exception e) {
 
                     }
-                },null);
+                },GetCookies.get());
                 HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
+                        //System.out.println(response);
                         articleBeanList=HttpUtil.parseJSONWithJSONObject(response, ArticleBean.class);
                         if (articleTopList.size()!=0){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
@@ -177,7 +178,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                             exception.printStackTrace();
                         }
                     }
-                },null);
+                },GetCookies.get());
             }
 
             @Override
@@ -194,7 +195,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     public void onError(Exception e) {
 
                     }
-                },null);
+                },GetCookies.get());
             }
 
             @Override

@@ -44,8 +44,6 @@ public class HeatedWordsModel extends BaseFragmentModel<HeatedWordsPresenter, He
             @Override
             public void requestQueryM(String key, int page) throws Exception {
                 String query=DOMAIN_URL+"article/query/"+page+JSON_URL;
-
-
                 HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
 
                     @Override

@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.data.net.bean;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -18,6 +19,7 @@ public class ArticleBean implements Parcelable , Serializable {
     private String title;
     private String niceDate;
     private String superChapterName;
+    private boolean collect;
 
     protected ArticleBean(Parcel in) {
         id = in.readInt();
@@ -28,6 +30,19 @@ public class ArticleBean implements Parcelable , Serializable {
         niceDate = in.readString();
         superChapterName = in.readString();
         top = in.readInt();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            collect=in.readBoolean();
+        }else {
+            collect=in.readByte()!=0;
+        }
+    }
+
+    public boolean isCollect() {
+        return collect;
+    }
+
+    public void setCollect(boolean collect) {
+        this.collect = collect;
     }
 
     public String getSuperChapterName() {
@@ -116,6 +131,11 @@ public class ArticleBean implements Parcelable , Serializable {
         dest.writeString(niceDate);
         dest.writeString(superChapterName);
         dest.writeInt(top);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            dest.writeBoolean(collect);
+        }else {
+            dest.writeByte((byte)(collect ?1:0));
+        }
     }
     public static final Parcelable.Creator<ArticleBean> CREATOR  = new Creator<ArticleBean>() {
         //实现从source中创建出类的实例的功能
@@ -130,6 +150,11 @@ public class ArticleBean implements Parcelable , Serializable {
             article.niceDate = source.readString();
             article.superChapterName = source.readString();
             article.top = source.readInt();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                article.collect=source.readBoolean();
+            }else {
+                article.collect =source.readByte()!=0;
+            }
             return article;
         }
         //创建一个类型为T，长度为size的数组

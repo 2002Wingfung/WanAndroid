@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.view.adapter;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.view.viewholder.ArticleViewHolder;
+import com.hongyongfeng.wanandroid.util.MyApplication;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
     public static final String HIGH_LIGHT_START="<em class='highlight'>";
     public static final String HIGH_LIGHT_END="</em>";
 
+    private final Resources resource=MyApplication.getContext().getResources();
     /**
      * 存储DishesInformation对象的List集合
      */
@@ -107,6 +112,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
             holder.tvTop.setText("置顶");
         }else {
             holder.tvTop.setVisibility(View.GONE);
+        }
+        if (article.isCollect()){
+            holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes, null));
         }
     }
 

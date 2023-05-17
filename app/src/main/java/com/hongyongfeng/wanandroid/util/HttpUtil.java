@@ -82,6 +82,7 @@ public class HttpUtil {
 //                    field.set(t,jsonObject.get(fieldName));
                     Class<?> type = field.getType();
                     String classType = type.toString();
+                    //System.out.println(classType);
                     switch (classType) {
                         case "int":
                             try {
@@ -104,6 +105,12 @@ public class HttpUtil {
                                 break;
                             }
                             break;
+                        case "boolean":
+                            try {
+                                field.set(t, jsonObject.getBoolean(fieldName));
+                            }catch (Exception e){
+                                break;
+                            }
                         default:
                             break;
                     }
