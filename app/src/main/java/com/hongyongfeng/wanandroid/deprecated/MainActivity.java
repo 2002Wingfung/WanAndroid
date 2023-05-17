@@ -1,4 +1,4 @@
-package com.hongyongfeng.wanandroid;
+package com.hongyongfeng.wanandroid.deprecated;
 
 
 import android.app.Activity;
@@ -21,8 +21,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.util.StatusBarUtils;
-
+@Deprecated
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     TextView tvTitle;
