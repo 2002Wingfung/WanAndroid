@@ -179,6 +179,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> implem
         if (keyCode == KeyEvent.KEYCODE_BACK && articleFragment.isVisible()) {
             loadFragment();
             transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+            edtKeyWords.setText("");
             //返回搜索热词页面
             return true;
         }
