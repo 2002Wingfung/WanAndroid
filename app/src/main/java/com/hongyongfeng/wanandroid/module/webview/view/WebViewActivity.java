@@ -88,6 +88,8 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         webSettings.setSupportZoom(true);
         //设置出现缩放工具
         webSettings.setBuiltInZoomControls(true);
+        //隐藏缩放按钮
+        webSettings.setDisplayZoomControls(false);
         //扩大比例的缩放
         webSettings.setUseWideViewPort(true);
         //自适应屏幕
