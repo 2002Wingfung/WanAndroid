@@ -26,7 +26,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                     .setContentText("上班打卡") //设置通知栏显示内容
                     .setPriority(NotificationCompat.PRIORITY_MAX) //设置通知优先级
                     .setDefaults(DEFAULT_ALL)
-                    .setSmallIcon(R.drawable.ic_launcher_android)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setAutoCancel(true); //设置这个标志当用户单击面板就可以将通知取消
             Intent mIntent=new Intent(context, MainActivity.class);  //绑定intent，点击图标能够进入某activity
             PendingIntent mPendingIntent=PendingIntent.getActivity(context, 0, mIntent,PendingIntent.FLAG_IMMUTABLE);
