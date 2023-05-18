@@ -28,11 +28,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * HTTP工具类
  * @author Wingfung Hung
  */
 public class HttpUtil {
+    /**
+     * 封装了一个解析json数据的方法，
+     * @param string 请求网络后返回的json字符串
+     * @return 返回的是一个List<Map>集合
+     */
     public static List<Map<String,Object>> parseJsonWithJsonObject(String string){
         List<Map<String,Object>> stringListMap=new ArrayList<>();
+        //截取json字符串,因为jsonArray的格式是[]，只能解析这种格式的数据,而返回的数据的格式是{}
         try {
             int indexStart=string.indexOf('[');
             int indexEnd=string.lastIndexOf(']');
@@ -40,6 +47,7 @@ public class HttpUtil {
             JSONObject jsonObject=jsonArray.getJSONObject(0);
             Iterator<String> keys = jsonObject.keys();
             List<String> jsonFieldList=new ArrayList<>();
+            //读取其中一个JsonObject的字段
             while (keys.hasNext()){
                 String jsonField=keys.next();
                 jsonFieldList.add(jsonField);
@@ -47,6 +55,7 @@ public class HttpUtil {
             for (int i=0;i<jsonArray.length();i++){
                 jsonObject=jsonArray.getJSONObject(i);
                 Map<String,Object> stringMap = new HashMap<>(1);
+                //将jsonObject中所有的字段的值都存进map中
                 for (String field:jsonFieldList){
                     stringMap.put(field,jsonObject.get(field));
                 }
@@ -59,10 +68,16 @@ public class HttpUtil {
         return stringListMap;
     }
 
-
+    /**
+     * 封装了一个解析json数据的方法，
+     * @param toString 请求网络后返回的json字符串
+     * @param c 反射所用到的实体类的类型
+     * @return 返回一个List泛型的集合
+     */
     public static <T> List<T> parseJsonWithObject(String toString, Class<T> c) {
         List<T> list=new ArrayList<>();
         try {
+            //截取字符串
             int indexStart=toString.indexOf('[');
             int indexEnd=toString.lastIndexOf(']');
             Field[] fields=c.getDeclaredFields();
@@ -113,6 +128,13 @@ public class HttpUtil {
         }
         return list;
     }
+
+    /**
+     * 发送http请求
+     * @param address 请求的地址
+     * @param listener 回调监听
+     * @param parameter cookies参数
+     */
     public static void sendHttpRequest(final String address,final HttpCallbackListener listener,String parameter){
         threadPools.es.execute(() -> {
             HttpURLConnection connection=null;
@@ -120,7 +142,9 @@ public class HttpUtil {
             try {
                 URL url=new URL(address);
                 connection=(HttpURLConnection) url.openConnection();
+                //GET方法
                 connection.setRequestMethod("GET");
+                //超时时间3000毫秒
                 connection.setConnectTimeout(3000);
                 connection.setReadTimeout(3000);
                 connection.setDoInput(true);
@@ -128,8 +152,10 @@ public class HttpUtil {
                     connection.setRequestProperty("Cookie", parameter);
                 }
                 connection.connect();
+                //获取输入流，得到返回的数据
                 InputStream in=connection.getInputStream();
                 reader=new BufferedReader(new InputStreamReader(in));
+                //使用字符串拼接
                 StringBuilder response=new StringBuilder();
                 String line;
                 while ((line=reader.readLine())!=null){
@@ -158,6 +184,13 @@ public class HttpUtil {
             }
         });
     }
+
+    /**
+     * 用post方法请求登录接口
+     * @param cookiesListener 完成请求时保存cookies接口
+     * @param listener 回调接口
+     * @param strings 字符串参数数组
+     */
     public static void postLoginRequest(final HttpCookiesListener cookiesListener, final HttpCallbackListener listener, String...strings){
         threadPools.es.execute(() -> {
             HttpURLConnection connection=null;
@@ -235,6 +268,13 @@ public class HttpUtil {
             }
         });
     }
+
+    /**
+     * post收藏请求
+     * @param address 请求地址
+     * @param cookies cookies字段
+     * @param listener 回调接口
+     */
     public static void postCollectRequest(final String address,String cookies, final HttpCallbackListener listener){
         threadPools.es.execute(() -> {
             HttpURLConnection connection=null;
@@ -246,7 +286,6 @@ public class HttpUtil {
                 connection.setRequestMethod("POST");
                 connection.setConnectTimeout(8000);
                 connection.setReadTimeout(8000);
-                // 设置运行输入,输出:
                 // 设置是否从httpUrlConnection读入，默认情况下是true;
                 connection.setDoInput(true);
                 // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
@@ -258,7 +297,7 @@ public class HttpUtil {
                     connection.setRequestProperty("Cookie", cookies);
                 }
                 connection.connect();
-                //System.out.println(connection.getResponseCode());
+                //状态码为200时回调finish方法
                 if (connection.getResponseCode() == TWO_HUNDRED) {
                     InputStream in=connection.getInputStream();
                     reader=new BufferedReader(new InputStreamReader(in));
@@ -294,6 +333,13 @@ public class HttpUtil {
             }
         });
     }
+
+    /**
+     * post搜索请求
+     * @param address 搜索地址
+     * @param key 搜索关键字
+     * @param listener 回调接口
+     */
     public static void postQueryRequest(final String address,String key, final HttpCallbackListener listener){
         threadPools.es.execute(() -> {
             HttpURLConnection connection=null;
@@ -312,13 +358,14 @@ public class HttpUtil {
                 connection.setDoOutput(true);
                 // Post方式不能缓存,需手动设置为false
                 connection.setUseCaches(false);
-                // 我们请求的数据:
+                // 我们请求的数据：参数k为搜索的关键字
                 String data = "k=" + URLEncoder.encode(key, "UTF-8");
                 // 获取输出流
                 OutputStream out = connection.getOutputStream();
                 out.write(data.getBytes());
                 out.flush();
                 out.close();
+                //搜索成功返回状态码为200
                 if (connection.getResponseCode() == TWO_HUNDRED) {
                     InputStream in=connection.getInputStream();
                     reader=new BufferedReader(new InputStreamReader(in));
@@ -354,6 +401,12 @@ public class HttpUtil {
             }
         });
     }
+
+    /**
+     * 检查http状态码
+     * @param code http状态码
+     * @throws HttpException Http异常
+     */
     public static void checkHttpCode(int code) throws HttpException {
         if (code!=TWO_HUNDRED){
             throw new HttpException("请求网络错误:"+code);
