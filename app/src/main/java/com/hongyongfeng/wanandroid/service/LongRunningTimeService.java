@@ -1,13 +1,33 @@
 package com.hongyongfeng.wanandroid.service;
 
+import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.ARTICLE_URL;
+
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
+import com.hongyongfeng.wanandroid.R;
+import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
+import com.hongyongfeng.wanandroid.module.main.activity.MainActivity;
+import com.hongyongfeng.wanandroid.util.HttpUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Wingfung Hung
@@ -21,13 +41,17 @@ public class LongRunningTimeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
         AlarmManager manager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Long secondsNextMorning =getSecondsNext(1,10);
+        Long secondsNextMorning =getSecondsNext(9,0);
         Intent intentMorning = new Intent(this, AlarmBroadcastReceiver.class);
         intentMorning.setAction("CLOCK_IN");
         //获取到PendingIntent的意图对象
-        PendingIntent piMorning = PendingIntent.getBroadcast(this, 0, intentMorning, PendingIntent.FLAG_IMMUTABLE);     //设置事件
-        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + secondsNextMorning, piMorning); //提交事件，发送给 广播接收器
+        PendingIntent piMorning = PendingIntent.getBroadcast(this, 0, intentMorning, PendingIntent.FLAG_IMMUTABLE);
+        //设置事件
+        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + secondsNextMorning, piMorning);
+        //提交事件，发送给 广播接收器
         return super.onStartCommand(intent, flags, startId);
     }
 

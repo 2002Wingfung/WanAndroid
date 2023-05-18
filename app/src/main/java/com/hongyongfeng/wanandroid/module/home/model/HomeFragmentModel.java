@@ -70,7 +70,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     private static final String UNCOLLECT_URL="lg/uncollect_originId/";
 
     private static final String JSON_URL="/json";
-    private static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
+    public static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
     private static final String ARTICLE_TOP_URL="https://www.wanandroid.com/article/top/json";
     public static final String SQL_INSERT_ARTICLE="insert into article_bean (id,author,chapterName,link,title,niceDate,superChapterName,top)values(?,?,?,?,?,?,?,?)";
     private final Context context=MyApplication.getContext();

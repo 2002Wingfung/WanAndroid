@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
+import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.ARTICLE_URL;
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
 import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
 
@@ -45,6 +46,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
+import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragment;
@@ -56,11 +58,18 @@ import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.service.LongRunningTimeService;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.VPFragment;
+import com.hongyongfeng.wanandroid.util.HttpUtil;
 import com.hongyongfeng.wanandroid.util.ThreadPools;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.xml.transform.sax.SAXResult;
 
 
 public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> {
@@ -95,6 +104,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 
     private int stateDefault;
     private int stateStart=0;
+    private String title;
     //以上为底部导航栏所需的成员变量
     ListView listView;
     private String[] listData={"我的收藏","浏览历史","关于","设置","退出登录"};
@@ -203,26 +213,50 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                         dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                PendingIntent pendingIntent;
-                                Intent intent=new Intent(MainActivity.this,MainActivity.class);
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                    NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
-                                    manager.createNotificationChannel(mChannel);
-                                }
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                                    pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-                                } else {
-                                    pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-                                }
-                                Notification notification=new NotificationCompat.Builder(MainActivity.this,"channelId")
-                                        .setContentTitle("This is content title")
-                                        .setContentText("This is content text")
-                                        .setWhen(System.currentTimeMillis())
-                                        .setSmallIcon(R.drawable.ic_notification)
-                                        .setContentIntent(pendingIntent)
-                                        .build();
-                                manager.notify(1,notification);
+                                HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
+                                    @Override
+                                    public void onFinish(String response) {
+                                        //System.out.println(response);
+                                        int indexStart=response.indexOf('[');
+                                        int indexEnd=response.lastIndexOf(']');
+                                        try {
+                                            JSONArray jsonArray=new JSONArray(response.substring(indexStart,indexEnd+1));
+                                            JSONObject jsonObject=jsonArray.getJSONObject(0);
+
+                                            title=jsonObject.getString("title");
+                                            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                            PendingIntent pendingIntent;
+                                            Intent intent=new Intent(MainActivity.this,MainActivity.class);
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                                NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
+                                                manager.createNotificationChannel(mChannel);
+                                            }
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                                                pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                                            } else {
+                                                pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                                            }
+                                            Notification notification=new NotificationCompat.Builder(MainActivity.this,"channelId")
+                                                    .setContentTitle("每日文章")
+                                                    .setContentText(title)
+                                                    .setWhen(System.currentTimeMillis())
+                                                    .setSmallIcon(R.drawable.ic_notification)
+                                                    .setContentIntent(pendingIntent)
+                                                    .build();
+                                            manager.notify(1,notification);
+                                            //System.out.println(title);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+
+                                    }
+                                }, null);
+
                             }
                         });
                         dialog.show();
