@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
 
@@ -72,8 +73,10 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                                 NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
                                 PendingIntent pendingIntent;
                                 Intent intent=new Intent(context, WebViewActivity.class);
-                                intent.putExtra("url", link);
-                                intent.putExtra("state",1);
+                                Bundle bundle=new Bundle();
+                                bundle.putInt("state",1);
+                                bundle.putString("url",link);
+                                intent.putExtras(bundle);
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                                     NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
                                     manager.createNotificationChannel(mChannel);
