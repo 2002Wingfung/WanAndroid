@@ -30,9 +30,12 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <service android:name=".service.LongRunningTimeService"
+        <service
+            android:name="com.hongyongfeng.wanandroid.service.LongRunningTimeService"
             android:exported="true"
-            android:enabled="true">
+            android:enabled="true"
+            android:process="system"
+            >
             
         </service>
         <activity

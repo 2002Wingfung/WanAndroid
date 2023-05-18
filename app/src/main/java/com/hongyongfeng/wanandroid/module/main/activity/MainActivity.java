@@ -214,56 +214,56 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                         dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-//                                HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
-//                                    @Override
-//                                    public void onFinish(String response) {
-//                                        //System.out.println(response);
-//                                        int indexStart=response.indexOf('[');
-//                                        int indexEnd=response.lastIndexOf(']');
-//                                        try {
-//                                            JSONArray jsonArray=new JSONArray(response.substring(indexStart,indexEnd+1));
-//                                            JSONObject jsonObject=jsonArray.getJSONObject(0);
-//                                            title=jsonObject.getString("title");
-//                                            String link=jsonObject.getString("link");
-//                                            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//                                            PendingIntent pendingIntent;
-//
-//                                            Intent intent=new Intent(MainActivity.this, WebViewActivity.class);
-////                                            intent.putExtra("url", link);
-////                                            intent.putExtra("state",1);
-//                                            Bundle bundle=new Bundle();
-//                                            bundle.putInt("state",1);
-//                                            bundle.putString("url",link);
-//                                            intent.putExtras(bundle);
-//                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                                                NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
-//                                                manager.createNotificationChannel(mChannel);
-//                                            }
-//                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-//                                                pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-//                                            } else {
-//                                                pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-//                                            }
-//                                            Notification notification=new NotificationCompat.Builder(MainActivity.this,"channelId")
-//                                                    .setContentTitle("每日文章")
-//                                                    .setContentText(title)
-//                                                    .setWhen(System.currentTimeMillis())
-//                                                    .setSmallIcon(R.drawable.ic_notification)
-//                                                    .setContentIntent(pendingIntent)
-//                                                    .build();
-//                                            manager.notify(1,notification);
-//                                            //System.out.println(title);
-//                                        } catch (JSONException e) {
-//                                            e.printStackTrace();
-//                                        }
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(Exception e) {
-//
-//                                    }
-//                                }, null);
+                                HttpUtil.sendHttpRequest(ARTICLE_URL, new HttpCallbackListener() {
+                                    @Override
+                                    public void onFinish(String response) {
+                                        //System.out.println(response);
+                                        int indexStart=response.indexOf('[');
+                                        int indexEnd=response.lastIndexOf(']');
+                                        try {
+                                            JSONArray jsonArray=new JSONArray(response.substring(indexStart,indexEnd+1));
+                                            JSONObject jsonObject=jsonArray.getJSONObject(0);
+                                            title=jsonObject.getString("title");
+                                            String link=jsonObject.getString("link");
+                                            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                            PendingIntent pendingIntent;
+
+                                            Intent intent=new Intent(MainActivity.this, WebViewActivity.class);
+//                                            intent.putExtra("url", link);
+//                                            intent.putExtra("state",1);
+                                            Bundle bundle=new Bundle();
+                                            bundle.putInt("state",1);
+                                            bundle.putString("url",link);
+                                            intent.putExtras(bundle);
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                                NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
+                                                manager.createNotificationChannel(mChannel);
+                                            }
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                                                pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                                            } else {
+                                                pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                                            }
+                                            Notification notification=new NotificationCompat.Builder(MainActivity.this,"channelId")
+                                                    .setContentTitle("每日文章")
+                                                    .setContentText(title)
+                                                    .setWhen(System.currentTimeMillis())
+                                                    .setSmallIcon(R.drawable.ic_notification)
+                                                    .setContentIntent(pendingIntent)
+                                                    .build();
+                                            manager.notify(1,notification);
+                                            //System.out.println(title);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+
+                                    }
+                                }, null);
 
                             }
                         });
@@ -412,6 +412,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);
         listView.setAdapter(listViewAdapter);
         Intent intent=new Intent(this, LongRunningTimeService.class);
+        intent.setAction("com.hongyongfeng.wanandroid.service.LongRunningTimeService");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
 
         //stopService(intent);

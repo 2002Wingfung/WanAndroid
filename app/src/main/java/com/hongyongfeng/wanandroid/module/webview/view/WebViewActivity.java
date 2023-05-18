@@ -253,6 +253,7 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         }else {
             if (state==1){
                 Intent intent=new Intent(WebViewActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 //System.out.println(true);
             }
@@ -282,6 +283,7 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                 }else{
                     if (state==1){
                         Intent intent=new Intent(WebViewActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
                     WebViewActivity.this.finish();
