@@ -27,6 +27,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
+import com.hongyongfeng.wanandroid.module.main.activity.MainActivity;
 import com.hongyongfeng.wanandroid.module.webview.presenter.WebViewPresenter;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 import org.json.JSONArray;
@@ -56,6 +57,7 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
     TextView tvBack;
     int count=0;
     String url;
+    private int state=0;
     @Override
     public com.hongyongfeng.wanandroid.module.webview.interfaces.WebView.VP getContract() {
         return new com.hongyongfeng.wanandroid.module.webview.interfaces.WebView.VP() {
@@ -79,7 +81,12 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         if(intent != null){
             //获取intent中的参数
             url = intent.getStringExtra("url");
-
+            //state=intent.getIntExtra("state",0);
+            Bundle bundle = intent.getExtras();
+            // 4.输出值和对象的name属性
+            state=bundle.getInt("state");
+//            System.out.println(bundle.getString("url"));
+//            System.out.println(bundle.getInt("state"));
         }
         WebSettings webSettings=webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -243,8 +250,15 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
             webView.goBack();//返回上个页面
             return true;
+        }else {
+            if (state==1){
+                Intent intent=new Intent(WebViewActivity.this, MainActivity.class);
+                startActivity(intent);
+                //System.out.println(true);
+            }
+            //退出H5界面
+            return super.onKeyDown(keyCode, event);
         }
-        return super.onKeyDown(keyCode, event);//退出H5界面
     }
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -266,6 +280,10 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                 if (webView.canGoBack()) {
                     webView.goBack();//返回上个页面
                 }else{
+                    if (state==1){
+                        Intent intent=new Intent(WebViewActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
                     WebViewActivity.this.finish();
                 }
                 break;

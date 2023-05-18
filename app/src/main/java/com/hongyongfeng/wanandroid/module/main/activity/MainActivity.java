@@ -55,6 +55,7 @@ import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
+import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.service.LongRunningTimeService;
 import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
 import com.hongyongfeng.wanandroid.test.VPFragment;
@@ -222,11 +223,18 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                                         try {
                                             JSONArray jsonArray=new JSONArray(response.substring(indexStart,indexEnd+1));
                                             JSONObject jsonObject=jsonArray.getJSONObject(0);
-
                                             title=jsonObject.getString("title");
+                                            String link=jsonObject.getString("link");
                                             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                             PendingIntent pendingIntent;
-                                            Intent intent=new Intent(MainActivity.this,MainActivity.class);
+
+                                            Intent intent=new Intent(MainActivity.this, WebViewActivity.class);
+//                                            intent.putExtra("url", link);
+//                                            intent.putExtra("state",1);
+                                            Bundle bundle=new Bundle();
+                                            bundle.putInt("state",1);
+                                            bundle.putString("url",link);
+                                            intent.putExtras(bundle);
                                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                                                 NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
                                                 manager.createNotificationChannel(mChannel);

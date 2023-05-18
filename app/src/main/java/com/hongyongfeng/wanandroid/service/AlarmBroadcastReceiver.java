@@ -68,9 +68,12 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                                 JSONArray jsonArray=new JSONArray(response.substring(indexStart,indexEnd+1));
                                 JSONObject jsonObject=jsonArray.getJSONObject(0);
                                 String title=jsonObject.getString("title");
+                                String link=jsonObject.getString("link");
                                 NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
                                 PendingIntent pendingIntent;
                                 Intent intent=new Intent(context, WebViewActivity.class);
+                                intent.putExtra("url", link);
+                                intent.putExtra("state",1);
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                                     NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
                                     manager.createNotificationChannel(mChannel);
