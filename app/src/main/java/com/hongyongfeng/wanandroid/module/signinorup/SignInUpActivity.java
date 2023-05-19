@@ -16,8 +16,7 @@ import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment.LoginFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.register.fragment.RegisterFragment;
-import com.hongyongfeng.wanandroid.test.FragmentVPAdapter;
-import com.hongyongfeng.wanandroid.test.VPFragment;
+import com.hongyongfeng.wanandroid.test.FragmentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,11 +114,11 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter=new FragmentVPAdapter(getSupportFragmentManager(),fragmentList);
+        adapter=new FragmentAdapter(getSupportFragmentManager(),fragmentList);
         viewPager.setAdapter(adapter);
     }
     private List<Fragment> fragmentList;
-    private FragmentVPAdapter adapter;
+    private FragmentAdapter adapter;
     private ViewPager viewPager;
     TextView tvLogin;
     TextView tvRegister;

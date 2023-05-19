@@ -11,6 +11,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -40,17 +42,24 @@ public class LongRunningTimeService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d("service","create");
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 
         AlarmManager manager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Long secondsNextMorning =getSecondsNext(9,0);
+        Long secondsNextMorning =getSecondsNext(11,17);
+        //System.out.println("time"+secondsNextMorning);
         Intent intentMorning = new Intent(this, AlarmBroadcastReceiver.class);
         intentMorning.setAction("CLOCK_IN");
         //获取到PendingIntent的意图对象
         PendingIntent piMorning = PendingIntent.getBroadcast(this, 0, intentMorning, PendingIntent.FLAG_IMMUTABLE);
         //设置事件
-        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + secondsNextMorning, piMorning);
+        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +secondsNextMorning, piMorning);
         //提交事件，发送给 广播接收器
         return super.onStartCommand(intent, flags, startId);
     }

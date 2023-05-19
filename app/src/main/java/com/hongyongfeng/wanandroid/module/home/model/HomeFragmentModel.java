@@ -146,7 +146,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     public void onFinish(String response) {
                         //System.out.println(response);
                         articleBeanList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        if (articleTopList.size()!=0){
+                        if (articleTopList!=null&&articleTopList.size()!=0){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
                         }
                     }

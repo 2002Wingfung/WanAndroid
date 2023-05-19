@@ -40,6 +40,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,10 +82,15 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
         if(intent != null){
             //获取intent中的参数
             url = intent.getStringExtra("url");
-            //state=intent.getIntExtra("state",0);
-            Bundle bundle = intent.getExtras();
+            state=intent.getIntExtra("state",0);
+            //Bundle bundle = intent.getExtras();
             // 4.输出值和对象的name属性
-            state=bundle.getInt("state");
+            //state=bundle.getInt("state");
+            //url=bundle.getString("url1");
+            //System.out.println("web"+url);
+//            ArrayList<String> list=intent.getStringArrayListExtra("list");
+//            System.out.println("web"+list.get(1));
+
 //            System.out.println(bundle.getString("url"));
 //            System.out.println(bundle.getInt("state"));
         }
@@ -257,6 +263,8 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                 startActivity(intent);
                 //System.out.println(true);
             }
+            url=null;
+            state=0;
             //退出H5界面
             return super.onKeyDown(keyCode, event);
         }
@@ -286,6 +294,8 @@ public class WebViewActivity extends BaseActivity<WebViewPresenter, com.hongyong
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
+                    url=null;
+                    state=0;
                     WebViewActivity.this.finish();
                 }
                 break;

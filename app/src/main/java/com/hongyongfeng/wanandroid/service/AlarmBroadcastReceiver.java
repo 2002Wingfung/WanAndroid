@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -70,21 +71,31 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                                 JSONObject jsonObject=jsonArray.getJSONObject(0);
                                 String title=jsonObject.getString("title");
                                 String link=jsonObject.getString("link");
+                                //System.out.println(link);
+
                                 NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
                                 PendingIntent pendingIntent;
                                 Intent intent=new Intent(context, WebViewActivity.class);
-                                Bundle bundle=new Bundle();
-                                bundle.putInt("state",1);
-                                bundle.putString("url",link);
-                                intent.putExtras(bundle);
+//                                Bundle bundle=new Bundle();
+//                                bundle.putInt("state",1);
+                                //bundle.putString("url1",link);
+                                //intent.putExtras(bundle);
+                                intent.putExtra("url",link);
+                                intent.putExtra("state",1);
+                                //System.out.println(bundle.getString("url1"));
+//                                ArrayList<String > list=new ArrayList<>();
+//                                list.add("1");
+//                                list.add(link);
+                                //System.out.println(list.get(1));
+                                //intent.putStringArrayListExtra("list",list);
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                                     NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
                                     manager.createNotificationChannel(mChannel);
                                 }
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                                    pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                                    pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_UPDATE_CURRENT);
                                 } else {
-                                    pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                                    pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_UPDATE_CURRENT);
                                 }
                                 Notification notification=new NotificationCompat.Builder(context,"channelId")
                                         .setContentTitle("每日文章")
