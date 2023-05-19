@@ -8,7 +8,7 @@ public class Constant {
     public static final String COLLECT_URL="lg/collect/";
     public static final String CANCEL_COLLECT_URL ="lg/uncollect_originId/";
     public static final String JSON_URL="/json";
-    public static final String COLLECTION_URL=DOMAIN_URL+COLLECT_URL+"list/0"+JSON_URL;
+    public static final String COLLECTION_URL=DOMAIN_URL+COLLECT_URL+"list/";
     /**
      *创建文章表，用于浏览历史记录
      */

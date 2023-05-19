@@ -8,7 +8,7 @@ import java.util.List;
 public interface MoreInterface {
     interface M{
         void requestHistoryM()throws Exception;
-        void requestCollectM()throws Exception;
+        void requestCollectM(int page)throws Exception;
         void saveArticleM(ArticleBean article)throws Exception;
         void collectM(int id, CollectListener listener)throws Exception;
         void unCollectM(int id, CollectListener listener)throws Exception;
@@ -19,7 +19,7 @@ public interface MoreInterface {
         void unCollectVP(int id, CollectListener listener);
         void requestHistoryVP();
         void responseHistoryVP(List<ArticleBean> article);
-        void requestCollectVP();
+        void requestCollectVP(int page);
         void responseCollectVP(List<ArticleBean> article);
         void collectResponse(int code);
         void unCollectResponse(int code);

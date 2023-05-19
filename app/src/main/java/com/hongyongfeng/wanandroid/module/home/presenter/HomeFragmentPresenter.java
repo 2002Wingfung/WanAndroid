@@ -1,8 +1,6 @@
 package com.hongyongfeng.wanandroid.module.home.presenter;
 
-
 import android.graphics.Bitmap;
-
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.data.net.bean.BannerBean;
@@ -10,15 +8,21 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
-
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentModel, HomeFragment, HomeFragmentInterface.ViewPresenter> {
     @Override
     public HomeFragmentModel getModelInstance() {
         return new HomeFragmentModel(this);
     }
 
+    /**
+     *
+     * @return 返回p层接口
+     */
     @Override
     public HomeFragmentInterface.ViewPresenter getContract() {
         return new HomeFragmentInterface.ViewPresenter() {

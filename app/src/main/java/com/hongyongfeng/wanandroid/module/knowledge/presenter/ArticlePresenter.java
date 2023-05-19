@@ -10,15 +10,15 @@ import com.hongyongfeng.wanandroid.module.knowledge.model.ArticleModel;
 
 import java.util.List;
 
-public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, KnowledgeArticleFragment, ArticleInterface.VP> {
+public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, KnowledgeArticleFragment, ArticleInterface.ViewPresenter> {
     @Override
     public ArticleModel getModelInstance() {
         return new ArticleModel(this);
     }
 
     @Override
-    public ArticleInterface.VP getContract() {
-        return new ArticleInterface.VP() {
+    public ArticleInterface.ViewPresenter getContract() {
+        return new ArticleInterface.ViewPresenter() {
 
 
             @Override
@@ -31,7 +31,7 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
             }
 
             @Override
-            public void collectVP(int id, CollectListener listener) {
+            public void collectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().collectM(id,listener);
                 } catch (Exception e) {

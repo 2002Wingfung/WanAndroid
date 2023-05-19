@@ -5,9 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,18 +32,18 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.VP> {
+public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.ViewPresenter> {
     @Override
-    public ArticleInterface.VP getContract() {
-        return new ArticleInterface.VP() {
+    public ArticleInterface.ViewPresenter getContract() {
+        return new ArticleInterface.ViewPresenter() {
             @Override
             public void saveHistory(ArticleBean article) {
                 mPresenter.getContract().saveHistory(article);
             }
 
             @Override
-            public void collectVP(int id, CollectListener listener) {
-                mPresenter.getContract().collectVP(id,listener);
+            public void collectVp(int id, CollectListener listener) {
+                mPresenter.getContract().collectVp(id,listener);
             }
 
             @Override
@@ -243,7 +240,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                     number0=1;
                 }
                 if (count[0] % number2 == number0) {
-                    getContract().collectVP(articleList.get(position).getId(), new CollectListener() {
+                    getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));

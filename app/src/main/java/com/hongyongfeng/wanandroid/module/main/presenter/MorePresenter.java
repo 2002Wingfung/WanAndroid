@@ -65,9 +65,9 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             }
 
             @Override
-            public void requestCollectVP() {
+            public void requestCollectVP(int page) {
                 try {
-                    mModel.getContract().requestCollectM();
+                    mModel.getContract().requestCollectM(page);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

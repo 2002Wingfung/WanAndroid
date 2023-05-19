@@ -50,15 +50,16 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
             }
 
             @Override
-            public void requestCollectM() throws Exception {
+            public void requestCollectM(int page) throws Exception {
                 String cookies=GetCookies.get();
+                String url=COLLECTION_URL+page+JSON_URL;
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(1);
                 }else {
-                    HttpUtil.sendHttpRequest(COLLECTION_URL, new HttpCallbackListener() {
+                    HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
-                            System.out.println(response);
+                            //System.out.println(response);
                             List<ArticleBean> articleBeanList =HttpUtil.parseJsonWithObject(response,ArticleBean.class);
                             mPresenter.getContract().responseCollectVP(articleBeanList);
                         }

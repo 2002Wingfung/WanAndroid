@@ -17,15 +17,15 @@ import com.hongyongfeng.wanandroid.util.HttpUtil;
 
 import java.util.List;
 
-public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInterface.M> {
+public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInterface.Model> {
     public ArticleModel(ArticlePresenter mPresenter) {
         super(mPresenter);
     }
     //MyDatabaseHelper helper=new MyDatabaseHelper(MyApplication.getContext(),"HistoryArticle.db",null,1);
 
     @Override
-    public ArticleInterface.M getContract() {
-        return new ArticleInterface.M() {
+    public ArticleInterface.Model getContract() {
+        return new ArticleInterface.Model() {
 
             @Override
             public void requestArticleM(int id, int page) throws Exception {

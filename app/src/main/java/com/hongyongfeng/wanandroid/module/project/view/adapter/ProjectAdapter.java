@@ -64,13 +64,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         //在merchantInfoList集合中获取Merchant对象
         ProjectBean project=articleList.get(position);
-        //设置商家图片
         holder.tvTitle.setText(project.getTitle());
         holder.tvDetails.setText(project.getDesc());
         holder.tvTime.setText(project.getNiceDate());
         holder.tvAuthor.setText(project.getAuthor());
         viewHolderMap.put(position,holder.itemView);
-        //System.out.println(position);
         if (project.isCollect()){
             holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes, null));
         }else {

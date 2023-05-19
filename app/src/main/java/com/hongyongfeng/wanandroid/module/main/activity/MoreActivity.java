@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -33,6 +35,7 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
     ArticleAdapter adapter=new ArticleAdapter(articleBeanLists);
     static ProgressDialog dialog;
 
+    private int page=0;
     @Override
     public MoreInterface.VP getContract() {
         return new MoreInterface.VP() {
@@ -71,21 +74,43 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
             }
 
             @Override
-            public void requestCollectVP() {
-                mPresenter.getContract().requestCollectVP();
+            public void requestCollectVP(int page) {
+                mPresenter.getContract().requestCollectVP(page);
             }
 
             @Override
             public void responseCollectVP(List<ArticleBean> article) {
-                articleBeanLists.addAll(article);
-                MoreActivity.this.runOnUiThread(new Runnable() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
+                if (article!=null){
+                    if (article.size()!=0){
+                        articleBeanLists.addAll(article);
+                        MoreActivity.this.runOnUiThread(new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            @Override
+                            public void run() {
+                                adapter.notifyDataSetChanged();
+                                dialog.dismiss();
+                            }
+                        });
+                    }else {
+                        MoreActivity.this.runOnUiThread(new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            @Override
+                            public void run() {
+                                dialog.dismiss();
+                                Toast.makeText(MoreActivity.this, "加载完成", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
-                });
+                }else {
+                    MoreActivity.this.runOnUiThread(new Runnable() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                            Toast.makeText(MoreActivity.this, "加载完成", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
 
             @Override
@@ -143,9 +168,11 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
                 super.onScrolled(recyclerView, dx, dy);
                 if (recyclerView.computeVerticalScrollExtent()!=recyclerView.computeVerticalScrollRange()){
                     if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
-//                        dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
-//                        page++;
-//                        getContract().requestTitleVP(id,page);
+                        if (index == 0) {
+                            page++;
+                            dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
+                            getContract().requestCollectVP(page);
+                        }
                     }
                 }
             }
@@ -237,10 +264,10 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
         tvTitle=findViewById(R.id.tv_title);
         recyclerView= findViewById(R.id.rv_article1);
         SetRecyclerView.setRecyclerView(this,recyclerView,adapter);
-
     }
 
 
+    private int index=-1;
     private int count =0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -249,11 +276,11 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
         if (intent!=null){
             String title=intent.getStringExtra("title");
             tvTitle.setText(title);
-            int index=intent.getIntExtra("index",-1);
+            index=intent.getIntExtra("index",-1);
             switch (index){
                 case 0:
                     dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
-                    getContract().requestCollectVP();
+                    getContract().requestCollectVP(ZERO);
                     count=0;
                     break;
                 case 1:
@@ -272,10 +299,17 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_back:
+                index=-1;
                 finish();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        index=-1;
     }
 }
