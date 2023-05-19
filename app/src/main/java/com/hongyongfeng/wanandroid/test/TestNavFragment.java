@@ -20,7 +20,9 @@ import org.w3c.dom.Text;
  * A simple {@link Fragment} subclass.
  * Use the {@link TestNavFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @author Wingfung Hung
  */
+@Deprecated
 public class TestNavFragment extends Fragment {
 
 

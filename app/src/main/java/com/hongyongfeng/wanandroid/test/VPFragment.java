@@ -17,7 +17,9 @@ import com.hongyongfeng.wanandroid.R;
  * A simple {@link Fragment} subclass.
  * Use the {@link VPFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @author Wingfung Hung
  */
+@Deprecated
 public class VPFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";

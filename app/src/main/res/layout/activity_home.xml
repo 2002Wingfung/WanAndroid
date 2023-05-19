@@ -29,29 +29,11 @@
 
             </LinearLayout>
 
-<!--            <FrameLayout-->
-<!--                android:id="@+id/content"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="1">-->
-<!--&lt;!&ndash;                可以添加一些Fragment&ndash;&gt;-->
-
-<!--            </FrameLayout>-->
-
-<!--            <androidx.fragment.app.FragmentContainerView-->
-<!--                android:id="@+id/fragment_01"-->
-<!--                android:name="com.hongyongfeng.wanandroid.test.TestNavFragment"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                tools:layout="@layout/fragment_test_nav" />-->
             <androidx.viewpager.widget.ViewPager
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:id="@+id/vp_main"/>
-
-
 
             <View
                 android:layout_width="match_parent"
@@ -73,6 +55,5 @@
         app:insetForeground="@android:color/transparent"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_navigation" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

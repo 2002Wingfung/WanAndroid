@@ -8,36 +8,28 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.query.interfaces.HeatedWords;
 import com.hongyongfeng.wanandroid.module.query.presenter.HeatedWordsPresenter;
 import com.hongyongfeng.wanandroid.module.query.view.FlowLayout;
-import com.hongyongfeng.wanandroid.test.TestFlowLayoutActivity;
 import com.hongyongfeng.wanandroid.util.DisplayUtils;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Wingfung Hung
+ */
 public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, HeatedWords.VP> {
     private void displayUI(FlowLayout flowLayout,List<Map<String,Object>> heatedWordsListMap) {
 //        final String data = "132";

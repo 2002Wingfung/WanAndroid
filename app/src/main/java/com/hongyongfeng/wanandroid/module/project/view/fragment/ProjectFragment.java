@@ -1,30 +1,19 @@
 package com.hongyongfeng.wanandroid.module.project.view.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TableLayout;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.tabs.TabLayout;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.presenter.ProjectFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectCategoryAdapter;
-import com.hongyongfeng.wanandroid.test.VPFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

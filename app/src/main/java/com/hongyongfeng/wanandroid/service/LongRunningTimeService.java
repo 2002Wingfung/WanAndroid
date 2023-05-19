@@ -32,6 +32,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 该服务用于定时推送一篇最新的文章
  * @author Wingfung Hung
  */
 public class LongRunningTimeService extends Service {

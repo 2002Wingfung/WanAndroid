@@ -19,6 +19,10 @@ import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.module.query.view.FlowLayout;
 import com.hongyongfeng.wanandroid.util.DisplayUtils;
 
+/**
+ * @author Wingfung Hung
+ */
+@Deprecated
 public class TestFlowLayoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
