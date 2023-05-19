@@ -13,17 +13,17 @@ import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 
 import java.util.List;
 
-public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentModel, HomeFragment, HomeFragmentInterface.VP> {
+public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentModel, HomeFragment, HomeFragmentInterface.ViewPresenter> {
     @Override
     public HomeFragmentModel getModelInstance() {
         return new HomeFragmentModel(this);
     }
 
     @Override
-    public HomeFragmentInterface.VP getContract() {
-        return new HomeFragmentInterface.VP() {
+    public HomeFragmentInterface.ViewPresenter getContract() {
+        return new HomeFragmentInterface.ViewPresenter() {
             @Override
-            public void collectVP(int id, CollectListener listener) {
+            public void collectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().collectM(id,listener);
                 } catch (Exception e) {
@@ -32,7 +32,7 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
+            public void unCollectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().unCollectM(id,listener);
                 } catch (Exception e) {
@@ -51,7 +51,7 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
-            public void requestImageVP() {
+            public void requestImageVp() {
                 //核验请求的信息，进行逻辑处理
                 //调用model层
                 try {
@@ -73,7 +73,7 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
-            public void requestArticleVP()  {
+            public void requestArticleVp()  {
                 try {
                     mModel.getContract().requestArticleM();
                 } catch (Exception e) {
@@ -92,7 +92,7 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
-            public void requestLoadMoreVP(int page) {
+            public void requestLoadMoreVp(int page) {
                 try {
                     mModel.getContract().requestLoadMoreM(page);
                 }catch (Exception e){
@@ -101,8 +101,8 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             }
 
             @Override
-            public void responseLoadMoreVP(List<ArticleBean> articleList) {
-                mView.getContract().responseLoadMoreVP(articleList);
+            public void responseLoadMoreVp(List<ArticleBean> articleList) {
+                mView.getContract().responseLoadMoreVp(articleList);
             }
 
             @Override

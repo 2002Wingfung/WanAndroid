@@ -4,9 +4,7 @@ import static com.hongyongfeng.wanandroid.util.SaveArticle.CACHE_BITMAP;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +40,6 @@ import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
-import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
@@ -51,9 +47,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.VP> {
+public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.ViewPresenter> {
     public Handler dialogHandler = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -78,16 +73,16 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         return BitmapFactory.decodeByteArray(data, 0, data.length);//从字节数组解码位图
     }
     @Override
-    public HomeFragmentInterface.VP getContract() {
-        return new HomeFragmentInterface.VP() {
+    public HomeFragmentInterface.ViewPresenter getContract() {
+        return new HomeFragmentInterface.ViewPresenter() {
             @Override
-            public void collectVP(int id,CollectListener listener) {
-                mPresenter.getContract().collectVP(id,listener);
+            public void collectVp(int id, CollectListener listener) {
+                mPresenter.getContract().collectVp(id,listener);
             }
 
             @Override
-            public void unCollectVP(int id,CollectListener listener) {
-                mPresenter.getContract().unCollectVP(id,listener);
+            public void unCollectVp(int id, CollectListener listener) {
+                mPresenter.getContract().unCollectVp(id,listener);
             }
 
             @Override
@@ -126,8 +121,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
 
             @Override
-            public void requestImageVP() {
-                mPresenter.getContract().requestImageVP();
+            public void requestImageVp() {
+                mPresenter.getContract().requestImageVp();
             }
 
             @Override
@@ -167,8 +162,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void requestArticleVP() {
-                mPresenter.getContract().requestArticleVP();
+            public void requestArticleVp() {
+                mPresenter.getContract().requestArticleVp();
             }
 
             @Override
@@ -215,12 +210,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
 
             @Override
-            public void requestLoadMoreVP(int page) {
-                mPresenter.getContract().requestLoadMoreVP(page);
+            public void requestLoadMoreVp(int page) {
+                mPresenter.getContract().requestLoadMoreVp(page);
             }
 
             @Override
-            public void responseLoadMoreVP(List<ArticleBean> articleLists) {
+            public void responseLoadMoreVp(List<ArticleBean> articleLists) {
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -301,11 +296,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     if (errorCode==1){
                         articleList.clear();
                         adapter.notifyDataSetChanged();
-                        getContract().requestArticleVP();
+                        getContract().requestArticleVp();
                         errorCode=0;
                     }else {
                         page++;
-                        getContract().requestLoadMoreVP(page);
+                        getContract().requestLoadMoreVp(page);
                     }
 
                     //System.out.println(page);
@@ -335,7 +330,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     number0=1;
                 }
                 if (count[0] % number2 == number0) {
-                    getContract().collectVP(articleList.get(position).getId(), new CollectListener() {
+                    getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
@@ -345,7 +340,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         }
                     });
                 } else {
-                    getContract().unCollectVP(articleList.get(position).getId(), new CollectListener() {
+                    getContract().unCollectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
@@ -409,7 +404,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
             //dialog.dismiss();
             Log.d("onCreateView","onCreateView");
-            getContract().requestArticleVP();
+            getContract().requestArticleVp();
             count = 1;
             //helper=new MyDatabaseHelper(fragmentActivity,"History",null,1);
         }
@@ -431,7 +426,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         viewList.add(view3);
         if (count1==0){
             count1=1;
-            getContract().requestImageVP();
+            getContract().requestImageVp();
         }
 
 //        try {

@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, HomeFragmentInterface.M> {
+public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, HomeFragmentInterface.Model> {
     public HomeFragmentModel(HomeFragmentPresenter mPresenter) {
         super(mPresenter);
     }
@@ -79,8 +79,8 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     }
 
     @Override
-    public HomeFragmentInterface.M getContract() {
-        return new HomeFragmentInterface.M() {
+    public HomeFragmentInterface.Model getContract() {
+        return new HomeFragmentInterface.Model() {
             @Override
             public void requestImageM()  {
                 try {
@@ -176,7 +176,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         articleMoreList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        mPresenter.getContract().responseLoadMoreVP(articleMoreList);
+                        mPresenter.getContract().responseLoadMoreVp(articleMoreList);
                     }
 
                     @Override
