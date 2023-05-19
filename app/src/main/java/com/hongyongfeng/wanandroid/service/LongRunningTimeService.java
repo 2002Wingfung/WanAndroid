@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.service;
 
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.ARTICLE_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.ACTION;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -45,19 +46,23 @@ public class LongRunningTimeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("service","create");
+        //Log.d("service","create");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
         AlarmManager manager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        //设置发送广播的具体时间
         Long secondsNextMorning =getSecondsNext(10,0);
-        Intent intentMorning = new Intent(this, AlarmBroadcastReceiver.class);
-        intentMorning.setAction("CLOCK_IN");
+        Intent intentTime = new Intent(this, AlarmBroadcastReceiver.class);
+        intentTime.setAction(ACTION);
         //获取到PendingIntent的意图对象
-        PendingIntent piMorning = PendingIntent.getBroadcast(this, 0, intentMorning, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent piMorning = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            piMorning = PendingIntent.getBroadcast(this, 0, intentTime, PendingIntent.FLAG_IMMUTABLE);
+        }else {
+            piMorning = PendingIntent.getBroadcast(this, 0, intentTime, PendingIntent.FLAG_ONE_SHOT);
+        }
         //设置事件
         manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +secondsNextMorning, piMorning);
         //提交事件，发送给 广播接收器
@@ -65,9 +70,11 @@ public class LongRunningTimeService extends Service {
     }
 
     private Long getSecondsNext(int hour,int minute) {
+        //获取当前的时间
         long systemTime = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
+        //设置定时的时间
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
@@ -81,7 +88,6 @@ public class LongRunningTimeService extends Service {
         }
         // 计算设定时间到现在时间的时间差
         Long seconds = selectTime-systemTime;
-
         return seconds.longValue();
     }
 }

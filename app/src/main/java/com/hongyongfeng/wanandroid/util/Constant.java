@@ -26,6 +26,8 @@ public class Constant {
                     ");";
     public static final String DELETE_SQL="select id from article_bean where id=?";
     public static final int ZERO=0;
+    public static final int ONE=1;
     public static final int FOUR=4;
     public static final int TWO_HUNDRED=200;
+    public static final String ACTION="CLOCK_IN";
 }
