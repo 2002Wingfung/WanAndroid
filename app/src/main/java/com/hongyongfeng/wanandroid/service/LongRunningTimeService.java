@@ -52,8 +52,7 @@ public class LongRunningTimeService extends Service {
 
 
         AlarmManager manager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Long secondsNextMorning =getSecondsNext(11,17);
-        //System.out.println("time"+secondsNextMorning);
+        Long secondsNextMorning =getSecondsNext(10,0);
         Intent intentMorning = new Intent(this, AlarmBroadcastReceiver.class);
         intentMorning.setAction("CLOCK_IN");
         //获取到PendingIntent的意图对象

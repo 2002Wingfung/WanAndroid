@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".test.TestActivity">
+    tools:context=".module.query.view.QueryActivity">
     <include
         android:id="@+id/include"
         layout="@layout/action_bar_query" />

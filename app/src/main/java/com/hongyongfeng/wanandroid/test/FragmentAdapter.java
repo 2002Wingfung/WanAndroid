@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.List;
 
 /**
+ * Fragment的适配器
  * @author Wingfung Hung
  */
 public class FragmentAdapter extends FragmentStatePagerAdapter {
@@ -33,5 +34,6 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         //super.destroyItem(container, position, object);
+        //使得不能销毁碎片,避免了切换Fragment时重新加载的问题
     }
 }
