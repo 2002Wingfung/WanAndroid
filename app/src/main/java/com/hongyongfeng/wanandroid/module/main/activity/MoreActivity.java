@@ -79,10 +79,13 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
             }
 
             @Override
-            public void responseCollectVP(List<ArticleBean> article) {
-                if (article!=null){
-                    if (article.size()!=0){
-                        articleBeanLists.addAll(article);
+            public void responseCollectVP(List<ArticleBean> articleList) {
+                if (articleList!=null){
+                    if (articleList.size()!=0){
+                        for (ArticleBean article:articleList) {
+                            article.setCollect(true);
+                        }
+                        articleBeanLists.addAll(articleList);
                         MoreActivity.this.runOnUiThread(new Runnable() {
                             @SuppressLint("NotifyDataSetChanged")
                             @Override
