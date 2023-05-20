@@ -81,7 +81,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                 db.execSQL(SQL_INSERT_ARTICLE,new String[]
                         {String.valueOf(project.getId()),project.getAuthor(),
                                 null,project.getLink(),
-                                project.getTitle(),project.getNiceDate(),
+                                project.getTitle(),
                                 null,null});
                 cursor.close();
                 db.close();

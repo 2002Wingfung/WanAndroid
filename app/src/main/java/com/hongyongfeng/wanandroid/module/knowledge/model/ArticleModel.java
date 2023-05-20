@@ -47,12 +47,6 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
             @Override
             public void saveArticleM(ArticleBean article) throws Exception {
-//                SQLiteDatabase db = helper.getWritableDatabase();
-//                db.execSQL(SQL_INSERT_ARTICLE,new String[]
-//                        {String.valueOf(article.getId()),article.getAuthor(),
-//                                article.getChapterName(),article.getLink(),
-//                                article.getTitle(),article.getNiceDate(),
-//                                article.getSuperChapterName(),String.valueOf(article.getTop())});
                 insert(article);
             }
 
