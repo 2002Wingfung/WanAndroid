@@ -392,9 +392,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         WindowManager wm = this.getWindowManager();//获取屏幕宽高
         int width1 = wm.getDefaultDisplay().getWidth();
         int height1 = wm.getDefaultDisplay().getHeight();
-        //NavigationView drawerLayout=findViewById(R.id.nav_view);
         LinearLayout drawerLayout=findViewById(R.id.left_layout);
-        //drawerLayout.findViewById(R.id.menu).setBackgroundColor(getResources().getColor(R.color.layout));
         ViewGroup.LayoutParams para= drawerLayout.getLayoutParams();//获取drawerlayout的布局
         para.width=width1/7*5;//修改宽度
         para.height=height1;//修改高度
@@ -409,36 +407,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         intent.setAction("com.hongyongfeng.wanandroid.service.LongRunningTimeService");
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
-
         requestStoragePermission();
-
-        //stopService(intent);
-        //readSharedPreference();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
-//                Window window = HomeActivity.this.getWindow();
-//                View decorView = window.getDecorView();
-//                //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
-//                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-//                decorView.setSystemUiVisibility(option);
-//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                window.setStatusBarColor(Color.TRANSPARENT);
-//                //导航栏颜色也可以正常设置
-////                window.setNavigationBarColor(Color.TRANSPARENT);
-//            } else {
-//                Window window = HomeActivity.this.getWindow();
-//                WindowManager.LayoutParams attributes = window.getAttributes();
-//                int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-//                int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
-//                attributes.flags |= flagTranslucentStatus;
-////                attributes.flags |= flagTranslucentNavigation;
-//                window.setAttributes(attributes);
-//            }
-//        }
-        //StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
-
     }
 
     @Override
@@ -518,12 +487,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                 tvProject.setTextColor(getResources().getColor(R.color.blue));
                 tvTitle.setText("项目");
                 break;
+            default:
+                break;
         }
     }
 
     @Override
     public int getContentViewId() {
-        //return R.layout.activity_home;
         return R.layout.activity_main_latest;
     }
 
@@ -541,7 +511,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     @Override
     public void initView() {
         tvQuery=findViewById(R.id.tv_query);
-        tvTitle = findViewById(R.id.tv_title);//标题
+        //标题
+        tvTitle = findViewById(R.id.tv_title);
         //左上角导航按钮
         navMenu = findViewById(R.id.tv_menu);
         //activity_main文件内最外层布局
@@ -556,10 +527,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     public void headerOnClick(View v) {
         if (tvName.getText().toString().equals("玩安卓")){
             Intent intent=new Intent(MainActivity.this, SignInUpActivity.class);
-//        startActivity(intent);
             startActivityForResult(intent,1);
         }
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
