@@ -45,9 +45,6 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 String id =jsonObject.getString("id");
                 String imagePath =jsonObject.getString("imagePath");
                 String url =jsonObject.getString("url");
-//                Log.d("MainActivity","id is "+id);
-//                Log.d("MainActivity","imagePath is "+imagePath);
-//                Log.d("MainActivity","url is "+url);
                 BannerBean bannerBean=new BannerBean(imagePath,url);
                 beanList.add(bannerBean);
             }
@@ -67,7 +64,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     private static final String IMAGE_URL="https://www.wanandroid.com/banner/json";
     private static final String DOMAIN_URL="https://www.wanandroid.com/";
     private static final String COLLECT_URL="lg/collect/";
-    private static final String UNCOLLECT_URL="lg/uncollect_originId/";
+    private static final String UNCOLLECT_URL ="lg/uncollect_originId/";
 
     private static final String JSON_URL="/json";
     public static final String ARTICLE_URL="https://www.wanandroid.com/article/list/0/json";
