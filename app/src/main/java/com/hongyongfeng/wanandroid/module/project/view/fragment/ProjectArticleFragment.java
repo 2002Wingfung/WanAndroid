@@ -44,18 +44,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     private int position=0;
 
     private boolean loadMore = false;
-    private String mParam1;
-    private String mParam2;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    public static ProjectArticleFragment newInstance(String param1, String param2) {
-        ProjectArticleFragment fragment = new ProjectArticleFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public ArticleInterface.VP getContract() {
@@ -171,8 +160,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         fragmentActivity=requireActivity();
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
             id=getArguments().getInt("id");
         }
     }
@@ -261,6 +249,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState==0){
                     //System.out.println(newState);
+//                    adapter.notifyItemChanged(0,bitmapLists.size());
                     adapter.notifyDataSetChanged();
                 }
             }
