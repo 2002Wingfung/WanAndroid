@@ -1,11 +1,11 @@
 package com.hongyongfeng.wanandroid.module.webview.interfaces;
 
+/**
+ * @author Wingfung Hung
+ */
 public interface WebView {
-    interface M{
-        void requestWebViewM(String name, String pwd)throws Exception;
+    interface Model {
     }
-    interface VP{
-        void requestWebViewVP(String name, String pwd);
-        void responseWebViewResult(boolean loginStatusResult);
+    interface Vp {
     }
 }

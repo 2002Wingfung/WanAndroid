@@ -4,15 +4,13 @@ import com.hongyongfeng.wanandroid.base.BaseModel;
 import com.hongyongfeng.wanandroid.module.webview.interfaces.WebView;
 import com.hongyongfeng.wanandroid.module.webview.presenter.WebViewPresenter;
 
-public class WebViewModel extends BaseModel<WebViewPresenter, WebView.M> {
+/**
+ * @author Wingfung Hung
+ */
+public class WebViewModel extends BaseModel<WebViewPresenter, WebView.Model> {
     @Override
-    public WebView.M getContract() {
-        return new WebView.M() {
-            @Override
-            public void requestWebViewM(String name, String pwd) throws Exception {
-
-            }
-        };
+    public WebView.Model getContract() {
+        return null;
     }
     public WebViewModel(WebViewPresenter mPresenter) {
         super(mPresenter);

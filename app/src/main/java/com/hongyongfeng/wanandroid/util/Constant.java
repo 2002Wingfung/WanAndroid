@@ -30,7 +30,9 @@ public class Constant {
     public static final int ONE=1;
     public static final int TWO=2;
     public static final int FOUR=4;
+    public static final int ONE_HUNDRED=100;
     public static final int TWO_HUNDRED=200;
+    public static final int THREE_HUNDRED=300;
     public static final int THREE_THOUSAND=3000;
     public static final String ACTION="CLOCK_IN";
 }
