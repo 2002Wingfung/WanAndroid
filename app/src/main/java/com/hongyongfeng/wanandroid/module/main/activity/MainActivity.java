@@ -4,6 +4,7 @@ import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.AR
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
 import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -33,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -68,16 +71,15 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**
+ * 主活动
+ * @author Wingfung Hung
+ */
 public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> {
     public static ThreadPools threadPools=new ThreadPools();
-
-    NavigationView navigationView;
-    TextView tvQuery;
-    float percent1 =1.0F;
-    float percent0 =0.0F;
-    TextView tvTitle;
-    TextView navMenu;
-    FrameLayout content;
+    private TextView tvQuery;
+    private TextView tvTitle;
+    private TextView navMenu;
     private DrawerLayout drawer;
 
     //以下为底部导航栏所需的成员变量
@@ -90,20 +92,16 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     private TextView tvHome;
     private TextView tvKnowledge;
     private TextView tvProject;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     private ViewPager viewPager;
     private FragmentAdapter adapter;
     private List<Fragment> fragmentList;
     private TextView tvWelcome;
     private TextView tvName;
-
-    private int stateDefault;
-    private int stateStart=0;
-    private String title;
     //以上为底部导航栏所需的成员变量
-    ListView listView;
-    private String[] listData={"我的收藏","浏览历史","关于","设置","退出登录"};
+    private ListView listView;
+    private final String[] listData={"我的收藏","浏览历史","关于","设置","退出登录"};
     private int count=0;
 
     @Override
@@ -307,9 +305,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                stateDefault=state;
                 if (state==0){
-                    stateStart=0;
                     count=0;
                 }
                 if(BannerAdapter.down==1&&state==0){
@@ -414,6 +410,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
 
+        requestStoragePermission();
 
         //stopService(intent);
         //readSharedPreference();
@@ -545,9 +542,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     public void initView() {
         tvQuery=findViewById(R.id.tv_query);
         tvTitle = findViewById(R.id.tv_title);//标题
-        content = findViewById(R.id.content);//Fragment碎片布局
-        //左侧隐藏的NavigationView布局
-        navigationView = findViewById(R.id.nav_view);
         //左上角导航按钮
         navMenu = findViewById(R.id.tv_menu);
         //activity_main文件内最外层布局
@@ -604,22 +598,62 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 //                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
                 break;
             case R.id.ll_home:
-//                fragment=TestNavFragment.newInstance("这是首页文章","");
-//                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 viewPager.setCurrentItem(0);
                 break;
             case R.id.ll_knowledge:
-//                fragment=TestNavFragment.newInstance("这是知识体系","");
-//                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 viewPager.setCurrentItem(1);
                 break;
             case R.id.ll_project:
-//                fragment=TestNavFragment.newInstance("这是项目","");
-//                fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
                 viewPager.setCurrentItem(2);
                 break;
             default:
                 break;
+        }
+    }
+    private void requestStoragePermission() {
+        List<String> needRequestList = checkPermission(this,
+                new String[]{Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.ACCESS_NOTIFICATION_POLICY,
+                        Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,Manifest.permission_group.NOTIFICATIONS});
+        if (needRequestList.isEmpty()) {
+            System.out.println(true);
+            //已授权
+        } else {
+            //申请权限
+            System.out.println("first,false");
+
+            requestPermission(needRequestList);
+        }
+    }
+    private List<String> checkPermission(Context context, String[] checkList) {
+        List<String> list = new ArrayList<>();
+        for (String s : checkList) {
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat
+                    .checkSelfPermission(context, s)) {
+                list.add(s);
+            }
+        }
+        return list;
+    }
+    private void requestPermission(List<String> needRequestList) {
+        ActivityCompat
+                .requestPermissions(MainActivity.this, needRequestList.toArray(new String[0]),
+                        111);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 111) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    System.out.println(true);
+                    //已授权
+                } else {
+                    //未授权
+                    System.out.println(false);
+                }
+            }
         }
     }
 }
