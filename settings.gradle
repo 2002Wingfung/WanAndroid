@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "WanAndroid"
 include ':app'
-include ':basic_res'
