@@ -4,10 +4,8 @@ import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.SQ
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
 import static com.hongyongfeng.wanandroid.util.Constant.DELETE_SQL;
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 
 /**

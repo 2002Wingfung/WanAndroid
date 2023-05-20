@@ -1,17 +1,18 @@
 package com.hongyongfeng.wanandroid.module.home.view.fragment;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.THREE_THOUSAND;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import static com.hongyongfeng.wanandroid.util.SaveArticle.CACHE_BITMAP;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,6 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -29,7 +29,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -43,7 +42,6 @@ import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -54,52 +52,44 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    dialog.dismiss();
-                    break;
-                default:
-                    break;
+            if (msg.what == 1) {
+                dialog.dismiss();
             }
         }
     };
-
     public static byte[] getBytes(Bitmap bitmap){
         //实例化字节数组输出流
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);//压缩位图
-        return baos.toByteArray();//创建分配字节数组
-    }
-    public static Bitmap getBitmap(byte[] data){
-        return BitmapFactory.decodeByteArray(data, 0, data.length);//从字节数组解码位图
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        //压缩位图
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        return stream.toByteArray();
+        //创建分配字节数组
     }
     @Override
     public HomeFragmentInterface.ViewPresenter getContract() {
         return new HomeFragmentInterface.ViewPresenter() {
             @Override
             public void collectVp(int id, CollectListener listener) {
+                //请求收藏
                 mPresenter.getContract().collectVp(id,listener);
             }
-
             @Override
             public void unCollectVp(int id, CollectListener listener) {
+                //请求取消收藏
                 mPresenter.getContract().unCollectVp(id,listener);
             }
-
             @Override
             public void collectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
-                            startActivity(intent);
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                //返回收藏是否成功的数据
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==0){
+                        Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                    }else if (code==1){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -107,85 +97,53 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void unCollectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                //返回取消收藏是否成功的数据
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==0){
+                        Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                    }else if (code==1){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void requestImageVp() {
+                //请求banner的图片
                 mPresenter.getContract().requestImageVp();
             }
 
             @Override
             public void responseImageResult(List<BannerBean> beanList, List<Bitmap> bitmapList) {
-                //System.out.println(beanList);
                 beanLists = beanList;
                 bitmapLists = bitmapList;
                 //file.delete();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(!file.exists()){
-                            for (int i = 0; i < viewList.size(); i++) {
-                                View view = viewList.get(i);
-                                ImageView imgBanner = view.findViewById(R.id.img_banner);
-                                Bitmap bitmap=bitmapLists.get(i);
-                                imgBanner.setImageBitmap(bitmap);
-                                bitmapByteList.add(getBytes(bitmap));
-                            }
-                            //System.out.println("exists");
-                            SaveArticle.setData(fragmentActivity,beanList,2);
-                            SaveArticle.setData(fragmentActivity,bitmapByteList,1);
-                            dialogHandler.sendEmptyMessage(1);
-                        }else {
-                            for (int i = 0; i < viewList.size(); i++) {
-                                View view = viewList.get(i);
-                                ImageView imgBanner = view.findViewById(R.id.img_banner);
-
-                                Bitmap bitmap=bitmapLists.get(i);
-
-                                //制定测量规则 参数表示size + mode
-                                int width = View.MeasureSpec.makeMeasureSpec(0,
-                                        View.MeasureSpec.UNSPECIFIED);
-                                int height = View.MeasureSpec.makeMeasureSpec(0,
-                                        View.MeasureSpec.UNSPECIFIED);
-                                //调用measure方法之后就可以获取宽高
-                                imgBanner.measure(width, height);
-//                                ConstraintLayout layout1=fragmentActivity.findViewById(R.id.fragment_home);
-//                                System.out.println("layout"+layout1);
-//                                layout1.measure(width,height);
-//                                System.out.println(layout1.getMeasuredWidth());
-                                //System.out.println(imgBanner.getWidth());
-                                System.out.println(imgBanner.getMeasuredWidth());
-                                imgBanner.setImageBitmap(bitmap);
-                                imgBanner.measure(width, height);
-
-                                System.out.println(imgBanner.getMeasuredWidth());
-
-//                                viewPager.measure(width,height);
-//                                System.out.println(viewPager.getMeasuredWidth());
-                            }
-                            //file.delete();
+                fragmentActivity.runOnUiThread(() -> {
+                    if(!file.exists()){
+                        //判断图片文件是否存在
+                        for (int i = 0; i < viewList.size(); i++) {
+                            View view = viewList.get(i);
+                            ImageView imgBanner = view.findViewById(R.id.img_banner);
+                            Bitmap bitmap=bitmapLists.get(i);
+                            imgBanner.setImageBitmap(bitmap);
+                            bitmapByteList.add(getBytes(bitmap));
                         }
-                        //dialogHandler.sendEmptyMessage(1);
+                        //如果文件不存在，则保存图片到本地储存中
+                        SaveArticle.setData(fragmentActivity,beanList,TWO);
+                        SaveArticle.setData(fragmentActivity,bitmapByteList,ONE);
+                        dialogHandler.sendEmptyMessage(ONE);
+                    }else {
+                        for (int i = 0; i < viewList.size(); i++) {
+                            View view = viewList.get(i);
+                            ImageView imgBanner = view.findViewById(R.id.img_banner);
+                            Bitmap bitmap=bitmapLists.get(i);
+                            imgBanner.setImageBitmap(bitmap);
+                        }
                     }
-
                 });
-
-
             }
-
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void requestArticleVp() {
                 mPresenter.getContract().requestArticleVp();
@@ -193,8 +151,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void responseArticleResult(List<ArticleBean> articleLists, List<ArticleBean> articleTopLists) {
-                //这里有点bug，没有用runOnUiThread也能更新ui
-                requireActivity().runOnUiThread(new Runnable() {
+                fragmentActivity.runOnUiThread(new Runnable() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
@@ -212,26 +169,16 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             if (file.exists()){
                                 dialog.dismiss();
                             }
-//                            if (errorCode==1){
-//                                dialog.dismiss();
-//                            }
                         }else {
                             dialog.dismiss();
                         }
                     }
                 });
-
             }
-
             @Override
             public void error(int error) {
                 errorCode=error;
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                fragmentActivity.runOnUiThread(() -> Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show());
             }
 
             @Override
@@ -241,17 +188,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void responseLoadMoreVp(List<ArticleBean> articleLists) {
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (articleLists.size()!=0){
-                            articleList.addAll(articleLists);
-                            adapter.notifyItemInserted(articleList.size());
-                        }else {
-                            Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
+                fragmentActivity.runOnUiThread(() -> {
+                    if (articleLists.size()!=0){
+                        articleList.addAll(articleLists);
+                        adapter.notifyItemInserted(articleList.size());
+                    }else {
+                        Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                     }
+                    dialog.dismiss();
                 });
             }
 
@@ -262,37 +206,39 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         };
     }
     private int page = 0;
-    File file=null;
+    private File file=null;
     private List<View> viewList;
     static ViewPager viewPager;
     private List<BannerBean> beanLists;
     private List<Bitmap> bitmapLists;
-    List<byte[]> bitmapByteList=new ArrayList<>();
+    private final List<byte[]> bitmapByteList=new ArrayList<>();
     private int errorCode=0;
-    static ProgressDialog dialog;
-    public static List<ArticleBean> articleList = new ArrayList<>();
+    private ProgressDialog dialog;
+    static List<ArticleBean> articleList = new ArrayList<>();
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
     @SuppressLint("StaticFieldLeak")
     static ArticleAdapter adapter = new ArticleAdapter(articleList);
     private NestedScrollView scrollView;
-    ConstraintLayout layout;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private int count = 0;
     private int count1 = 0;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
+    }
+    /**
+     * 该方法应该放在onViewCreated方法中执行
+     */
+    private void calculate(){
         ConstraintLayout ll=fragmentActivity.findViewById(R.id.fragment_home);
-        System.out.println("layout"+ll);
         ViewTreeObserver vto2 = ll.getViewTreeObserver();
         vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 ll.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                Log.i("TAG", "方法3："+String.valueOf(ll.getWidth())+":"+ll.getHeight());
+                Log.i("TAG", "方法3："+ll.getWidth()+":"+ll.getHeight());
             }
         });
         Log.i("TAG", "屏幕的宽度："+fragmentActivity.getWindowManager().getDefaultDisplay().getWidth());
@@ -300,20 +246,18 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
     @Override
     protected void destroy() {
-
     }
-
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("home","onPause");
+        //碎片暂停时就保存一下文章列表到本地
         SaveArticle.setData(fragmentActivity,articleList,0);
     }
 
     @Override
     protected void initView(View view) {
-        layout = fragmentActivity.findViewById(R.id.fragment_home);
+        ConstraintLayout layout = fragmentActivity.findViewById(R.id.fragment_home);
         scrollView = layout.findViewById(R.id.scroll_view_home);
         //根据id获取RecycleView的实例
         recyclerView = fragmentActivity.findViewById(R.id.rv_article);
@@ -328,47 +272,33 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                     //滑动到底部
                     dialog.show();
-                    //=ProgressDialog.show(requireActivity(),"","正在加载",false,false);
+                    //加载失败时
                     if (errorCode==1){
                         articleList.clear();
                         adapter.notifyDataSetChanged();
+                        //如果第一次请求网络失败则重新加载首页文章
                         getContract().requestArticleVp();
                         errorCode=0;
                     }else {
                         page++;
                         getContract().requestLoadMoreVp(page);
                     }
-
-                    //System.out.println(page);
-                    //Toast.makeText(fragmentActivity, "滑动到了底部", Toast.LENGTH_SHORT).show();
-//                    articleList.add(new ArticleBean(-1));
-//                    articleList.add(new ArticleBean(-1));
-//                    articleList.add(new ArticleBean(-1));
-////
-//                    adapter.notifyItemInserted(articleList.size());
-
                 }
             }
         });
-
-//        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//
-//            }
-//        });
         adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
-                int number2 = 2;
-                int number0 = 0;
+                int number0 = ZERO;
                 if (articleList.get(position).isCollect()){
-                    number0=1;
+                    number0=ONE;
                 }
-                if (count[0] % number2 == number0) {
+                if (count[0] % TWO == number0) {
+                    //点赞
                     getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
+                            //收藏成功则改变点赞图标为红心
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
                         }
                         @Override
@@ -376,9 +306,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         }
                     });
                 } else {
+                    //取消点赞
                     getContract().unCollectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
+                            //取消收藏成功则改变点赞图标为红心
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
                         }
                         @Override
@@ -392,21 +324,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @Override
             public void onArticleClicked(View view, int position) {
                 ArticleBean article=articleList.get(position);
-                //SaveArticle.save(fragmentActivity,article);
-                //插入数据库表
                 Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
                 intent.putExtra("url", article.getLink());
                 startActivity(intent);
+                //将点击的文章插入数据库表
                 getContract().saveHistory(article);
-                //Toast.makeText(fragmentActivity, "点击了view"+(position+1), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("HomeFragment", "onCreate" + SystemClock.elapsedRealtime());
     }
 
     @Nullable
@@ -416,106 +340,43 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         mPresenter.bindView(this);
         fragmentActivity = requireActivity();
         file=new File(fragmentActivity.getCacheDir(),CACHE_BITMAP);
-//        recyclerView = fragmentActivity.findViewById(R.id.rv_article);
-//        SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
         if (count == 0) {
-//            try {
-//                bitmapByteList = SaveArticle.getData(fragmentActivity,1);  //获取缓存数据
-//            } catch (IllegalAccessException | java.lang.InstantiationException e) {
-//                e.printStackTrace();
-//            }
-//            if(bitmapByteList!=null){     //不为空，即缓存中有数据
-//                Log.i("TAG","cache is not null");
-//                for (int i = 0; i < viewList.size(); i++) {
-//                    View view = viewList.get(i);
-//                    ImageView imgBanner = view.findViewById(R.id.img_banner);
-//                    byte[] data=bitmapByteList.get(i);
-//                    Bitmap bitmap=getBitmap(data);
-//                    imgBanner.setImageBitmap(bitmap);
-//                }
-//            }else{   //为空，从网络获取
-//                getContract().requestImageVP();
-//            }
+            //如果是第一次打开主页Fragment,则加载数据
             //setRetainInstance(true);
             dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
-            //dialog.dismiss();
-            Log.d("onCreateView","onCreateView");
             getContract().requestArticleVp();
             count = 1;
-            //helper=new MyDatabaseHelper(fragmentActivity,"History",null,1);
         }
-
+        //获取Fragment的布局视图
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-////制定测量规则 参数表示size + mode
-//        int width = View.MeasureSpec.makeMeasureSpec(0,
-//                View.MeasureSpec.UNSPECIFIED);
-//        int height = View.MeasureSpec.makeMeasureSpec(0,
-//                View.MeasureSpec.UNSPECIFIED);
-////调用measure方法之后就可以获取宽高
-//        view.measure(width, height);
-//        System.out.println("width"+view.getMeasuredWidth()); // 获取宽度
-//        System.out.println(view.getWidth());
-//        System.out.println("height"+view.getMeasuredHeight());// 获取高度
-//        System.out.println(view.getHeight());
-
         viewPager = view.findViewById(R.id.indicator_all);
-
         inflater = getLayoutInflater();
+        //获取轮播图的view视图
         View view1 = inflater.inflate(R.layout.layout1, container,false);
         View view2 = inflater.inflate(R.layout.layout2, container,false);
         View view3 = inflater.inflate(R.layout.layout3, container,false);
-
-        viewList = new ArrayList<>();// 将要分页显示的View装入数组中
+        // 将要分页显示的View装入数组中
+        viewList = new ArrayList<>();
         viewList.add(view1);
         viewList.add(view2);
         viewList.add(view3);
         if (count1==0){
             count1=1;
+            //如果是第一次打开主页Fragment,则加载轮播图
             getContract().requestImageVp();
         }
-
-//        try {
-//            bitmapByteList = SaveArticle.getData(fragmentActivity,1);  //获取缓存数据
-//        } catch (IllegalAccessException | java.lang.InstantiationException e) {
-//            e.printStackTrace();
-//        }
-//        if(bitmapByteList!=null){     //不为空，即缓存中有数据
-//            Log.i("TAG","cache is not null");
-//            for (int i = 0; i < viewList.size(); i++) {
-//                View viewBanner = viewList.get(i);
-//                ImageView imgBanner = viewBanner.findViewById(R.id.img_banner);
-//                byte[] data=bitmapByteList.get(i);
-//                Bitmap bitmap=getBitmap(data);
-//                imgBanner.setImageBitmap(bitmap);
-//            }
-//        }else{   //为空，从网络获取
-//            getContract().requestImageVP();
-//        }
-
-//        BannerAdapter pagerAdapter=new BannerAdapter(viewList,beanLists,new OnLoadImageListener(){
-//
-//            @Override
-//            public void loadImage(int position, View imageView) {
-//                //.out.println(bitmapLists.get(position));
-//                //String imagePath = bannerBean.getImagePath();
-//                //((ImageView)imageView).setImageBitmap(getImageBitmap(imagePath));
-//            }
-//        });
         BannerAdapter pagerAdapter = new BannerAdapter(viewList);
-        pagerAdapter.setOnPictureClickListener(new BannerAdapter.OnPictureClickListener() {
-            @Override
-            public void onPictureClick(int position) {
-                String url = beanLists.get(position).getUrl();
-                Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
-                //Toast.makeText(getActivity(), "clicked"+position, Toast.LENGTH_SHORT).show();
-            }
+        pagerAdapter.setOnPictureClickListener(position -> {
+            //点击轮播图则跳转对应的网页
+            String url = beanLists.get(position).getUrl();
+            Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
+            //有机会可以做保存轮播图对应的文章的历史记录
         });
-
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(2);
+        //设置ViewPager的缓存页数为3
+        viewPager.setOffscreenPageLimit(TWO);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -527,17 +388,16 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state == 0) {
+                if (state == ZERO) {
                     mHandler.removeCallbacksAndMessages(null);
-                    mHandler.sendEmptyMessageDelayed(0, 3000);
+                    mHandler.sendEmptyMessageDelayed(ZERO, THREE_THOUSAND);
                 }
             }
         });
-        mHandler.sendEmptyMessageDelayed(0, 1000 * 3);
+        //发送信息使轮播图开始滚动
+        mHandler.sendEmptyMessageDelayed(ZERO, THREE_THOUSAND);
         return view;
     }
-
-
 
     @SuppressLint("HandlerLeak")
     public static Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -545,34 +405,21 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         @Override
         public void handleMessage(Message msg) {
             if (msg.what==0){
+                //用于每隔3秒切换轮播图
                 int count = 3;
                 int index = viewPager.getCurrentItem();
                 index = (index + 1) % count;
                 viewPager.setCurrentItem(index);
                 mHandler.sendEmptyMessageDelayed(0, 1000 * 3);
             }else {
+                //加载文章完成则通知adapter进行更新
                 adapter.notifyDataSetChanged();
             }
-
         }
     };
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onDestroy() {
-
-        Log.d("HomeFragment", "onDestroy" + SystemClock.elapsedRealtime());
-        super.onDestroy();
-    }
-
     @Override
     protected void initData() {
-//        if (articleList.size()==0){
-//            for (int i =0;i<20;i++){
-//                articleList.add(new ArticleBean(i));
-//            }
-//        }
-
     }
 
     @Override
@@ -592,5 +439,4 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     @Override
     public void onClick(View v) {
     }
-
 }

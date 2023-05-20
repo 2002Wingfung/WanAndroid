@@ -5,7 +5,6 @@ import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.thre
 import static com.hongyongfeng.wanandroid.util.Constant.ARTICLE_URL_1;
 import static com.hongyongfeng.wanandroid.util.Constant.ONE;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,9 +60,10 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             for (int i=0;i<jsonArray.length();i++){
                 JSONObject jsonObject=jsonArray.getJSONObject(i);
                 //获取json中的字段
+                int id=jsonObject.getInt("id");
                 String imagePath =jsonObject.getString("imagePath");
                 String url =jsonObject.getString("url");
-                BannerBean bannerBean=new BannerBean(imagePath,url);
+                BannerBean bannerBean=new BannerBean(imagePath,url,id);
                 beanList.add(bannerBean);
             }
         } catch (JSONException e) {

@@ -14,14 +14,18 @@ import java.util.List;
  * @author Wingfung Hung
  */
 public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentModel, HomeFragment, HomeFragmentInterface.ViewPresenter> {
+    /**
+     * 将Model层与P层绑定
+     * @return 一个Model层对象
+     */
     @Override
     public HomeFragmentModel getModelInstance() {
         return new HomeFragmentModel(this);
     }
 
     /**
-     *
-     * @return 返回p层接口
+     *用于回调下面的重载方法
+     * @return 返回p层接口，用于回调
      */
     @Override
     public HomeFragmentInterface.ViewPresenter getContract() {
@@ -56,18 +60,14 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
 
             @Override
             public void requestImageVp() {
-                //核验请求的信息，进行逻辑处理
                 //调用model层
                 try {
-//                    mModel.requestLogin(name,pwd);
                     mModel.getContract().requestImageM();
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     //异常的处理
                     //保存到日志
                     //一系列的异常处理
-                    //...
                 }
             }
 
@@ -113,9 +113,7 @@ public class HomeFragmentPresenter extends BaseFragmentPresenter<HomeFragmentMod
             public void saveHistory(ArticleBean article) {
                 try {
                     mModel.getContract().saveArticleM(article);
-
-                }catch (Exception e)
-                {
+                }catch (Exception e) {
                     e.printStackTrace();
                 }
             }

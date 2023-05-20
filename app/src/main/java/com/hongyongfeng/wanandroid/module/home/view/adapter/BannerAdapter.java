@@ -1,6 +1,8 @@
 package com.hongyongfeng.wanandroid.module.home.view.adapter;
 
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
+
+import android.annotation.SuppressLint;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,28 +10,31 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class BannerAdapter extends PagerAdapter {
-    View view1,view2,view3,view4;
-    private List<View> viewList;
+    /**
+     * 装有图片的View集合
+     */
+    private final List<View> viewList;
+    /**
+     * 用于标识是否按下，按下为0，松开为1
+     */
     public int up=0;
+    /**
+     * 用于标识是否按下，按下为1，松开为0
+     */
     public static int down=0;
 
-
-//    /**
-//     * @param bannerBean          装有图片路径的数据源
-//     * @param onLoadImageListener 加载图片的回调接口 让调用层处理加载图片的逻辑
-//     */
-//    public BannerAdapter(List<View> viewList,List<BannerBean> bannerBean, OnLoadImageListener onLoadImageListener) {
-//        this.mBannerBean = bannerBean;
-//        this.mOnLoadImageListener = onLoadImageListener;
-//        this.viewList = viewList;
-//    }
-
-    public BannerAdapter( List<View> viewList) {
+    public BannerAdapter(List<View> viewList) {
         this.viewList = viewList;
-
     }
     public interface OnPictureClickListener{
+        /**
+         * Banner图片点击事件接口
+         * @param position 图片的索引标号
+         */
         void onPictureClick(int position);
     }
     private OnPictureClickListener onPictureClickListener;
@@ -49,47 +54,40 @@ public class BannerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position,
                             @NonNull Object object) {
-        //container.removeView(viewList.get(position));
+        //不调用父类的销毁ViewPager的方法
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = viewList.get(position);
-//        ImageView iv= view.findViewById(R.id.img_banner);
-//        //等比例缩放图片,占满容器
-//        //iv.setScaleType(ImageView.ScaleType.FIT_XY);
-//        if (null!=mOnLoadImageListener){
-//            //设置回调,传入数据 让调用层(Activity)去处理加载图片的逻辑
-//            mOnLoadImageListener.loadImage(position,iv);
-//        }
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //回调机制
-                onPictureClickListener.onPictureClick(position);
-            }
+        view.setOnClickListener(v -> {
+            //回调机制，点击图片事件回调
+            onPictureClickListener.onPictureClick(position);
         });
+        //监听是否触摸该view
         view.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        //按下
+                        //按下，则清除Handler中的信息
                         mHandler.removeCallbacksAndMessages(null);
                         down=1;
                         up=0;
-                        System.out.println("Down");
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
                         //抬起
                         down=0;
                         up=1;
+                        //重新发送信息使得轮播图滚动
                         mHandler.sendEmptyMessageDelayed(0, 1000*3);
-                        System.out.println("up");
                         break;
                     }
+                    default:
+                        break;
                 }
                 return false;
             }

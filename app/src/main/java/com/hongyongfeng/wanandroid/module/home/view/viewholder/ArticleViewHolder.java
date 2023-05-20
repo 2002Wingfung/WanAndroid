@@ -14,35 +14,50 @@ import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
  */
 public class ArticleViewHolder extends RecyclerView.ViewHolder{
     /**
-     * 菜品item视图
+     * 文章item视图
      */
     public View articleView;
-    public TextView tvId;
+    /**
+     * 文章标题
+     */
     public TextView tvTitle;
+    /**
+     * 文章的点赞按钮
+     */
     public TextView tvLikes;
+    /**
+     * 文章置顶标识
+     */
     public TextView tvTop;
+    /**
+     * 文章类别
+     */
     public TextView tvCategory;
+    /**
+     * 文章发布时间
+     */
     public TextView tvTime;
+    /**
+     * 文章作者
+     */
     public TextView tvAuthor;
-
 
     public ArticleViewHolder(@NonNull View itemView, final ArticleAdapter.OnItemClickListener onClickListener) {
         super(itemView);
         articleView=itemView;
-        tvId =itemView.findViewById(R.id.tv_title);
         tvTitle=itemView.findViewById(R.id.title);
         tvLikes=itemView.findViewById(R.id.likes);
         tvTop=itemView.findViewById(R.id.top);
         tvCategory=itemView.findViewById(R.id.category);
         tvTime=itemView.findViewById(R.id.time);
         tvAuthor=itemView.findViewById(R.id.author);
-
         final int[] count={0};
         tvLikes.setOnClickListener(view -> {
             if (onClickListener != null) {
                 int position = getAdapterPosition();
                 //确保position值有效
                 if (position != RecyclerView.NO_POSITION) {
+                    //点赞事件的监听回调
                     onClickListener.onLikesClicked(view, position,tvLikes,count);
                 }
             }
@@ -52,6 +67,7 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
                 int position = getAdapterPosition();
                 //确保position值有效
                 if (position != RecyclerView.NO_POSITION) {
+                    //点击item事件监听回调
                     onClickListener.onArticleClicked(view, position);
                 }
             }

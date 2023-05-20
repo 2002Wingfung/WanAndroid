@@ -15,10 +15,23 @@ public class BannerBean implements Serializable {
      * 图片所对应的链接
      */
     private String url;
+    /**
+     * 图片所对应的id
+     */
+    private int id;
 
-    public BannerBean(String imagePath, String url) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public BannerBean(String imagePath, String url, int id) {
         this.imagePath = imagePath;
         this.url = url;
+        this.id=id;
     }
 
     public String getImagePath() {
