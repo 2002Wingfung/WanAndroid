@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -142,7 +143,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                                 imgBanner.setImageBitmap(bitmap);
                                 bitmapByteList.add(getBytes(bitmap));
                             }
-                            System.out.println("exists");
+                            //System.out.println("exists");
                             SaveArticle.setData(fragmentActivity,beanList,2);
                             SaveArticle.setData(fragmentActivity,bitmapByteList,1);
                             dialogHandler.sendEmptyMessage(1);
@@ -150,14 +151,38 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             for (int i = 0; i < viewList.size(); i++) {
                                 View view = viewList.get(i);
                                 ImageView imgBanner = view.findViewById(R.id.img_banner);
+
                                 Bitmap bitmap=bitmapLists.get(i);
+
+                                //制定测量规则 参数表示size + mode
+                                int width = View.MeasureSpec.makeMeasureSpec(0,
+                                        View.MeasureSpec.UNSPECIFIED);
+                                int height = View.MeasureSpec.makeMeasureSpec(0,
+                                        View.MeasureSpec.UNSPECIFIED);
+                                //调用measure方法之后就可以获取宽高
+                                imgBanner.measure(width, height);
+//                                ConstraintLayout layout1=fragmentActivity.findViewById(R.id.fragment_home);
+//                                System.out.println("layout"+layout1);
+//                                layout1.measure(width,height);
+//                                System.out.println(layout1.getMeasuredWidth());
+                                //System.out.println(imgBanner.getWidth());
+                                System.out.println(imgBanner.getMeasuredWidth());
                                 imgBanner.setImageBitmap(bitmap);
+                                imgBanner.measure(width, height);
+
+                                System.out.println(imgBanner.getMeasuredWidth());
+
+//                                viewPager.measure(width,height);
+//                                System.out.println(viewPager.getMeasuredWidth());
                             }
                             //file.delete();
                         }
                         //dialogHandler.sendEmptyMessage(1);
                     }
+
                 });
+
+
             }
 
             @SuppressLint("NotifyDataSetChanged")
@@ -260,6 +285,17 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SetRecyclerView.setRecyclerViewScroll(fragmentActivity, recyclerView, adapter);
+        ConstraintLayout ll=fragmentActivity.findViewById(R.id.fragment_home);
+        System.out.println("layout"+ll);
+        ViewTreeObserver vto2 = ll.getViewTreeObserver();
+        vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                ll.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                Log.i("TAG", "方法3："+String.valueOf(ll.getWidth())+":"+ll.getHeight());
+            }
+        });
+        Log.i("TAG", "屏幕的宽度："+fragmentActivity.getWindowManager().getDefaultDisplay().getWidth());
     }
 
     @Override
@@ -411,9 +447,19 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+////制定测量规则 参数表示size + mode
+//        int width = View.MeasureSpec.makeMeasureSpec(0,
+//                View.MeasureSpec.UNSPECIFIED);
+//        int height = View.MeasureSpec.makeMeasureSpec(0,
+//                View.MeasureSpec.UNSPECIFIED);
+////调用measure方法之后就可以获取宽高
+//        view.measure(width, height);
+//        System.out.println("width"+view.getMeasuredWidth()); // 获取宽度
+//        System.out.println(view.getWidth());
+//        System.out.println("height"+view.getMeasuredHeight());// 获取高度
+//        System.out.println(view.getHeight());
 
         viewPager = view.findViewById(R.id.indicator_all);
-
 
         inflater = getLayoutInflater();
         View view1 = inflater.inflate(R.layout.layout1, container,false);
@@ -492,9 +538,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     }
 
 
+
     @SuppressLint("HandlerLeak")
     public static Handler mHandler = new Handler(Looper.getMainLooper()) {
         @SuppressLint("NotifyDataSetChanged")
+        @Override
         public void handleMessage(Message msg) {
             if (msg.what==0){
                 int count = 3;
