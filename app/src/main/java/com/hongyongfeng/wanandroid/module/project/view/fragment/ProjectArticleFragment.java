@@ -255,9 +255,14 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         });
         LinearLayoutManager layoutManager= (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (newState==0){
+                    //System.out.println(newState);
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
