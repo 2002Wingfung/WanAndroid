@@ -6,9 +6,9 @@ import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.CANCEL_COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.QUERY_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO;
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
-
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -17,7 +17,6 @@ import com.hongyongfeng.wanandroid.module.query.interfaces.LoadMoreInterface;
 import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
 import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
-
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
         return new LoadMoreInterface.Model() {
             @Override
             public void requestLoadMoreM(String key,int page){
-                String query="https://www.wanandroid.com/article/query/"+page+"/json";
+                String query=DOMAIN_URL+QUERY_URL+page+JSON_URL;
                 HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
