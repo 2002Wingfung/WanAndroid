@@ -99,7 +99,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private ViewPager viewPager;
-    private FragmentAdapter adapter;
     private List<Fragment> fragmentList;
     private TextView tvWelcome;
     private TextView tvName;
@@ -351,7 +350,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         //设置修改后的布局。
         drawerLayout.setLayoutParams(para);
         initEvent();
-        adapter=new FragmentAdapter(getSupportFragmentManager(),fragmentList);
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(TWO);
         ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);

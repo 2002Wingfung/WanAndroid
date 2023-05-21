@@ -1,21 +1,24 @@
 package com.hongyongfeng.wanandroid.module.query.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by lin.zhou on 2015/8/12.
+ *
+ * @author Wingfung Hung
  * 流式布局
  */
 public class FlowLayout extends ViewGroup {
 
-    private List<Line> mLines = new ArrayList<Line>(); // 用来记录描述有多少行View
-    private Line mCurrrenLine;                                            // 用来记录当前已经添加到了哪一行
+    /**
+     * 用来记录描述有多少行View
+     */
+    private final List<Line> mLines = new ArrayList<>();
     private int mHorizontalSpace = 10;
     private int mVerticalSpace = 6;
 
@@ -32,11 +35,13 @@ public class FlowLayout extends ViewGroup {
         this.mVerticalSpace = verticalSpace;
     }
 
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //清空
         mLines.clear();
-        mCurrrenLine = null;
+        //用来记录当前已经添加到了哪一行
+        Line mCurrentLine = null;
         int layoutWidth = MeasureSpec.getSize(widthMeasureSpec);
         // 获取行最大的宽度
         int maxLineWidth = layoutWidth - getPaddingLeft() - getPaddingRight();
@@ -45,51 +50,49 @@ public class FlowLayout extends ViewGroup {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View v = getChildAt(i);
-
             //如果孩子不可见
             if (v.getVisibility() == GONE) {
                 continue;
             }
             measureChild(v, widthMeasureSpec, heightMeasureSpec);
             // 往lines添加孩子
-            if (mCurrrenLine == null) {
+            if (mCurrentLine == null) {
                 // 说明还没有开始添加孩子
-                mCurrrenLine = new Line(maxLineWidth, mHorizontalSpace);
+                mCurrentLine = new Line(maxLineWidth, mHorizontalSpace);
 
                 // 添加到 Lines中
-                mLines.add(mCurrrenLine);
+                mLines.add(mCurrentLine);
 
                 // 行中一个孩子都没有
-                mCurrrenLine.addView(v);
+                mCurrentLine.addView(v);
             } else {
                 // 行中有孩子了
-                Boolean canAdd = mCurrrenLine.canAdd(v);
+                boolean canAdd = mCurrentLine.canAdd(v);
                 if (canAdd) {
-                    mCurrrenLine.addView(v);
+                    mCurrentLine.addView(v);
                 } else {
                     //装不下，换行
-                    mCurrrenLine = new Line(maxLineWidth, mHorizontalSpace);
-                    mLines.add(mCurrrenLine);
+                    mCurrentLine = new Line(maxLineWidth, mHorizontalSpace);
+                    mLines.add(mCurrentLine);
                     // 将view添加到line
-                    mCurrrenLine.addView(v);
+                    mCurrentLine.addView(v);
                 }
 
             }
         }
         // 设置自己的宽度和高度
-        int measuredWidth = layoutWidth;
         float allHeight = 0;
         for (int i = 0; i < mLines.size(); i++) {
-            float mHeigth = mLines.get(i).mHeigth;
+            float mHeight = mLines.get(i).mHeight;
             // 加行高
-            allHeight += mHeigth;
+            allHeight += mHeight;
             // 加间距
             if (i != 0) {
                 allHeight += mVerticalSpace;
             }
         }
         int measuredHeight = (int) (allHeight + getPaddingTop() + getPaddingBottom() + 0.5f);
-        setMeasuredDimension(measuredWidth, measuredHeight);
+        setMeasuredDimension(layoutWidth, measuredHeight);
     }
 
     @Override
@@ -104,22 +107,18 @@ public class FlowLayout extends ViewGroup {
             // 给行布局
             line.layout(paddingLeft, offsetTop);
 
-            offsetTop += line.mHeigth + mVerticalSpace;
+            offsetTop += line.mHeight + mVerticalSpace;
         }
     }
 
 
-    class Line {
+    static class Line {
         // 属性
-        private List<View> mViews = new ArrayList<View>();    // 用来记录每一行有几个View
-        private float mMaxWidth;                            // 行最大的宽度
-        private float mUsedWidth;                        // 已经使用了多少宽度
-        private float mHeigth;                            // 行的高度
-        private float mMarginLeft;
-        private float mMarginRight;
-        private float mMarginTop;
-        private float mMarginBottom;
-        private float mHorizontalSpace;                    // View和view之间的水平间距
+        private final List<View> mViews = new ArrayList<>();// 用来记录每一行有几个View
+        private final float mMaxWidth;  // 行最大的宽度
+        private float mUsedWidth;  // 已经使用了多少宽度
+        private float mHeight; // 行的高度
+        private final float mHorizontalSpace; // View和view之间的水平间距
 
         // 构造
         public Line(int maxWidth, int horizontalSpace) {
@@ -131,7 +130,7 @@ public class FlowLayout extends ViewGroup {
         /**
          * 添加view，记录属性的变化
          *
-         * @param view
+         * @param view 每个TextView视图
          */
         public void addView(View view) {
             // 加载View的方法
@@ -147,11 +146,11 @@ public class FlowLayout extends ViewGroup {
                 } else {
                     mUsedWidth = viewWidth;
                 }
-                mHeigth = viewHeight;
+                mHeight = viewHeight;
             } else {
                 // 多个view的情况
                 mUsedWidth += viewWidth + mHorizontalSpace;
-                mHeigth = mHeigth < viewHeight ? viewHeight : mHeigth;
+                mHeight = mHeight < viewHeight ? viewHeight : mHeight;
             }
 
             // 将View记录到集合中
@@ -161,8 +160,8 @@ public class FlowLayout extends ViewGroup {
         /**
          * 用来判断是否可以将View添加到line中
          *
-         * @param view
-         * @return
+         * @param view 每个TextView视图
+         * @return 加得进去则返回true，加不进去则返回false
          */
         public boolean canAdd(View view) {
             // 判断是否能添加View
@@ -178,19 +177,15 @@ public class FlowLayout extends ViewGroup {
             // 预计使用的宽度
             float planWidth = mUsedWidth + mHorizontalSpace + viewWidth;
 
-            if (planWidth > mMaxWidth) {
-                // 加不进去
-                return false;
-            }
-
-            return true;
+            // 加不进去
+            return planWidth < mMaxWidth;
         }
 
         /**
          * 给孩子布局
          *
-         * @param offsetLeft
-         * @param offsetTop
+         * @param offsetLeft 控件内部偏离左边界的距离
+         * @param offsetTop 控件内部偏离上边界的距离
          */
         public void layout(int offsetLeft, int offsetTop) {
             // 给孩子布局
@@ -199,7 +194,7 @@ public class FlowLayout extends ViewGroup {
 
             int size = mViews.size();
             // 判断已经使用的宽度是否小于最大的宽度
-            float extra = 0;
+            float extra ;
             float widthAvg = 0;
             if (mMaxWidth > mUsedWidth) {
                 extra = mMaxWidth - mUsedWidth;
@@ -225,8 +220,7 @@ public class FlowLayout extends ViewGroup {
 
                 // 布局
                 int left = currentLeft;
-                int top = (int) (offsetTop + (mHeigth - viewHeight) / 2 +
-                        0.5f);
+                int top = (int) (offsetTop + (mHeight - viewHeight) / 2 + 0.5f);
                 // int top = offsetTop;
                 int right = left + viewWidth;
                 int bottom = top + viewHeight;

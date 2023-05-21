@@ -27,6 +27,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import com.hongyongfeng.wanandroid.R;
@@ -38,6 +40,7 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.HomeFragmentInterface;
 import com.hongyongfeng.wanandroid.module.home.presenter.HomeFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
+import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SaveArticle;
@@ -47,6 +50,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.ViewPresenter> {
     public Handler dialogHandler = new Handler(Looper.myLooper()) {
         @Override
@@ -133,7 +139,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         //如果文件不存在，则保存图片到本地储存中
                         SaveArticle.setData(fragmentActivity,beanList,TWO);
                         SaveArticle.setData(fragmentActivity,bitmapByteList,ONE);
-                        dialogHandler.sendEmptyMessage(ONE);
+                        //dialogHandler.sendEmptyMessage(ONE);
+                        loadFragment();
+                        transaction.hide(fragment).commit();
                     }else {
                         for (int i = 0; i < viewList.size(); i++) {
                             View view = viewList.get(i);
@@ -155,6 +163,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
+                        loadFragment();
                         if ((articleList.size()==0)){
                             if (articleTopLists!=null){
                                 if (articleTopLists.size()!=0){
@@ -167,10 +176,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                             articleList.addAll(articleLists);
                             adapter.notifyDataSetChanged();
                             if (file.exists()){
-                                dialog.dismiss();
+//                                dialog.dismiss();
+                                transaction.hide(fragment).commit();
                             }
                         }else {
-                            dialog.dismiss();
+//                            dialog.dismiss();
+                            transaction.hide(fragment).commit();
                         }
                     }
                 });
@@ -223,6 +234,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
     private RecyclerView recyclerView;
     private int count = 0;
     private int count1 = 0;
+    private FragmentTransaction transaction;
+    private final LoadingFragment fragment=new LoadingFragment();
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -271,7 +284,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {   //scrollY是滑动的距离
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                     //滑动到底部
-                    dialog.show();
+                    dialog= ProgressDialog.show(requireActivity(), "", "正在加载", false, false);;
+
                     //加载失败时
                     if (errorCode==1){
                         articleList.clear();
@@ -332,7 +346,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             }
         });
     }
-
+    private void loadFragment(){
+        FragmentManager fragmentManager = getChildFragmentManager();
+        transaction= fragmentManager.beginTransaction();
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -343,7 +360,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         if (count == 0) {
             //如果是第一次打开主页Fragment,则加载数据
             //setRetainInstance(true);
-            dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
+            loadFragment();
+            transaction.add(R.id.fragment_home,fragment).show(fragment);
+            transaction.commit();
+            //dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
             getContract().requestArticleVp();
             count = 1;
         }
@@ -404,13 +424,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         @SuppressLint("NotifyDataSetChanged")
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what==0){
+            if (msg.what==ZERO){
                 //用于每隔3秒切换轮播图
                 int count = 3;
                 int index = viewPager.getCurrentItem();
-                index = (index + 1) % count;
+                index = (index + ONE) % count;
                 viewPager.setCurrentItem(index);
-                mHandler.sendEmptyMessageDelayed(0, 1000 * 3);
+                mHandler.sendEmptyMessageDelayed(ZERO, THREE_THOUSAND);
             }else {
                 //加载文章完成则通知adapter进行更新
                 adapter.notifyDataSetChanged();

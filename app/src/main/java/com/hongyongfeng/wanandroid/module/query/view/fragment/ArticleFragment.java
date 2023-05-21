@@ -1,6 +1,11 @@
 package com.hongyongfeng.wanandroid.module.query.view.fragment;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
+
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +35,7 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInterface.Vp> {
     @Override
@@ -163,25 +169,21 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (isSlideToBottom(recyclerView)) {
-                    dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
+                    dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
                     getContract().requestLoadMoreVp(edtQuery.getText().toString(),page);
                     page++;
                 }
             }
         });
 
-        //System.out.println(recyclerView.canScrollVertically(-1));
-        //判断是否滑动到底部
-        //返回false表示不能往上滑动，即代表到底部了
         adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
-                int number2 = 2;
-                int number0 = 0;
+                int number0 = ZERO;
                 if (articleList.get(position).isCollect()){
-                    number0=1;
+                    number0=ONE;
                 }
-                if (count[0] % number2 == number0) {
+                if (count[0] % TWO == number0) {
                     getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
@@ -202,9 +204,8 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                         }
                     });
                 }
-                count[0]++;
+                count[ZERO]++;
             }
-
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent = new Intent(fragmentActivity, WebViewActivity.class);
@@ -224,7 +225,6 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
     @Override
     protected void initData() {
-
     }
 
     @Override
@@ -234,7 +234,6 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
     @Override
     protected <ERROR> void responseError(ERROR error, Throwable throwable) {
-
     }
 
     @Override
@@ -245,7 +244,6 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -259,16 +257,12 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
     @Override
     public void onHiddenChanged(boolean hidden) {
+        //hidden为true，则不在最前端显示 相当于调用了onPause();
         super.onHiddenChanged(hidden);
-        if (hidden) {   // 不在最前端显示 相当于调用了onPause();
-            //System.out.println("hide");;
-        }else{  // 在最前端显示 相当于调用了onResume();
-            //System.out.println("show");//网络数据刷新
-
+        if (!hidden){
+            // hidden为false,则在最前端显示，相当于调用了onResume();
             if (getArguments() != null) {
                 articleBeanList = getArguments().getParcelableArrayList("list");
-//                articleBeanList.remove(0);
-//                articleBeanList.remove(0);
             }
             loadData();
         }
@@ -276,20 +270,17 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
-
-        if (articleList.size()==0){
+        if (articleList.size()==ZERO){
             articleList.addAll(articleBeanList);
         }else {
             articleList.clear();
             articleList.addAll(articleBeanList);
         }
         adapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(0);
-        //adapter.notifyItemRangeChanged(0,articleList.size());
+        recyclerView.scrollToPosition(ZERO);
     }
 
     @Override
     public void onClick(View v) {
-
     }
 }

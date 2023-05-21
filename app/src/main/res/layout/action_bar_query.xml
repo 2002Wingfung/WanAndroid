@@ -26,7 +26,7 @@
         app:layout_constraintStart_toEndOf="@id/tv_back"
         app:layout_constraintEnd_toStartOf="@id/tv_clear"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="#e5e7e6"
+        android:textColor="#F5F5F5"
         android:gravity="center"
         android:maxLines="1"
         android:singleLine="true"
