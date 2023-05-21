@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -29,15 +31,16 @@ import java.util.List;
  * @author Wingfung Hung
  */
 public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
-    TextView tvBack;
-    TextView tvTitle;
-    RecyclerView recyclerView;
-    //可以是网络获取的bean,也可以是本地获取的bean
-    ArrayList<ArticleBean> articleBeanLists=new ArrayList<>();
-    ArticleAdapter adapter=new ArticleAdapter(articleBeanLists);
-    static ProgressDialog dialog;
-
-    private int page=0;
+    private TextView tvBack;
+    private TextView tvTitle;
+    private RecyclerView recyclerView;
+    /**
+     * 可以是网络获取的bean,也可以是本地获取的bean
+     */
+    private final ArrayList<ArticleBean> articleBeanLists=new ArrayList<>();
+    private final ArticleAdapter adapter=new ArticleAdapter(articleBeanLists);
+    private ProgressDialog dialog;
+    private int page=ZERO;
     @Override
     public MoreInterface.Vp getContract() {
         return new MoreInterface.Vp() {
@@ -54,7 +57,6 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
             @Override
             public void unCollectVp(int id, CollectListener listener) {
                 mPresenter.getContract().unCollectVp(id,listener);
-
             }
 
             @Override
@@ -120,37 +122,30 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
 
             @Override
             public void collectResponse(int code) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(MoreActivity.this, "点赞成功", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(MoreActivity.this, "还没登录", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(MoreActivity.this, SignInUpActivity.class);
-                            startActivity(intent);
-                            dialog.dismiss();
-                            finish();
-                        }else {
-                            Toast.makeText(MoreActivity.this, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(MoreActivity.this, "点赞成功", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(MoreActivity.this, "还没登录", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(MoreActivity.this, SignInUpActivity.class);
+                        startActivity(intent);
+                        dialog.dismiss();
+                        finish();
+                    }else {
+                        Toast.makeText(MoreActivity.this, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
-
             }
 
             @Override
             public void unCollectResponse(int code) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(MoreActivity.this, "取消点赞", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(MoreActivity.this, "还没登录", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(MoreActivity.this, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(MoreActivity.this, "取消点赞", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(MoreActivity.this, "还没登录", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(MoreActivity.this, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -185,11 +180,10 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
         adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
-                int number2 = 2;
-                int number0 = 0;
-                if (MoreActivity.this.count ==0){
-
-                    number0=1;
+                int number2 = TWO;
+                int number0 = ZERO;
+                if (MoreActivity.this.count ==ZERO){
+                    number0=ONE;
                     if (count[0] % number2 == number0) {
                         getContract().collectVp(articleBeanLists.get(position).getId(), new CollectListener() {
                             @Override
@@ -212,7 +206,7 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
                         });
                     }
                 }else {
-                    if (count[0] % number2 == number0) {
+                    if (count[ZERO] % number2 == number0) {
                         likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
                         Toast.makeText(MoreActivity.this, "点赞成功", Toast.LENGTH_SHORT).show();
                     } else {
@@ -220,13 +214,8 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
                         Toast.makeText(MoreActivity.this, "取消点赞", Toast.LENGTH_SHORT).show();
                     }
                 }
-                int number1 = 1;
-                //如果是收藏界面，则这里是number1，看看怎么把所有的item都变为红心
-                //如果是历史浏览界面，则这里是number0
-
-                count[0]++;
+                count[ZERO]++;
             }
-
             @Override
             public void onArticleClicked(View view, int position) {
                 Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
@@ -240,12 +229,10 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
 
     @Override
     public void initData() {
-
     }
 
     @Override
     public void destroy() {
-
     }
 
     @Override
@@ -261,7 +248,6 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
 
     @Override
     public <ERROR> void responseError(ERROR error, Throwable throwable) {
-
     }
     @Override
     public void initView() {
@@ -272,8 +258,8 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
     }
 
 
-    private int index=-1;
-    private int count =0;
+    private int index=-ONE;
+    private int count =ZERO;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -281,17 +267,17 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
         if (intent!=null){
             String title=intent.getStringExtra("title");
             tvTitle.setText(title);
-            index=intent.getIntExtra("index",-1);
+            index=intent.getIntExtra("index",-ONE);
             switch (index){
-                case 0:
+                case ZERO:
                     dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
                     getContract().requestCollectVp(ZERO);
-                    count=0;
+                    count=ZERO;
                     break;
-                case 1:
+                case ONE:
                     dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
                     getContract().requestHistoryVp();
-                    count=1;
+                    count=ONE;
                     break;
                 default:
                     break;
@@ -302,19 +288,15 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.tv_back:
-                index=-1;
-                finish();
-                break;
-            default:
-                break;
+        if (v.getId() == R.id.tv_back) {
+            index = -ONE;
+            finish();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        index=-1;
+        index=-ONE;
     }
 }

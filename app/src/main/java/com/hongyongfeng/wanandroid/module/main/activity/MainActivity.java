@@ -2,28 +2,25 @@ package com.hongyongfeng.wanandroid.module.main.activity;
 
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
 import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
+import static com.hongyongfeng.wanandroid.util.Constant.FIVE;
+import static com.hongyongfeng.wanandroid.util.Constant.FOUR;
 import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.SEVEN;
+import static com.hongyongfeng.wanandroid.util.Constant.THREE;
+import static com.hongyongfeng.wanandroid.util.Constant.THREE_THOUSAND;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO;
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,13 +30,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
@@ -53,11 +48,9 @@ import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
 import com.hongyongfeng.wanandroid.service.LongRunningTimeService;
 import com.hongyongfeng.wanandroid.test.FragmentAdapter;
 import com.hongyongfeng.wanandroid.util.ThreadPools;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 /**
  * 主活动
@@ -70,8 +63,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
     private TextView tvTitle;
     private TextView navMenu;
     private DrawerLayout drawer;
-
-    //以下为底部导航栏所需的成员变量
     private LinearLayout home;
     private LinearLayout knowledge;
     private LinearLayout project;
@@ -81,23 +72,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
     private TextView tvHome;
     private TextView tvKnowledge;
     private TextView tvProject;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
     private TextView tvWelcome;
     private TextView tvName;
-    //以上为底部导航栏所需的成员变量
     private ListView listView;
     private final String[] listData={"我的收藏","浏览历史","关于","设置","退出登录"};
-    private int count=0;
-
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        //AppCompatDelegate.MODE_NIGHT_NO
-    }
+    private int count=ZERO;
 
     @Override
     public MainInterface.Vp getContract() {
@@ -109,139 +90,94 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
 
             @Override
             public void responseResult(String name) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvName.setText(name);
-                        tvWelcome.setText("欢迎");
-                    }
+                runOnUiThread(() -> {
+                    tvName.setText(name);
+                    tvWelcome.setText("欢迎");
                 });
             }
         };
-    }
-    public static void makeStatusBarTransparent(Activity activity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return;
-        }
-        Window window = activity.getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            int option = window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(option);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
     }
 
     @Override
     public void initListener() {
         tvQuery.setOnClickListener(this);
-        //navigationView.setNavigationItemSelectedListener(this);//nva菜单的Item点击事件钮监听
-        navMenu.setOnClickListener(this);//监听是否按下导航按钮
+        //监听是否按下导航按钮
+        navMenu.setOnClickListener(this);
         drawer.setOnClickListener(this);
         home.setOnClickListener(this);
         knowledge.setOnClickListener(this);
         project.setOnClickListener(this);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(MainActivity.this,
-//                                "你点击了:"+listData[position],
-//                                Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(MainActivity.this,MoreActivity.class);
-                if (position!=4){
-                    switch (position){
-                        case 0:
-                            intent.putExtra("title","我的收藏");
-                            intent.putExtra("index",0);
-                            break;
-                        case 1:
-                            intent.putExtra("title","浏览历史");
-                            intent.putExtra("index",1);
-                            break;
-                        case 2:
-                            intent.putExtra("title","关于");
-                            break;
-                        case 3:
-                            intent.putExtra("title","设置");
-                            break;
-                        default:
-                            break;
-                    }
-                    startActivity(intent);
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent=new Intent(MainActivity.this,MoreActivity.class);
+            if (position!=FOUR){
+                switch (position){
+                    case ZERO:
+                        intent.putExtra("title","我的收藏");
+                        intent.putExtra("index",ZERO);
+                        break;
+                    case ONE:
+                        intent.putExtra("title","浏览历史");
+                        intent.putExtra("index",ONE);
+                        break;
+                    case TWO:
+                        intent.putExtra("title","关于");
+                        break;
+                    case THREE:
+                        intent.putExtra("title","设置");
+                        break;
+                    default:
+                        break;
+                }
+                startActivity(intent);
+            }else {
+                if (WAN.equals(tvName.getText().toString())){
+                    Toast.makeText(MainActivity.this, "还没登录喔", Toast.LENGTH_SHORT).show();
                 }else {
-                    if (WAN.equals(tvName.getText().toString())){
-                        Toast.makeText(MainActivity.this, "还没登录喔", Toast.LENGTH_SHORT).show();
-                    }else {
-                        AlertDialog.Builder dialog=new AlertDialog.Builder(MainActivity.this);
-                        dialog.setTitle("确认退出登录?");
-                        dialog.setCancelable(false);
-                        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences preferences = MainActivity.this.getSharedPreferences(COOKIE_PREF, Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.clear();
-                                editor.apply();
-                                tvName.setText(WAN);
-                                tvWelcome.setText("欢迎");
-                                Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        dialog.show();
-                    }
-                    
+                    AlertDialog.Builder dialog=new AlertDialog.Builder(MainActivity.this);
+                    dialog.setTitle("确认退出登录?");
+                    dialog.setCancelable(false);
+                    dialog.setPositiveButton("确定", (dialog1, which) -> {
+                        SharedPreferences preferences = MainActivity.this.getSharedPreferences(COOKIE_PREF, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.apply();
+                        tvName.setText(WAN);
+                        tvWelcome.setText("欢迎");
+                        Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
+                    });
+                    dialog.setNegativeButton("取消", (dialog12, which) -> {
+                    });
+                    dialog.show();
                 }
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-//                if (position==0&&positionOffsetPixels==0&&stateDefault==1&&stateStart==0){
-//                    drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
-//                    stateStart=1;
-//                }
-                if (position==0&&positionOffsetPixels==0){
+                if (position==ZERO&&positionOffsetPixels==ZERO){
                     count++;
-                    //System.out.println(count);
                 }else {
-                    count=0;
+                    count=ZERO;
                 }
                 if (count>=25){
-                    drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
-                    count=0;
+                    drawer.openDrawer(GravityCompat.START);
+                    //设置左边菜单栏显示出来
+                    count=ZERO;
                 }
-//                if (position==0&&positionOffsetPixels==0&&stateStart==0){
-//                    //drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
-//                    left=true;
-//                    stateStart=1;
-//                    System.out.println("dui");
-//                }else{
-//                    left=false;
-//                }
             }
 
             @Override
             public void onPageSelected(int position) {
                 onViewPagerSelected(position);
-
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state==0){
-                    count=0;
+                if (state==ZERO){
+                    count=ZERO;
                 }
-                if(BannerAdapter.down==1&&state==0){
-                    mHandler.sendEmptyMessageDelayed(0,3000);
+                if(BannerAdapter.down==ONE&&state==ZERO){
+                    mHandler.sendEmptyMessageDelayed(ZERO,THREE_THOUSAND);
                 }
             }
         });
@@ -249,67 +185,36 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-//                if (slideOffset>percent0){
-//                    percent0=slideOffset;
-//                    StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
-//
-//                }
-//                if (slideOffset< percent0){
-//                    StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.blue);
-//                    percent0 =slideOffset;
-//
-//                }
             }
-
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
-//                ConstraintLayout layout=findViewById(R.id.include);
-
-                //makeStatusBarTransparent(HomeActivity.this);
-
-//                WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-//                localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-
             }
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-//                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.blue);
             }
 
             @Override
             public void onDrawerStateChanged(int newState) {
-
             }
         });
     }
-
     private void onViewPagerSelected(int position) {
-        loadFragment();
         resetBottomState();
-        if (position==0){
+        if (position==ZERO){
             setBottomItemSelected(R.id.ll_home);
-        } else if (position==1) {
+        } else if (position==ONE) {
             setBottomItemSelected(R.id.ll_knowledge);
-
         }else {
             setBottomItemSelected(R.id.ll_project);
         }
     }
-
     @Override
     public void initData() {
         fragmentList=new ArrayList<>();
-//        VPFragment fragmentHome=VPFragment.newInstance("首页文章","");
-//
-//        VPFragment fragmentKnowledge=VPFragment.newInstance("知识体系","");
-//        VPFragment fragmentProject=VPFragment.newInstance("项目","");
         fragmentList.add(new HomeFragment());
-//        fragmentList.add(fragmentHome);
         fragmentList.add(new KnowledgeFragment());
-//        fragmentList.add(fragmentProject);
         fragmentList.add(new ProjectFragment());
-
     }
 
     @Override
@@ -329,7 +234,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
         //获取DrawerLayout的布局
         ViewGroup.LayoutParams para= drawerLayout.getLayoutParams();
         //修改宽度
-        para.width=width1/7*5;
+        para.width=width1/SEVEN*FIVE;
         //修改高度
         para.height=height1;
         //设置修改后的布局。
@@ -343,7 +248,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
         Intent intent=new Intent(this, LongRunningTimeService.class);
         intent.setAction("com.hongyongfeng.wanandroid.service.LongRunningTimeService");
         startService(intent);
-        requestStoragePermission();
+        requestNotificationPermission();
     }
 
     @Override
@@ -355,14 +260,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
     private void initEvent() {
         //添加Fragment
         //设置默认是首页
-        loadFragment();
         setBottomItemSelected(R.id.ll_home);
         tvTitle.setText("首页文章");
     }
-    private void loadFragment(){
-        fragmentManager=getSupportFragmentManager();
-        fragmentTransaction=fragmentManager.beginTransaction();
-    }
+
 
     private void initBottomNavigationView() {
         home =findViewById(R.id.ll_home);
@@ -380,28 +281,30 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
     private void resetBottomState(){
         //重置底部导航栏的按钮颜色以及文字的颜色
         imgHome.setSelected(false);
-        tvHome.setTextColor(getResources().getColor(R.color.gray));
+        int color=ResourcesCompat.getColor(getResources(),R.color.gray,null);
+        tvHome.setTextColor(color);
         imgKnowledge.setSelected(false);
-        tvKnowledge.setTextColor(getResources().getColor(R.color.gray));
+        tvKnowledge.setTextColor(color);
         imgProject.setSelected(false);
-        tvProject.setTextColor(getResources().getColor(R.color.gray));
+        tvProject.setTextColor(color);
     }
     @SuppressLint("NonConstantResourceId")
     private void setBottomItemSelected(int id){
+        int color=ResourcesCompat.getColor(getResources(),R.color.blue,null);
         switch (id){
             case R.id.ll_home:
                 imgHome.setSelected(true);
-                tvHome.setTextColor(getResources().getColor(R.color.blue));
+                tvHome.setTextColor(color);
                 tvTitle.setText("首页文章");
                 break;
             case R.id.ll_knowledge:
                 imgKnowledge.setSelected(true);
-                tvKnowledge.setTextColor(getResources().getColor(R.color.blue));
+                tvKnowledge.setTextColor(color);
                 tvTitle.setText("知识体系");
                 break;
             case R.id.ll_project:
                 imgProject.setSelected(true);
-                tvProject.setTextColor(getResources().getColor(R.color.blue));
+                tvProject.setTextColor(color);
                 tvTitle.setText("项目");
                 break;
             default:
@@ -449,13 +352,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //判断请求码
-        if (requestCode==1){
+        if (requestCode==ONE){
             //结果码
-            if (resultCode==1)
+            if (resultCode==ONE)
             {
                 //取数据
                 String name = Objects.requireNonNull(data).getStringExtra("name");
-
                 //给控件赋值
                 tvName.setText(name);
                 tvWelcome.setText("欢迎");
@@ -468,7 +370,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
         int id=v.getId();
         boolean navBottom=(id==R.id.ll_home||id==R.id.ll_knowledge||id==R.id.ll_project);
         if (navBottom){
-            loadFragment();
             resetBottomState();
             setBottomItemSelected(id);
         }
@@ -477,24 +378,25 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
                 Intent intent=new Intent(MainActivity.this, QueryActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.tv_menu://左上角导航按钮
-                drawer.openDrawer(GravityCompat.START);//设置左边菜单栏显示出来
-//                StatusBarUtils.setWindowStatusBarColor(HomeActivity.this, R.color.transparent);
+            case R.id.tv_menu:
+                //左上角导航按钮
+                drawer.openDrawer(GravityCompat.START);
+                //设置左边菜单栏显示出来
                 break;
             case R.id.ll_home:
-                viewPager.setCurrentItem(0);
+                viewPager.setCurrentItem(ZERO);
                 break;
             case R.id.ll_knowledge:
-                viewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(ONE);
                 break;
             case R.id.ll_project:
-                viewPager.setCurrentItem(2);
+                viewPager.setCurrentItem(TWO);
                 break;
             default:
                 break;
         }
     }
-    private void requestStoragePermission() {
+    private void requestNotificationPermission() {
         List<String> needRequestList = checkPermission(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.ACCESS_NOTIFICATION_POLICY,
                         Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,Manifest.permission_group.NOTIFICATIONS});
@@ -503,8 +405,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
             //已授权
         } else {
             //申请权限
-            System.out.println("first,false");
-
             requestPermission(needRequestList);
         }
     }
@@ -519,23 +419,18 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
         return list;
     }
     private void requestPermission(List<String> needRequestList) {
-        ActivityCompat
-                .requestPermissions(MainActivity.this, needRequestList.toArray(new String[0]),
-                        111);
+        ActivityCompat.requestPermissions(MainActivity.this, needRequestList.toArray(new String[ZERO]), ONE);
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 111) {
-            for (int i = 0; i < permissions.length; i++) {
+        if (requestCode == ONE) {
+            for (int i = ZERO; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    System.out.println(true);
                     //已授权
                 } else {
                     //未授权
-                    System.out.println(false);
                 }
             }
         }

@@ -30,11 +30,16 @@ public class Constant {
                     "main_id INTEGER primary key autoincrement"+
                     ");";
     public static final String SELECT_SQL ="select id from article_bean where id=?";
+    public static final String SELECT_HISTORY_SQL ="select * from article_bean order by main_id desc";
     public static final String DELETE_SQL ="delete from article_bean where id=?";
     public static final int ZERO=0;
     public static final int ONE=1;
     public static final int TWO=2;
+    public static final int THREE=3;
     public static final int FOUR=4;
+    public static final int FIVE=5;
+    public static final int SIX=6;
+    public static final int SEVEN=7;
     public static final int ONE_HUNDRED=100;
     public static final int TWO_HUNDRED=200;
     public static final int THREE_HUNDRED=300;

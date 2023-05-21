@@ -165,13 +165,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                                 }
                             }
                             articleList.addAll(articleLists);
-                            adapter.notifyDataSetChanged();
                             if (file.exists()){
-//                                dialog.dismiss();
                                 transaction.hide(fragment).commit();
                             }
+                            adapter.notifyDataSetChanged();
                         }else {
-//                            dialog.dismiss();
                             transaction.hide(fragment).commit();
                         }
                     }
