@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
@@ -17,10 +15,13 @@ import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresen
 import com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment.LoginFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.register.fragment.RegisterFragment;
 import com.hongyongfeng.wanandroid.test.FragmentAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * @author Wingfung Hung
+ */
 public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
     public ILogin.VP getContract() {
@@ -81,18 +82,12 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
     public void initData() {
         fragmentList=new ArrayList<>();
-
-        //fragmentList.add(new BaseLogInUpFragment());
         fragmentList.add(new LoginFragment());
-
         fragmentList.add(new RegisterFragment());
-        //fragmentList.add(VPFragment.newInstance("123",""));
-
     }
 
     @Override
     public void destroy() {
-
     }
 
     @Override
@@ -114,15 +109,14 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter=new FragmentAdapter(getSupportFragmentManager(),fragmentList);
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);
     }
     private List<Fragment> fragmentList;
-    private FragmentAdapter adapter;
     private ViewPager viewPager;
-    TextView tvLogin;
-    TextView tvRegister;
-    TextView tvBack;
+    private TextView tvLogin;
+    private TextView tvRegister;
+    private TextView tvBack;
     @Override
     public void initView() {
         tvBack=findViewById(R.id.tv_back);
@@ -130,7 +124,6 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
         tvRegister=findViewById(R.id.tv_register);
         viewPager=findViewById(R.id.vp_login_and_register);
     }
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -148,6 +141,5 @@ public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
             default:
                 break;
         }
-
     }
 }
