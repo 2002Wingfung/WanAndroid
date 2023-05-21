@@ -1,15 +1,16 @@
 package com.hongyongfeng.wanandroid.module.query.presenter;
 
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
-import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.query.interfaces.HeatedWords;
 import com.hongyongfeng.wanandroid.module.query.model.HeatedWordsModel;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragment;
-
 import java.util.List;
 import java.util.Map;
 
-public class HeatedWordsPresenter extends BaseFragmentPresenter<HeatedWordsModel, HeatedWordsFragment, HeatedWords.VP> {
+/**
+ * @author Wingfung Hung
+ */
+public class HeatedWordsPresenter extends BaseFragmentPresenter<HeatedWordsModel, HeatedWordsFragment, HeatedWords.Vp> {
 
     @Override
     public HeatedWordsModel getModelInstance() {
@@ -17,31 +18,16 @@ public class HeatedWordsPresenter extends BaseFragmentPresenter<HeatedWordsModel
     }
 
     @Override
-    public HeatedWords.VP getContract() {
-        return new HeatedWords.VP() {
+    public HeatedWords.Vp getContract() {
+        return new HeatedWords.Vp() {
             @Override
-            public void requestQueryVP(String key, int page) {
-                try {
-                    mModel.getContract().requestQueryM(key,page);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void responseQueryResult(List<ArticleBean> queryResult) {
-                mView.getContract().responseQueryResult(queryResult);
-            }
-
-            @Override
-            public void requestHeatedWordsVP() {
+            public void requestHeatedWordsVp() {
                 try {
                     mModel.getContract().requestHeatedWordsM();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
-
             @Override
             public void responseHeatedWordsResult(List<Map<String,Object>> heatedWordsList) {
                 mView.getContract().responseHeatedWordsResult(heatedWordsList);

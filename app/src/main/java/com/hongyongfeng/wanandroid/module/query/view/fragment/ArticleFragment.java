@@ -1,16 +1,12 @@
 package com.hongyongfeng.wanandroid.module.query.view.fragment;
 
-import static android.content.Intent.getIntent;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,17 +31,17 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInterface.VP> {
+public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInterface.Vp> {
     @Override
-    public LoadMoreInterface.VP getContract() {
-        return new LoadMoreInterface.VP() {
+    public LoadMoreInterface.Vp getContract() {
+        return new LoadMoreInterface.Vp() {
             @Override
-            public void requestLoadMoreVP(String key,int page) {
-                mPresenter.getContract().requestLoadMoreVP(key,page);
+            public void requestLoadMoreVp(String key, int page) {
+                mPresenter.getContract().requestLoadMoreVp(key,page);
             }
 
             @Override
-            public void responseLoadMoreVP(List<ArticleBean> articleLists) {
+            public void responseLoadMoreVp(List<ArticleBean> articleLists) {
                 fragmentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -75,13 +70,13 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             }
 
             @Override
-            public void collectVP(int id, CollectListener listener) {
-                mPresenter.getContract().collectVP(id,listener);
+            public void collectVp(int id, CollectListener listener) {
+                mPresenter.getContract().collectVp(id,listener);
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
-                mPresenter.getContract().unCollectVP(id,listener);
+            public void unCollectVp(int id, CollectListener listener) {
+                mPresenter.getContract().unCollectVp(id,listener);
             }
 
             @Override
@@ -169,7 +164,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                 super.onScrolled(recyclerView, dx, dy);
                 if (isSlideToBottom(recyclerView)) {
                     dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
-                    getContract().requestLoadMoreVP(edtQuery.getText().toString(),page);
+                    getContract().requestLoadMoreVp(edtQuery.getText().toString(),page);
                     page++;
                 }
             }
@@ -187,7 +182,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                     number0=1;
                 }
                 if (count[0] % number2 == number0) {
-                    getContract().collectVP(articleList.get(position).getId(), new CollectListener() {
+                    getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
@@ -197,7 +192,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                         }
                     });
                 } else {
-                    getContract().unCollectVP(articleList.get(position).getId(), new CollectListener() {
+                    getContract().unCollectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));

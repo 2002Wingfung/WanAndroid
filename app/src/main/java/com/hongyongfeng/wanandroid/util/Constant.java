@@ -9,6 +9,7 @@ public class Constant {
     public static final String LOGIN_URL="user/login";
     public static final String COLLECT_URL="lg/collect/";
     public static final String ARTICLE_URL_1="article/list/";
+    public static final String QUERY_URL="article/query/";
     public static final String CANCEL_COLLECT_URL ="lg/uncollect_originId/";
     public static final String JSON_URL="/json";
     public static final String COLLECTION_URL=DOMAIN_URL+COLLECT_URL+"list/";

@@ -5,6 +5,8 @@ import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.thre
 import static com.hongyongfeng.wanandroid.util.Constant.ARTICLE_URL_1;
 import static com.hongyongfeng.wanandroid.util.Constant.ONE;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -90,7 +92,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     public static final String SQL_INSERT_ARTICLE="insert into article_bean (id,author,chapterName,link,title,niceDate,superChapterName,top)values(?,?,?,?,?,strftime('%Y-%m-%d %H:%M','now','localtime'),?,?)";
     private final Context context=MyApplication.getContext();
     public static Bitmap getBitmap(byte[] data){
-        return BitmapFactory.decodeByteArray(data, 0, data.length);
+        return BitmapFactory.decodeByteArray(data, ZERO, data.length);
         //从字节数组解码位图
     }
 
@@ -112,7 +114,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                 if(bitmapByteList!=null&&beanList!=null){//不为空，即缓存中有数据
                     Log.i("TAG","cache is not null");
                     List<Bitmap> bitmapList=new ArrayList<>();
-                    for (int i = 0; i < bitmapByteList.size(); i++) {
+                    for (int i = ZERO; i < bitmapByteList.size(); i++) {
                         byte[] data=bitmapByteList.get(i);
                         Bitmap bitmap=getBitmap(data);
                         bitmapList.add(bitmap);
@@ -146,7 +148,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         articleTopList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        if (articleBeanList.size()!=0){
+                        if (articleBeanList.size()!=ZERO){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
                         }
                     }
@@ -159,17 +161,17 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         articleBeanList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        if (articleTopList!=null&&articleTopList.size()!=0){
+                        if (articleTopList!=null&&articleTopList.size()!=ZERO){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
                         }
                     }
                     @Override
                     public void onError(Exception e) {
                         e.printStackTrace();
-                        mPresenter.getContract().error(1);
+                        mPresenter.getContract().error(ONE);
                         List<ArticleBean> list;
                         try {
-                            list= SaveArticle.getData(MyApplication.getContext(),0);  //获取缓存数据
+                            list= SaveArticle.getData(MyApplication.getContext(),ZERO);  //获取缓存数据
                             if(list!=null){
                                 //不为空，即缓存中有数据
                                 Log.i("TAG","cache is not null");
@@ -202,17 +204,17 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             @Override
             public void collectM(int id, CollectListener listener) {
                 if (cookies == null||"".equals(cookies)) {
-                    mPresenter.getContract().collectResponse(1);
+                    mPresenter.getContract().collectResponse(ONE);
                 }else {
                     HttpUtil.postCollectRequest(DOMAIN_URL + COLLECT_URL + id + JSON_URL,cookies, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
-                            mPresenter.getContract().collectResponse(0);
+                            mPresenter.getContract().collectResponse(ZERO);
                             listener.onFinish();
                         }
                         @Override
                         public void onError(Exception e) {
-                            mPresenter.getContract().collectResponse(2);
+                            mPresenter.getContract().collectResponse(TWO);
                         }
                     });
                 }
@@ -220,17 +222,17 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             @Override
             public void unCollectM(int id, CollectListener listener) {
                 if (cookies == null||"".equals(cookies)) {
-                    mPresenter.getContract().collectResponse(1);
+                    mPresenter.getContract().collectResponse(ONE);
                 }else {
                     HttpUtil.postCollectRequest(DOMAIN_URL + UNCOLLECT_URL + id + JSON_URL, cookies, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
-                            mPresenter.getContract().unCollectResponse(0);
+                            mPresenter.getContract().unCollectResponse(ZERO);
                             listener.onFinish();
                         }
                         @Override
                         public void onError(Exception e) {
-                            mPresenter.getContract().unCollectResponse(2);
+                            mPresenter.getContract().unCollectResponse(TWO);
                         }
                     });
                 }

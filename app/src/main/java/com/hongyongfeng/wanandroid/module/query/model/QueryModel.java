@@ -1,48 +1,43 @@
 package com.hongyongfeng.wanandroid.module.query.model;
 
+import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.JSON_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.QUERY_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import com.hongyongfeng.wanandroid.base.BaseModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
 import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
+import com.hongyongfeng.wanandroid.util.GetCookies;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
-
 import java.util.List;
 
-public class QueryModel extends BaseModel<QueryPresenter, Query.M> {
+/**
+ * @author Wingfung Hung
+ */
+public class QueryModel extends BaseModel<QueryPresenter, Query.Model> {
     public QueryModel(QueryPresenter mPresenter) {
         super(mPresenter);
     }
-
-
-
+    private final String cookies= GetCookies.get();
     @Override
-    public Query.M getContract() {
-        return new Query.M() {
-            @Override
-            public void requestQueryM(String key,int page) throws Exception {
-                String query="https://www.wanandroid.com/article/query/"+page+"/json";
-
-
-                HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
-
-                    @Override
-                    public void onFinish(String response) {
-                        List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        if (articleBeanList.size()!=0){
-
-                            mPresenter.getContract().responseQueryResult(articleBeanList);
-                        }
+    public Query.Model getContract() {
+        return (key, page) -> {
+            String query=DOMAIN_URL+QUERY_URL+page+JSON_URL;
+            HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
+                @Override
+                public void onFinish(String response) {
+                    System.out.println(response);
+                    List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
+                    if (articleBeanList.size()!=ZERO){
+                        mPresenter.getContract().responseQueryResult(articleBeanList);
                     }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
-                //mPresenter.getContract().responseQueryResult(true);
-
-            }
+                }
+                @Override
+                public void onError(Exception e) {
+                }
+            },cookies);
         };
     }
 }

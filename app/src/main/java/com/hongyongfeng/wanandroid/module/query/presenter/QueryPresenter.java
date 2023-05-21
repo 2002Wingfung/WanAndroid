@@ -5,10 +5,12 @@ import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
 import com.hongyongfeng.wanandroid.module.query.model.QueryModel;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
-
 import java.util.List;
 
-public class QueryPresenter extends BasePresenter<QueryModel, QueryActivity, Query.VP> {
+/**
+ * @author Wingfung Hung
+ */
+public class QueryPresenter extends BasePresenter<QueryModel, QueryActivity, Query.Vp> {
 
     @Override
     public QueryModel getModelInstance() {
@@ -16,14 +18,14 @@ public class QueryPresenter extends BasePresenter<QueryModel, QueryActivity, Que
     }
 
     @Override
-    public Query.VP getContract() {
-        return new Query.VP() {
+    public Query.Vp getContract() {
+        return new Query.Vp() {
             @Override
-            public void requestQueryVP(String key,int page) {
+            public void requestQueryVp(String key, int page) {
                 try {
                     mModel.getContract().requestQueryM(key,page);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
 

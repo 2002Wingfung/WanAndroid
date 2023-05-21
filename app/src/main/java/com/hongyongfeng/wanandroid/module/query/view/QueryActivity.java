@@ -5,16 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -31,12 +27,11 @@ import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
-import com.hongyongfeng.wanandroid.util.KeyboardUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> implements HeatedWordsFragment.CallBackListener {
+public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implements HeatedWordsFragment.CallBackListener {
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
     HeatedWordsFragment heatedWordsFragment=new HeatedWordsFragment();
@@ -48,13 +43,13 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> implem
     EditText edtKeyWords;
     ArrayList<ArticleBean> articleBeanLists;
     @Override
-    public Query.VP getContract() {
-        return new Query.VP() {
+    public Query.Vp getContract() {
+        return new Query.Vp() {
             @Override
-            public void requestQueryVP(String key,int page) {
+            public void requestQueryVp(String key, int page) {
                 //System.out.println(key);
 
-                mPresenter.getContract().requestQueryVP(key,page);
+                mPresenter.getContract().requestQueryVp(key,page);
             }
 
             @Override
@@ -138,7 +133,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> implem
                     }else {
                         transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
                     }
-                    getContract().requestQueryVP(edtKeyWords.getText().toString(),0);
+                    getContract().requestQueryVp(edtKeyWords.getText().toString(),0);
 
                     // 在这里写搜索的操作,一般都是网络请求数据
                 }
@@ -236,6 +231,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> implem
         }else {
             transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
         }
-        getContract().requestQueryVP(value,0);
+        getContract().requestQueryVp(value,0);
     }
 }

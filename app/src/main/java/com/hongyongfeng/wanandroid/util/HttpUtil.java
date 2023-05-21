@@ -2,6 +2,7 @@ package com.hongyongfeng.wanandroid.util;
 
 import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
 import static com.hongyongfeng.wanandroid.util.Constant.FOUR;
+import static com.hongyongfeng.wanandroid.util.Constant.THREE_THOUSAND;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO_HUNDRED;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.exception.HttpException;
@@ -145,8 +146,8 @@ public class HttpUtil {
                 //GET方法
                 connection.setRequestMethod("GET");
                 //超时时间3000毫秒
-                connection.setConnectTimeout(3000);
-                connection.setReadTimeout(3000);
+                connection.setConnectTimeout(THREE_THOUSAND);
+                connection.setReadTimeout(THREE_THOUSAND);
                 connection.setDoInput(true);
                 if (parameter!=null){
                     connection.setRequestProperty("Cookie", parameter);
@@ -200,8 +201,8 @@ public class HttpUtil {
                 connection=(HttpURLConnection) url.openConnection();
                 // 设置请求方式,请求超时信息
                 connection.setRequestMethod("POST");
-                connection.setConnectTimeout(8000);
-                connection.setReadTimeout(8000);
+                connection.setConnectTimeout(THREE_THOUSAND);
+                connection.setReadTimeout(THREE_THOUSAND);
                 // 设置运行输入,输出:
                 // 设置是否从httpUrlConnection读入，默认情况下是true;
                 connection.setDoInput(true);
@@ -284,8 +285,8 @@ public class HttpUtil {
                 connection=(HttpURLConnection) url.openConnection();
                 // 设置请求方式,请求超时信息
                 connection.setRequestMethod("POST");
-                connection.setConnectTimeout(8000);
-                connection.setReadTimeout(8000);
+                connection.setConnectTimeout(THREE_THOUSAND);
+                connection.setReadTimeout(THREE_THOUSAND);
                 // 设置是否从httpUrlConnection读入，默认情况下是true;
                 connection.setDoInput(true);
                 // post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
@@ -340,7 +341,7 @@ public class HttpUtil {
      * @param key 搜索关键字
      * @param listener 回调接口
      */
-    public static void postQueryRequest(final String address,String key, final HttpCallbackListener listener){
+    public static void postQueryRequest(final String address,String key, final HttpCallbackListener listener,String cookies){
         threadPools.es.execute(() -> {
             HttpURLConnection connection=null;
             BufferedReader reader=null;
@@ -349,8 +350,8 @@ public class HttpUtil {
                 connection=(HttpURLConnection) url.openConnection();
                 // 设置请求方式,请求超时信息
                 connection.setRequestMethod("POST");
-                connection.setConnectTimeout(8000);
-                connection.setReadTimeout(8000);
+                connection.setConnectTimeout(THREE_THOUSAND);
+                connection.setReadTimeout(THREE_THOUSAND);
                 // 设置运行输入,输出:
                 // 设置是否从httpUrlConnection读入，默认情况下是true;
                 connection.setDoInput(true);
@@ -358,6 +359,9 @@ public class HttpUtil {
                 connection.setDoOutput(true);
                 // Post方式不能缓存,需手动设置为false
                 connection.setUseCaches(false);
+                if (cookies != null){
+                    connection.setRequestProperty("Cookie", cookies);
+                }
                 // 我们请求的数据：参数k为搜索的关键字
                 String data = "k=" + URLEncoder.encode(key, "UTF-8");
                 // 获取输出流

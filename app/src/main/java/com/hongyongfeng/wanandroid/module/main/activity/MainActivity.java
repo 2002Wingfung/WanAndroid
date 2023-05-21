@@ -3,6 +3,9 @@ package com.hongyongfeng.wanandroid.module.main.activity;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.ARTICLE_URL;
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
 import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -77,6 +80,7 @@ import java.util.Objects;
  */
 public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> {
     public static ThreadPools threadPools=new ThreadPools();
+    private static final String WAN="玩安卓";
     private TextView tvQuery;
     private TextView tvTitle;
     private TextView navMenu;
@@ -184,7 +188,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                     }
                     startActivity(intent);
                 }else {
-                    if (tvName.getText().toString().equals("玩安卓")){
+                    if (WAN.equals(tvName.getText().toString())){
                         Toast.makeText(MainActivity.this, "还没登录喔", Toast.LENGTH_SHORT).show();
                     }else {
                         AlertDialog.Builder dialog=new AlertDialog.Builder(MainActivity.this);
@@ -197,7 +201,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.clear();
                                 editor.apply();
-                                tvName.setText("玩安卓");
+                                tvName.setText(WAN);
                                 tvWelcome.setText("欢迎");
                                 Toast.makeText(MainActivity.this, "退出登录成功", Toast.LENGTH_SHORT).show();
                             }
@@ -332,24 +336,28 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //默认进入选中首页
-        onViewPagerSelected(0);
-        WindowManager wm = this.getWindowManager();//获取屏幕宽高
+        onViewPagerSelected(ZERO);
+        //获取屏幕宽高
+        WindowManager wm = this.getWindowManager();
         int width1 = wm.getDefaultDisplay().getWidth();
         int height1 = wm.getDefaultDisplay().getHeight();
         LinearLayout drawerLayout=findViewById(R.id.left_layout);
-        ViewGroup.LayoutParams para= drawerLayout.getLayoutParams();//获取drawerlayout的布局
-        para.width=width1/7*5;//修改宽度
-        para.height=height1;//修改高度
-        drawerLayout.setLayoutParams(para); //设置修改后的布局。
+        //获取DrawerLayout的布局
+        ViewGroup.LayoutParams para= drawerLayout.getLayoutParams();
+        //修改宽度
+        para.width=width1/7*5;
+        //修改高度
+        para.height=height1;
+        //设置修改后的布局。
+        drawerLayout.setLayoutParams(para);
         initEvent();
         adapter=new FragmentAdapter(getSupportFragmentManager(),fragmentList);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(TWO);
         ArrayAdapter<String> listViewAdapter=new ArrayAdapter<>(this,R.layout.item_list_menu,listData);
         listView.setAdapter(listViewAdapter);
         Intent intent=new Intent(this, LongRunningTimeService.class);
         intent.setAction("com.hongyongfeng.wanandroid.service.LongRunningTimeService");
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
         requestStoragePermission();
     }
@@ -360,29 +368,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         getContract().requestVP();
     }
 
-    private void readSharedPreference() {
-        try {
-            SharedPreferences preferences=getSharedPreferences(COOKIE_PREF,MODE_PRIVATE);
-            String cookies=preferences.getString("login","");
-            System.out.println(cookies);
-            int first=cookies.indexOf(";")+1;
-            int last=cookies.lastIndexOf(";");
-            cookies=cookies.substring(first,last);
-            first=cookies.indexOf("=")+1;
-            tvWelcome.setText("欢迎");
-            tvName.setText(cookies.substring(first));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     private void initEvent() {
         //添加Fragment
         //设置默认是首页
         loadFragment();
-        //fragment=TestNavFragment.newInstance("这是首页","");
-        //这里可以传递两个参数
-        //fragmentTransaction.replace(R.id.fragment_01,fragment).commit();
         setBottomItemSelected(R.id.ll_home);
         tvTitle.setText("首页文章");
     }
@@ -441,7 +430,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
         return R.layout.activity_main_latest;
     }
 
-
     @Override
     public MainPresenter getPresenterInstance() {
         return new MainPresenter();
@@ -449,7 +437,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
 
     @Override
     public <ERROR> void responseError(ERROR error, Throwable throwable) {
-
     }
 
     @Override
@@ -469,9 +456,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     }
 
     public void headerOnClick(View v) {
-        if (tvName.getText().toString().equals("玩安卓")){
+        if (WAN.equals(tvName.getText().toString())){
             Intent intent=new Intent(MainActivity.this, SignInUpActivity.class);
-            startActivityForResult(intent,1);
+            startActivityForResult(intent,ONE);
         }
     }
     @Override

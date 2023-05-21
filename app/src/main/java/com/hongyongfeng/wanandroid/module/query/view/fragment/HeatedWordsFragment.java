@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
-import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.query.interfaces.HeatedWords;
 import com.hongyongfeng.wanandroid.module.query.presenter.HeatedWordsPresenter;
 import com.hongyongfeng.wanandroid.module.query.view.FlowLayout;
@@ -30,8 +29,8 @@ import java.util.Map;
 /**
  * @author Wingfung Hung
  */
-public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, HeatedWords.VP> {
-    private void displayUI(FlowLayout flowLayout,List<Map<String,Object>> heatedWordsListMap) {
+public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, HeatedWords.Vp> {
+    private void display(FlowLayout flowLayout, List<Map<String,Object>> heatedWordsListMap) {
 //        final String data = "132";
 //        StringBuilder builder=new StringBuilder(data);
 
@@ -73,16 +72,10 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
             tv.setBackground(stateListDrawable);
             //ColorStateList colorStateList = DrawableUtils.getColorSelector(getResources().getColor(R.color.black), getResources().getColor(R.color.white));
             //tv.setTextColor(getResources().getColor(R.color.gray));
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String key=tv.getText().toString();
-                    //System.out.println(key);
-                    edtKeyword.setText(key);
-                    listener.sendValue(key);
-                    //dialog = ProgressDialog.show(activity, "", "正在加载", false, false);
-                    //getContract().requestQueryVP(key,0);
-                }
+            tv.setOnClickListener(v -> {
+                String key=tv.getText().toString();
+                edtKeyword.setText(key);
+                listener.sendValue(key);
             });
             flowLayout.addView(tv);
         }
@@ -110,30 +103,12 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
         }
     };
     @Override
-    public HeatedWords.VP getContract() {
-        return new HeatedWords.VP() {
-            @Override
-            public void requestQueryVP(String key, int page) {
-                mPresenter.getContract().requestQueryVP(key,page);
-            }
+    public HeatedWords.Vp getContract() {
+        return new HeatedWords.Vp() {
 
             @Override
-            public void responseQueryResult(List<ArticleBean> queryResult) {
-
-                //System.out.println(queryResult);
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-//                        mHandler.sendEmptyMessageDelayed(0,500);
-//                        articleBeanLists=(ArrayList<ArticleBean>) queryResult;
-                        //listener.sendValue();
-                    }
-                });
-            }
-
-            @Override
-            public void requestHeatedWordsVP() {
-                mPresenter.getContract().requestHeatedWordsVP();
+            public void requestHeatedWordsVp() {
+                mPresenter.getContract().requestHeatedWordsVp();
             }
 
             @Override
@@ -146,7 +121,7 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
                     @Override
                     public void run() {
                         //tvHeatedWords.setText(words.toString());
-                        displayUI(flowLayout,heatedWordsListMap);
+                        display(flowLayout,heatedWordsListMap);
                     }
                 });
             }
@@ -169,7 +144,7 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getContract().requestHeatedWordsVP();
+        getContract().requestHeatedWordsVp();
         //Log.d("heated","print");
     }
 

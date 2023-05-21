@@ -42,10 +42,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     private int page=1;
     private int id;
     private int position=0;
-
-    private boolean loadMore = false;
-
-
     @Override
     public ArticleInterface.VP getContract() {
         return new ArticleInterface.VP() {
@@ -182,12 +178,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         super.onResume();
 
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        loadMore=false;//视图销毁将变量置为false
-    }
     @Override
     protected void destroy() {
         adapter.viewHolderMap.clear();
@@ -256,35 +246,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                if (isSlideToBottom(recyclerView)){
-//                    if (loadMore){
-//                        page++;
-//                        //System.out.println("load");
-////                        dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
-////                        getContract().requestTitleVP(id,page);
-//                    }
-//                }
-//                if (isSlideToBottom(recyclerView)) {
-//                    loadMore=true;
-//                }
-                if (layoutManager!=null){
-                    int firstVisible = layoutManager.findFirstVisibleItemPosition();
-                    int lastVisible = layoutManager.findLastVisibleItemPosition();
-
-//                    for (int i=0;i<=lastVisible;i++){
-//                        View view = Objects.requireNonNull(recyclerView.getLayoutManager()).findViewByPosition(position);
-//                        ImageView imageView = view.findViewById(R.id.iv_recycle_project_item);
-//                        imageView.setImageBitmap(bitmapLists.get(i));
-//                        adapter.notifyItemChanged(i);
-//                    }
-//                    int visibleItemCount = lastVisible - firstVisible;
-//                    if (lastVisible == 0) {
-//                        visibleItemCount = 0;
-//                    }
-//                    if (visibleItemCount != 0) {
-//                        dealScrollEvent(firstVisible, lastVisible);
-//                    }
-                }
                 if (recyclerView.computeVerticalScrollExtent()!=recyclerView.computeVerticalScrollRange()){
                     if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
                         dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
@@ -295,24 +256,9 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             }
         });
     }
-    protected boolean isSlideToBottom(RecyclerView recyclerView) {
-        if (recyclerView == null) {
-            return false;
-        }
-        if (recyclerView.computeVerticalScrollExtent()<recyclerView.computeVerticalScrollRange()){
-            loadMore=true;
-        }
-        return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
-    }
     @Override
     protected void initData() {
-//        if (projectList.size()==0){
-//            StringBuilder str=new StringBuilder("abc ");
-//            for (int i =1;i<11;i++){
-//                projectList.add(new ProjectBean("项目"+i,str.toString()));
-//                str.append(i).append("nihao  ");
-//            }
-//        }
+
     }
 
     @Override

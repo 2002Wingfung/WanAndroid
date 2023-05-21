@@ -27,6 +27,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInterface.M> {
     public ArticleModel(ArticlePresenter mPresenter) {
         super(mPresenter);
@@ -47,14 +50,9 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                         responseImageBitmap(projectList, new ImageCallbackListener() {
                             @Override
                             public void onError(Exception e) {
-
+                                //加载项目文章错误回调，取消dialog的显示
                             }
 
-//                            @Override
-//                            public void onBitmapFinish(List<Bitmap> bitmapList) {
-//                                mPresenter.getContract().responseImageResult(bitmapList);
-//
-//                            }
                             @Override
                             public void onBitmapFinish(Bitmap bitmap) {
                                 mPresenter.getContract().responseImageResult(bitmap);
@@ -65,7 +63,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
                     @Override
                     public void onError(Exception e) {
-
+                        //加载项目文章错误回调，取消dialog的显示
                     }
                 },GetCookies.get());
             }
