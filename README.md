@@ -1,3 +1,40 @@
+# 项目中已完成的需求
+
+## 基本需求
+
++ 界面做好看一点，界面做得好看也是技术活(已完成)
+
++ **必须使用** MVP 模式构造 APP(已完成)
++ APP 的主页包含 **首页文章**、**知识体系**、**项目** 三个模块(已完成)
++ 首页文章模块从上到下依次为 banner 轮播图、置顶文章和普通文章(已完成)
++ banner 轮播图可以 **自动轮播** ，并且可以手动滚动，手动滚动时应该停止自动轮播(已完成)
++ 知识体系模仿玩安卓 APP 制作(已完成)
++ 项目界面需要展示每个项目的图片(已完成)
++ 三个模块中的文章能点击进入查看详情，用 WebView 显示文章的具体内容，并在加载时 **显示进度条**(已完成)
++ 实现搜索功能(已完成)
++ 搜索界面展示搜索热词(已完成)
++ 展示搜索结果 **不要跳转** 到新的 activity ，而是直接在当前 activity 展示(已完成)
++ 展示列表时，实现 **分页加载** ，滑动到底部加载更多(已完成)
++ 实现注册和登录功能
++ 封装网络请求的代码（只传入请求信息即可，比如url，用户名和密码，查找的字段）(已完成)
+
+## 进阶需求
+
++ 使用 **线程池** 实现线程复用，不要每一次都新建线程来使用(已完成)
++ **适配深色模式**(已完成)
++ 实现 **自动登录** 功能，不是每次打开就调用登录接口登录，而是保存 cookies 来复用(已完成)
++ 实现收藏和取消收藏文章功能，收藏本站文章即可(已完成)
++ 展示收藏列表，查看自己已收藏的文章，点击可以查看文章详情(已完成)
++ 实现 **文章列表的本地缓存** 功能(已完成)
++ 增加 **最近浏览的文章记录** ，浏览记录保存在本地即可(已完成)
+
+## 升华需求
+
++ 搜索热词使用 **流式布局** 展示，不可使用依赖，请学习如何自定义 View(已完成)
++ 每天定时推送一篇最新的文章(已完成)
+
+---
+
 # 二轮开发笔记
 
 ## 1 使用adb获取设备上的Log日志(Android调试桥) 
@@ -1264,7 +1301,7 @@ webView.setWebViewClient(new WebViewClient(){
 
 ---
 
-## 28 [EditText防止输入空格](https://www.cnblogs.com/lishbo/p/9956043.html)
+## 28 EditText防止输入空格
 
 使用EditText的时候，很多应用场景下不能输入空格。如何限制不让输入空格呢，这里使用两种方法来实现。
 
@@ -1326,7 +1363,7 @@ public static void setEditTextInhibitInputSpace(EditText editText){
 
 ## 29 Toast弹出的一定是字符串String
 
-如果传入其他类型的数据，则会报空指针异常。
+如果传入其他类型的数据，则会报异常。
 
 `E/MessageQueue-JNI: android.content.res.Resources$NotFoundException: String resource ID #0x1`
 
@@ -1361,7 +1398,21 @@ app:tabMode="auto" />
 
 ![](https://img-blog.csdnimg.cn/img_convert/8998b924006e95802ef00a14f98870aa.png)
 
+```kotlin
+override fun onAttach(context: Context) {
+    super.onAttach(context)
+    requireActivity().lifecycle.addObserver(object : DefaultLifecycleObserver {
+        override fun onCreate(owner: LifecycleOwner) {
+            // 想做啥做点啥
+            owner.lifecycle.removeObserver(this)
+        }
+    })
+}
+```
 
+
+
+---
 
 ## 32 ViewPager的加载方式
 
@@ -1382,6 +1433,8 @@ ViewPager的默认加载方式是缓存当前界面前后相邻的两个界面�
 `int limit`  缓存当前界面每一侧的界面数
 
 以上述为例，当前界面为1，若limit = 2，表示缓存2、3两个界面。因此便避免了界面3被销毁。 
+
+**如果不想预加载，则将参数limit设为0，即点击哪一页page就加载哪一页的数据。**
 
 ---
 
@@ -1418,6 +1471,27 @@ ViewPager的默认加载方式是缓存当前界面前后相邻的两个界面�
               mListView.setAdapter(mAdapter);
         }
         return mFragmentView ;
+    }
+```
+
+---
+
+### 32.2 防止频繁的销毁视图的解决方案
+
+1、使用方案一 `setOffscreenPageLimit(2)`
+
+2、或者重写PagerAdaper的destroyItem方法为空即可
+
+```java
+public class MyViewPagerAdapter extends FragmentPagerAdapter {
+
+        ...
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            //如果注释这行，那么不管怎么切换，page都不会被销毁
+            //super.destroyItem(container, position, object);
+        }
     }
 ```
 
@@ -1705,6 +1779,72 @@ FragmentTransaction transaction=fragmentManager.beginTransaction();
     android:usesCleartextTraffic="true"/>
 ```
 
+一般用webview加载网址手机都会自动跳转到自带的浏览器中，如果为了一些效果想要不去跳转到浏览器，那就要给自己的webview加上客户端
+
+添加客户端代码
+
+```java
+webView.setWebViewClient(new WebViewClient() {
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        view.loadUrl(url);
+        //禁止跳转外部网页
+        //但有些网站如果你禁止跳转外部app的话，他会不断重复刷新网站
+        return super.shouldOverrideUrlLoading(view, request);
+    }
+});
+```
+
+跳转外部app的代码：
+
+```java
+webView.setWebViewClient(new WebViewClient() {
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        try {
+            //处理intent协议
+            if (url.startsWith("intent://")) {
+                Intent intent;
+                try {
+                    intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                    intent.addCategory("android.intent.category.BROWSABLE");
+                    intent.setComponent(null);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                        intent.setSelector(null);
+                    }
+                    List<ResolveInfo> resolves = getApplicationContext() .getPackageManager(). queryIntentActivities(intent,0);
+                    if(resolves.size()>0){
+                        startActivityIfNeeded(intent, -1);
+                    }
+                    return true;
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+            // 处理自定义scheme协议
+            if (!url.startsWith("http")) {
+                try {
+                    // 以下固定写法
+                    final Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(url));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    // 防止没有安装的情况
+                    e.printStackTrace();
+                    Toast.makeText(WebViewActivity.this, "您所打开的第三方App未安装！", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return super.shouldOverrideUrlLoading(view, url);
+    }
+});
+```
+
 ---
 
 ## 42 更新UI一定要在主线程里面进行
@@ -1751,21 +1891,893 @@ webSettings.setDatabaseEnabled(true);
 webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
 ```
 
+---
 
+## 45 View.VISIBLE、INVISIBLE、GONE的区别
 
+android中UI应用的开发中经常会使用 `view.setVisibility()` 来设置控件的可见性，其中该函数有3个可选值，他们有着不同的含义：
 
+* `View.VISIBLE` --->可见
+* `View.INVISIBLE` --->不可见，但这个View仍然会占用在xml文件中所分配的布局空间，不重新layout
+* `View.GONE` ---->不可见，但这个View在ViewGroup中不保留位置，会重新layout，不再占用空间，那后面的view就会取代他的位置.
 
 ---
 
-## 28 待解决的问题
+## 46 onStart和onResume方法的区别
 
-* 搜索Activity中，键盘回车键变成搜索
-* 输入关键字之前，点击一次back键则可以finish搜索Activity；
-* 输入关键字之后，要点击两次back键才可以finish搜索Activity，点击一次back键则返回搜索热词的那个流式布局，使用自定义view
-* DrawerLayout 全屏手势滑动
-* 研究ThreadPoolsTest，看看怎么升级一下线程池
+onStart和onResume的区别：onStart实际上表示Activity或者Fragment已经可见了，只是我们用户还看不到，还不能进行交互而已，因为它还处在后台。而onResume表示Activity已经显示到前台可见了，并且可以进行交互。
 
-## 29 一些复制粘贴过来的代码规范
+1、onStart()：通常作用于用户初始化APP，或onStop()方法之后(用户按下home键，activity变为后台)之后用户再切回这个activity就会调用onRestart()然后调用onStart()，在OnStart()方法在被调用的时候，Activity已经准备好被用户看见，**但是此时的Activity尚未出现在前台，不能与用户进行交互，可理解为Activity或者Fragment已经出现了，已经准备好了，但是我们无法与其进行交互;**
+
+2、onResume()：是当该activity与用户能进行交互时被执行，用户可以获得activity的焦点，能够与用户交互。
+
+OnResume()就是使OnStart()方法之后的Activity或者Fragment变为可交互的状态;
+
+例子：在Activity或Fragment中弹出一个AlertDialog时执行onPaused()方法，（或者Activity/Fragment被另一个透明或者Dialog样式等等的Activity/Fragment覆盖了），之后AlertDialog被取消了，Activity/Fragment回到可交互状态，此时调用onResume()。
+
+注意：在ViewPager下，点击相邻的Fragment，该相邻的Fragment执行onResume方法，不会执行onStart方法
+
+---
+
+## 47 Fragment中hide和show方法对生命周期的影响
+
+第一次add一个Fragment后再show该Fragment，则会执行生命周期。
+
+之后如果对该Fragment进行hide方法或者show方法的话，**生命周期则不再执行**。
+
+在有的情况下，数据将无法通过生命周期方法进行刷新。
+
+解决办法：可以使用onHiddenChanged方法来解决这个问题。
+
+```java
+@Override
+public void onHiddenChanged(boolean hidden) {
+    super.onHiddenChanged(hidden);
+    if (hidden) {   // 不在最前端显示 相当于调用了onPause();
+        System.out.println("hide");;
+    }else{  // 在最前端显示 相当于调用了onResume();
+        System.out.println("show");//网络数据刷新
+    }
+}
+```
+
+---
+
+## 48 getResponseCode()状态码
+
+### http状态返回代码 1xx（临时响应）
+
+表示临时响应并需要请求者继续执行操作的状态代码。
+
+**http状态返回代码** 
+
+代码  说明
+100  （继续） 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。 
+101  （切换协议） 请求者已要求服务器切换协议，服务器已确认并准备切换。
+
+### http状态返回代码 2xx （成功）
+
+表示成功处理了请求的状态代码。
+
+**http状态返回代码** 
+
+代码  说明
+200  （成功） 服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页。
+201  （已创建） 请求成功并且服务器创建了新的资源。
+202  （已接受） 服务器已接受请求，但尚未处理。
+203  （非授权信息） 服务器已成功处理了请求，但返回的信息可能来自另一来源。
+204  （无内容） 服务器成功处理了请求，但没有返回任何内容。
+205  （重置内容） 服务器成功处理了请求，但没有返回任何内容。
+206  （部分内容） 服务器成功处理了部分 GET 请求。
+
+### http状态返回代码 3xx（重定向）
+
+表示要完成请求，需要进一步操作。 通常，这些状态代码用来重定向。
+
+**http状态返回代码** 
+
+代码  说明
+300  （多种选择） 针对请求，服务器可执行多种操作。 服务器可根据请求者 (user agent) 选择一项操作，或提供操作列表供请求者选择。
+301  （永久移动） 请求的网页已永久移动到新位置。 服务器返回此响应（对 GET 或 HEAD 请求的响应）时，会自动将请求者转到新位置。
+302  （临时移动） 服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。
+303  （查看其他位置） 请求者应当对不同的位置使用单独的 GET 请求来检索响应时，服务器返回此代码。
+
+304  （未修改） 自从上次请求后，请求的网页未修改过。 服务器返回此响应时，不会返回网页内容。
+305  （使用代理） 请求者只能使用代理访问请求的网页。 如果服务器返回此响应，还表示请求者应使用代理。
+307  （临时重定向） 服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。
+
+### http状态返回代码 4xx（请求错误）
+
+这些状态代码表示请求可能出错，妨碍了服务器的处理。
+
+**http状态返回代码** 
+
+代码  说明
+400  （错误请求） 服务器不理解请求的语法。
+401  （未授权） 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应。
+403  （禁止） 服务器拒绝请求。
+404  （未找到） 服务器找不到请求的网页。
+405  （方法禁用） 禁用请求中指定的方法。
+406  （不接受） 无法使用请求的内容特性响应请求的网页。
+407  （需要代理授权） 此状态代码与 401（未授权）类似，但指定请求者应当授权使用代理。
+408  （请求超时） 服务器等候请求时发生超时。
+409  （冲突） 服务器在完成请求时发生冲突。 服务器必须在响应中包含有关冲突的信息。
+410  （已删除） 如果请求的资源已永久删除，服务器就会返回此响应。
+411  （需要有效长度） 服务器不接受不含有效内容长度标头字段的请求。
+412  （未满足前提条件） 服务器未满足请求者在请求中设置的其中一个前提条件。
+413  （请求实体过大） 服务器无法处理请求，因为请求实体过大，超出服务器的处理能力。
+414  （请求的 URI 过长） 请求的 URI（通常为网址）过长，服务器无法处理。
+415  （不支持的媒体类型） 请求的格式不受请求页面的支持。
+416  （请求范围不符合要求） 如果页面无法提供请求的范围，则服务器会返回此状态代码。
+417  （未满足期望值） 服务器未满足"期望"请求标头字段的要求。
+
+### http状态返回代码 5xx（服务器错误）
+
+这些状态代码表示服务器在尝试处理请求时发生内部错误。 这些错误可能是服务器本身的错误，而不是请求出错。
+
+**http状态返回代码** 
+
+代码  说明
+500  （服务器内部错误） 服务器遇到错误，无法完成请求。
+501  （尚未实施） 服务器不具备完成请求的功能。 例如，服务器无法识别请求方法时可能会返回此代码。
+502  （错误网关） 服务器作为网关或代理，从上游服务器收到无效响应。
+503  （服务不可用） 服务器目前无法使用（由于超载或停机维护）。 通常，这只是暂时状态。
+504  （网关超时） 服务器作为网关或代理，但是没有及时从上游服务器收到请求。
+505  （HTTP 版本不受支持） 服务器不支持请求中所用的 HTTP 协议版本。 
+
+### 常见的http状态返回代码为：
+
+200 - 服务器成功返回网页
+404 - 请求的网页不存在
+503 - 服务不可用
+
+---
+
+## 49 强制刷新RecyclerView的Adapter
+
+```java
+adapter.notifyDataSetChanged();
+```
+
+如果用 `notifyItemChanged()` 的话，则会有更新动画出现，会耗更多的时间。
+
+### 补充：
+
+* （1）notifyItemChanged(position)
+  * 只刷新该position的Item，即只是该Item调用onBindViewHolder，因此如果对数据源进行插、移除操作不能改方法只刷新操作的Item，毕竟该Item之后的Item的position都发生了改变
+* （2）notifyItemChanged(int position, Object payload)
+  * 对position的Item进行局部刷新，在onBindViewHolder(ContentViewHolder viewHolder, int position, List<Object> payloads)中根据payloads.get(position)值只对需要刷新的控件进行操作
+* （3）notifyDataSetChanged()
+  * 刷新全部Item
+* （4）notifyItemRangeChanged(position, itemCount)
+  * 刷新position及之后ItemCount个Item
+* （5）notifyItemInserted(position)
+  * 插入并进行刷新
+* （6）notifyItemRangeInserted(int position, int itemCount)
+  * 从position开始插入itemCount个Item并进行刷新
+* （7）notifyItemRemoved(int position)
+  * 移除并进行刷新
+* （8）notifyItemRangeRemoved(int position, int itemCount)
+  * 从position开始移除itemCount个Item并进行刷新
+* （9）notifyItemMoved(int fromPosition, int toPosition)
+  * 移动并进行刷新
+
+---
+
+## 50 在TextView中显示Html文本
+
+```java
+holder.tvTitle.setText(Html.fromHtml(article.getTitle()));
+```
+
+如果字符串中有Html代码，则该代码会被解析，然后显示在原来字符串的位置上，并有一定的格式。
+
+`轻松实现相机预览 | <em class='highlight'>Camera</em> Viewfinder 全新上线` 
+
+该字符串中含有`<em class='highlight'>Camera</em>`标签，说明该标签体内的文字`Camera`应该是斜体的<em class='highlight'>Camera</em>，原来的字符串为：
+
+轻松实现相机预览 | <em class='highlight'>Camera</em> Viewfinder 全新上线
+
+如果字符串中没有Html代码，则返回原来的字符串。
+
+---
+
+## 51 Fragment和Activity序列化传递对象
+
+创建Fragment对象时，一般可以通过 `new Fragment()` 构造方法来实现。如果此时将参数通过Fragment的重载构造方法进行传递，系统会有一个warning，如下：
+
+`Avoid non-default constructors in fragments: use a default constructor plus Fragment#setArguments(Bundle) instead`
+
+这个警告的意思就是，尽量避免使用 不是默认的构造函数（也就是我们重载的构造函数）：通过 使用默认的构造函数 加上 `Fragment.setArguments（Bundle）`来取代。
+
+### 方法二：setArguements
+
+无论是replace()还是show()还是add()方法，都可以用Bundle传递参数并接收。
+
+```java
+ArrayList<ArticleBean> articleBeanLists;
+LoadingFragment loadingFragment=new LoadingFragment();
+ArticleFragment articleFragment=new ArticleFragment();
+Bundle bundle=new Bundle();
+bundle.putParcelableArrayList("list",  articleBeanLists);
+if (!articleFragment.isAdded()){
+    articleFragment.setArguments(bundle);
+    transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+}else {
+    articleFragment.setArguments(bundle);
+    transaction.hide(loadingFragment).show(articleFragment).commit();
+}
+```
+
+乍一看这两种方法似乎没有什么本质区别，但是实际上 方法一（重载构造函数）是有一个隐患的。
+
+根据Android文档说明，当一个fragment重新创建的时候，系统会再次调用 Fragment中的默认构造函数。 注意这里：是 默认构造函数。
+
+这句话更直白的意思就是：当你小心翼翼的创建了一个带有重要参数的Fragment的之后，一旦由于什么原因（横竖屏切换）导致你的Fragment重新创建，那么很遗憾的告诉你，你之前传递的参数都不见了，因为recreate你的Fragment的时候，调用的是**默认构造函数**。
+
+### 对比
+
+而使用系统推荐的 `Fragment.setArguments（Bundle）`来传递参数。就可以有效的避免这一个问题，当你的Fragment销毁的时候，其中的Bundle会保存下来，当要重新创建的时候会检查Bundle是否为null，如果不为null，就会使用bundle作为参数来重新创建fragment.
+
+疑问：
+
+当fragment重建的时候，怎么获取之前的参数呢？
+
+以上面的代码为例：我们可以重写 fragment的onAttach()或者onCreate()方法。
+
+```java
+@Override
+public void onAttach(@NonNull Context context) {
+    super.onAttach(context);
+    fragmentActivity = requireActivity();
+    if (getArguments() != null) {
+        articleBeanList = getArguments().getParcelableArrayList("list");
+    }
+}
+```
+
+当fragment重新创建，调用onCreate方法的好处是，可以重复获取之前的参数，然后就可以尽情使用了。
+
+### 注意：
+
+setArguments方法的调用必须要在Fragment与Activity关联之前。
+
+这句话可以这样理解，setArgument方法的使用必须要在FragmentTransaction 的commit之前使用。
+
+---
+
+### 使用Parcelable传递参数
+
+声明List集合时候泛型中是你声明的实体类： `List<ArticleBean> gates=new ArrayList<ArticleBean>;`
+
+我们要做的是将这个 `ArticleBean` 传递到要跳转的Activity，用到的方法是 `bundle.putParcelableArrayList("list", articleBeanList）`
+
+如果你的实体类只是声明变量以及添加对应的构造函数和setter和getter方法，直接用以上方法传递集合会报错的，因为 `bundle.putParcelableArrayList("list", articleBeanList）`这个方法要求是集合中的泛型必须实现 `Parcelable` 接口；
+
+
+
+```java
+public class ArticleBean implements Parcelable {
+    public ArticleBean() {
+    }
+
+    private int id;
+    private String author;
+    private String chapterName;
+    private String link;
+    private String title;
+    private String niceDate;
+    private String superChapterName;
+
+    protected ArticleBean(Parcel in) {
+        id = in.readInt();
+        author = in.readString();
+        chapterName = in.readString();
+        link = in.readString();
+        title = in.readString();
+        niceDate = in.readString();
+        superChapterName = in.readString();
+        top = in.readInt();
+    }
+
+    public String getSuperChapterName() {
+        return superChapterName;
+    }
+    public int top;
+
+    public int getTop() {
+        return top;
+    }
+
+    public void setTop(int top) {
+        this.top = top;
+    }
+
+    public void setSuperChapterName(String superChapterName) {
+        this.superChapterName = superChapterName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getChapterName() {
+        return chapterName;
+    }
+
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getNiceDate() {
+        return niceDate;
+    }
+
+    public void setNiceDate(String niceDate) {
+        this.niceDate = niceDate;
+    }
+
+
+
+    public ArticleBean(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        // 1.必须按成员变量声明的顺序封装数据，不然会出现获取数据出错 
+        // 2.序列化对象 
+        dest.writeInt(id);
+        dest.writeString(author);
+        dest.writeString(chapterName);
+        dest.writeString(link);
+        dest.writeString(title);
+        dest.writeString(niceDate);
+        dest.writeString(superChapterName);
+        dest.writeInt(top);
+    }
+    
+    // 1.必须实现Parcelable.Creator接口,否则在获取Person数据的时候，会报错，如下： 
+    // android.os.BadParcelableException: 
+    // Parcelable protocol requires a Parcelable.Creator object called  CREATOR on class com.um.demo.Person 
+    // 2.这个接口实现了从Percel容器读取ArticleBean数据，并返回ArticleBean对象给逻辑层使用 
+    // 3.实现Parcelable.Creator接口对象名必须为CREATOR，不如同样会报错上面所提到的错； 
+    // 4.在读取Parcel容器里的数据时，必须按成员变量声明的顺序读取数据，不然会出现获取数据出错 
+    // 5.反序列化对象 
+    public static final Parcelable.Creator<ArticleBean> CREATOR  = new Creator<ArticleBean>() {
+        //实现从source中创建出类的实例的功能
+        
+        @Override
+        public ArticleBean createFromParcel(Parcel source) {
+            // 必须按成员变量声明的顺序读取数据，不然会出现获取数据出错 
+            ArticleBean article  = new ArticleBean();
+            article.id = source.readInt();
+            article.author= source.readString();
+            article.chapterName = source.readString();
+            article.link = source.readString();
+            article.title = source.readString();
+            article.niceDate = source.readString();
+            article.superChapterName = source.readString();
+            article.top = source.readInt();
+            return article;
+        }
+        //创建一个类型为T，长度为size的数组
+        @Override
+        public ArticleBean[] newArray(int size) {
+            return new ArticleBean[size];
+        }
+    };
+}
+```
+
+以上的重点是实现了Parcelable接口，并且重写了其中的方法。
+
+传值方法(Activity)：
+
+```java
+Intent intent = new Intent(LoginActivity.this,PeizhiActivity.class);
+Bundle bundle = new Bundle();
+bundle.putParcelableArrayList("gates", gates);
+intent.putExtra("string",string);
+intent.putExtras(bundle);
+startActivity(intent);
+```
+
+接收方法(Activity)：
+
+```java
+Bundle bundle = getIntent().getExtras();
+gates = bundle.getParcelableArrayList("gates");
+```
+
+而Fragment的传值方法和接收方法在上文已经展示出来了。
+
+----
+
+## 52 RecyclerView滑动到顶部
+
+```java
+recyclerView.scrollToPosition(0);
+```
+
+---
+
+## 53 RecyclerView滑动到底部的监听方法
+
+这是View自带的方法
+
+![2185296-78f18e9fabbcc7a2.png (414×413) (jianshu.io)](https://upload-images.jianshu.io/upload_images/2185296-78f18e9fabbcc7a2.png?imageMogr2/auto-orient/strip|imageView2/2/format/webp)
+
+* `computeVerticalScrollExtent()` 是当前屏幕显示的区域高度
+* `computeVerticalScrollOffset()` 是当前屏幕之前滑过的距离
+* `computeVerticalScrollRange()` 是整个View控件的高度。
+  * 注意，该高度不是RecyclerView match_parent 时的高度，而是所有item加起来的高度。
+  * 当item没有布满整个RecyclerView时，computeVerticalScrollExtent()等于computeVerticalScrollRange()
+
+```java
+
+recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    @Override
+    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+    }
+
+    @Override
+    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+        if (isSlideToBottom(recyclerView)){
+            if (loadMore){
+                dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
+                getContract().requestArticleVP(id,page);
+                //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();
+                page++;
+            }
+        }
+
+        if (isSlideToBottom(recyclerView)) {
+            loadMore=true;
+        }
+    }
+});
+ 
+protected boolean isSlideToBottom(RecyclerView recyclerView) {
+    if (recyclerView == null) {
+        return false;
+    }
+    if (recyclerView.computeVerticalScrollExtent()<recyclerView.computeVerticalScrollRange()){
+        loadMore=true;
+        //该条件语句用于判断RecyclerView可见高度是否小于控件高度，如果是则第一次上拉可以成功刷新
+    }
+    //如果item没有布满屏幕，则会导致该方法返回true，使得程序自动请求加载更多，于是就引入了一个布尔变量loadMore，一开始是设为false的。如果第一次该方法返回true，则设置loadMore为true，从而就抵消了一次上拉刷新的请求。
+    return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
+}
+```
+
+---
+
+## 54 Fragment中获取宿主Activity的控件
+
+失败方法：
+
+* 在onCreateView方法中
+
+  ```java
+  view = inflater.inflate(R.layout.activity_query, container,false);
+  EditText edt=view.findViewById(R.id.edt_keyword);
+  ```
+
+  或者：
+
+  ```java
+  LayoutInflater factory =LayoutInflater.from(getContext());
+  View layout=factory.inflate(R.layout.activity_query,container);
+  EditText edtQuery=layout.findViewById(R.id.edt_keyword);
+  ```
+
+* 在任意地方
+
+  ```java
+  View actionBar = View.inflate(fragmentActivity, R.layout.activity_query, null);
+  EditText edt=actionBar.findViewById(R.id.edt_keyword);
+  ```
+
+以上方法，最终获得的EditText对象都是 `androidx.appcompat.widget.AppCompatEditText{b4891a9 VFED..CL. ......I. 0,0-0,0 #7f0800b6 app:id/edt_keyword}` ,其中 `0,0-0,0` 说明了无法正常获取该控件，但又不是空对象null.
+
+正确解决方法：
+
+```java
+EditText edtQuery=fragmentActivity.findViewById(R.id.edt_keyword);
+```
+
+用 `Activity.findViewById()` 方法才能正确获取Activity中的控件。
+
+最终获得的EditText对象是 `androidx.appcompat.widget.AppCompatEditText{fb9409 VFED..CL. .F...... 207,32-895,106 #7f0800b6 app:id/edt_keyword aid=1073741824}`
+
+---
+
+## 55 RecyclerView的刷新
+
+不建议把刷新RecyclerView的代码设置在onStart()方法和onResume()方法中，否则每次Activity的生命状态改变时，都会影响到RecyclerView的刷新。
+
+注意：要考虑Activity或Fragment的生命周期
+
+有时会因为某些需求导致在onResume或onStart方法中重置了recyclerview，但其数据已经丢失或没有重新设置Adapter，就会报错`No adapter attached; skipping layout`
+
+一般是把recyclerview这一整套代码写在onCreate里面就不用担心出问题。如果一定要在onStart里面写的话，每次onStart方法执行就会重置一下recyclerview，这样会极大降低用户友好度。
+
+打个比方：在逛淘宝的时候，往下翻了几十页后，点击一个item查看商品详情，结果返回时执行了onStart()方法让列表重置了，我又得翻好几十页才能接上上次看到的地方。
+
+---
+
+## 56 JSONObject可以返回Object类型的数据
+
+如果获取的字段的值是一个JSONArray数组的话，则自动将Object类型转为JSONArray。
+
+`jsonObject.get("children")`，若 `children` 字段对应的值是JSONArray数组，则默认返回一个JSONArray对象。
+
+注意：
+
+`new JSONArray` 的时候，传入构造函数中的参数一般是String类型，但不能是JSONArray类型的参数，否则会报错。
+
+解决办法：
+
+* 可以将JSONArray转化为字符串，再作为参数传入JSONArray的构造函数中，即 `JSONArray.toString()` ，`jsonObject.get("children").toString()`
+
+* 或者直接不用new JSONArray()，而是直接接收该JSON数组：
+
+  `JSONArray json=jsonObject.get("children");`
+
+---
+
+## 57 Java HashMap size() 方法
+
+size() 方法用于计算 hashMap 中键/值对的数量。
+
+size() 方法的语法为：
+
+```java
+hashmap.size()
+```
+
+**注：**hashmap 是 HashMap 类的一个对象。
+
+### 返回值
+
+返回 hashMap 中键/值对的数量。
+
+---
+
+## 58 Intent传递Map数据
+
+### 传入数据
+
+```java
+//将Map强制转换成Serializable
+Map<String, String> message = new HashMap<String, String>()；
+getMessage.put("name", userName);
+getMessage.put("time", time);
+Intent intent = new Intent(getApplicationContext(), DiseaseShowActivity.class);
+intent.putExtra("message",(Serializable)message);
+
+Intent intent=new Intent(activity, TabActivity.class);
+intent.putExtra("name",name);
+Map<String,Object> childrenMap=stringListMap.get(position);
+intent.putExtra("name",name);
+intent.putExtra("map",(Serializable)childrenMap);
+startActivity(intent);
+```
+
+### 接收数据
+
+```java
+Intent intent = getIntent();
+if(intent != null){
+    //获取intent中的参数
+    Map<String,Object> childrenMap=(Map<String,Object>)intent.getSerializableExtra("map");
+    String name=intent.getStringExtra("name");
+}
+```
+
+---
+
+## 59 Fragment可见性总结
+
+1，  onHiddenChanged(boolean hidden)
+
+（1）只在调用hideFragment/showFragment后才会调用，PagerAdapter方式中不会调用。
+
+（2）对应的isHidden()方法，只对show/hide方式有用。
+
+（3）show/hide触发时只针对当前fragment有用，对其子fragment没有作用，即子fragment不会回调onHiddenChanged方法。
+
+
+
+2，  setUserVisibleHint(booleanisVisibleToUser) **已弃用**
+
+（1）只在PagerAdapter方式中回调调用。
+
+（2）Fragment的PagerAdapter包括FragmentStatePagerAdapter和FragmentPagerAdapter两个子抽象类。
+
+（2）该方法在viewPager中失效，无论Fragment是否可见，都**不会**执行该方法。
+
+ 
+
+3，  Fragment的isVisible()判断方法
+
+（1）在PagerAdapter方式中不准确，即fragment不是PagerAdapter当前显示的fragment时也会是true。
+
+ 
+
+4 getUserVisibleHint(）**已弃用**
+
+（1）该方法用于判断Fragment是否可见，但是在viewPager中失效，无论Fragment是否可见，都**会**执行该方法。
+
+
+
+### 总结：
+
+要真正判断fragment是否处于可见显示状态，要综合考虑fragment的添加方式和其生命周期来处理
+
+（1） 生命周期可见状态变化时作出相应变化，如onResume，onPause中。
+
+（2） 同时针对onHiddenChanged和setUserVisibleHint两种情况来监听可见性变化。
+
+（3） 嵌套的fragment，子fragment不会随父fragment可见性变化而主动变化。
+
+---
+
+## 60 post方法请求数据
+
+我们请求的数据:
+
+`String data = "passwd=" + URLEncoder.encode(passwd, "UTF-8") + "&number=" + URLEncoder.encode(number, "UTF-8");`
+
+参数与参数名之间用 `&` 隔开
+
+---
+
+## 61 Fragment传值回Activity
+
+Frament中
+
+```java
+public interface CallBackListener{
+    public void sendValue(String value);
+}
+
+private CallBackListener listener;
+public void onAttach(@NonNull Context context) {
+    super.onAttach(context);
+    activity=requireActivity();
+    listener=(CallBackListener) activity;
+}
+
+//回调处
+listener.sendValue(key);
+```
+
+Activity中：implements接口，重写方法
+
+```java
+public class QueryActivity extends BaseActivity<QueryPresenter, Query.VP> implements HeatedWordsFragment.CallBackListener {
+    @Override
+    public void sendValue(String value) {
+        loadFragment();
+        if (!loadingFragment.isAdded()){
+            transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+        }else {
+            transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
+        }
+        getContract().requestQueryVP(value,0);
+    }
+}    
+```
+
+---
+
+## 62 流式布局
+
+### 动态设置TextView
+
+```java
+TextView tv = new TextView(activity);
+tv.setText((String)heatedWordsMap.get("name"));
+tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+tv.setGravity(Gravity.CENTER);
+int paddingy = DisplayUtils.dp2px( 7);
+int paddingx = DisplayUtils.dp2px( 6);
+tv.setPadding(paddingx, paddingy, paddingx, paddingy);
+tv.setClickable(false);
+
+int shape = GradientDrawable.RECTANGLE;
+int radius = DisplayUtils.dp2px( 14);
+int strokeWeight = DisplayUtils.dp2px( 2);
+int stokeColor = getResources().getColor(R.color.green);
+int stokeColor2 = getResources().getColor(R.color.gray);
+
+GradientDrawable drawableDefault = new GradientDrawable();
+drawableDefault.setShape(shape);
+drawableDefault.setCornerRadius(radius);
+drawableDefault.setStroke(strokeWeight, stokeColor);
+drawableDefault.setColor(ContextCompat.getColor(activity,R.color.transparent1));
+
+GradientDrawable drawableChecked = new GradientDrawable();
+drawableChecked.setShape(shape);
+drawableChecked.setCornerRadius(radius);
+//            drawableChecked.setColor(ContextCompat.getColor(TestFlowLayoutActivity.this, android.R.color.darker_gray));
+drawableChecked.setColor(ContextCompat.getColor(activity,R.color.shallow_gray));
+
+StateListDrawable stateListDrawable = new StateListDrawable();
+stateListDrawable.addState(new int[]{android.R.attr.state_checked}, drawableChecked);
+stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, drawableChecked);
+
+stateListDrawable.addState(new int[]{}, drawableDefault);
+
+tv.setBackground(stateListDrawable);
+//ColorStateList colorStateList = DrawableUtils.getColorSelector(getResources().getColor(R.color.black), getResources().getColor(R.color.white));
+//tv.setTextColor(getResources().getColor(R.color.gray));
+tv.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        String key=tv.getText().toString();
+        //System.out.println(key);
+        edtKeyword.setText(key);
+        listener.sendValue(key);
+        //dialog = ProgressDialog.show(activity, "", "正在加载", false, false);
+        //getContract().requestQueryVP(key,0);
+    }
+});
+flowLayout.addView(tv);
+```
+
+---
+
+## 63 服务--定时任务
+
+```java
+public class LongRunningTimeService extends Service {
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        AlarmManager manager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Long secondsNextMorning =getSecondsNext(1,10);
+        Intent intentMorning = new Intent(this, AlarmBroadcastReceiver.class);
+        intentMorning.setAction("CLOCK_IN");
+        //获取到PendingIntent的意图对象
+        PendingIntent piMorning = PendingIntent.getBroadcast(this, 0, intentMorning, PendingIntent.FLAG_IMMUTABLE);     //设置事件
+        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + secondsNextMorning, piMorning); //提交事件，发送给 广播接收器
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private Long getSecondsNext(int hour,int minute) {
+        long systemTime = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        // 选择的定时时间
+        long selectTime = calendar.getTimeInMillis();
+        // 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
+        if(systemTime > selectTime) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            selectTime = calendar.getTimeInMillis();
+        }
+        // 计算设定时间到现在时间的时间差
+        Long seconds = selectTime-systemTime;
+
+        return seconds.longValue();
+    }
+}
+```
+
+---
+
+## 64 发送通知
+
+```java
+NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+PendingIntent pendingIntent;
+Intent intent=new Intent(MainActivity.this,MainActivity.class);
+if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+    NotificationChannel mChannel = new NotificationChannel("channelId", "123", NotificationManager.IMPORTANCE_HIGH);
+    manager.createNotificationChannel(mChannel);
+}
+if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+    pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+} else {
+    pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+}
+Notification notification=new NotificationCompat.Builder(MainActivity.this,"channelId")
+        .setContentTitle("This is content title")
+        .setContentText("This is content text")
+        .setWhen(System.currentTimeMillis())
+        .setSmallIcon(R.drawable.ic_notification)
+        .setContentIntent(pendingIntent)
+        .build();
+manager.notify(1,notification);
+```
+
+---
+
+### Notification通过intent传递参数后结果为空的解决办法
+
+```java
+PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_UPDATE_CURRENT);
+```
+
+---
+
+## 65 动态调用AS自带的color
+
+`android.R.color.transparent`
+
+---
+
+## 66 测量控件或者布局的宽或高
+
+```java
+//制定测量规则 参数表示size + mode
+int width = View.MeasureSpec.makeMeasureSpec(ZERO,View.MeasureSpec.UNSPECIFIED);
+int height = View.MeasureSpec.makeMeasureSpec(ZERO,View.MeasureSpec.UNSPECIFIED);
+//调用measure方法之后就可以获取宽高
+imgBanner.measure(width, height);
+ConstraintLayout layout1=fragmentActivity.findViewById(R.id.fragment_home);
+System.out.println("layout"+layout1);
+layout1.measure(width,height);
+System.out.println(layout1.getMeasuredWidth());
+System.out.println(imgBanner.getWidth());
+System.out.println(imgBanner.getMeasuredWidth());
+imgBanner.setImageBitmap(bitmap);
+//设置图片前后的ImageView的宽度不一样
+imgBanner.measure(width, height);
+System.out.println(imgBanner.getMeasuredWidth());
+viewPager.measure(width,height);
+System.out.println(viewPager.getMeasuredWidth());
+```
+
+---
+
+## 67 一些复制粘贴过来的代码规范
 
 ### 1 代码命名规范
 

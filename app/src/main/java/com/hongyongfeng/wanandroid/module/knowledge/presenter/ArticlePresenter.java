@@ -1,15 +1,16 @@
 package com.hongyongfeng.wanandroid.module.knowledge.presenter;
 
-
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.knowledge.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeArticleFragment;
 import com.hongyongfeng.wanandroid.module.knowledge.model.ArticleModel;
-
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, KnowledgeArticleFragment, ArticleInterface.ViewPresenter> {
     @Override
     public ArticleModel getModelInstance() {
@@ -19,8 +20,6 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
     @Override
     public ArticleInterface.ViewPresenter getContract() {
         return new ArticleInterface.ViewPresenter() {
-
-
             @Override
             public void saveHistory(ArticleBean article) {
                 try {
@@ -29,7 +28,6 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void collectVp(int id, CollectListener listener) {
                 try {
@@ -70,7 +68,6 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
             @Override
             public void responseArticleVp(List<ArticleBean> articleList) {
                 mView.getContract().responseArticleVp(articleList);
-
             }
         };
     }

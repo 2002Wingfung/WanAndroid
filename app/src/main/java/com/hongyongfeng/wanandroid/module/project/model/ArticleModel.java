@@ -39,13 +39,13 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
     public ArticleModel(ArticlePresenter mPresenter) {
         super(mPresenter);
     }
-    private final String cookies=GetCookies.get();
     @Override
     public ArticleInterface.Model getContract() {
         return new ArticleInterface.Model() {
             @Override
             public void requestTitleM(int id,int page){
                 String url=DOMAIN_URL+PROJECT_URL+page+JSON_URL+"?cid="+id;
+                String cookies=GetCookies.get();
                 HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
@@ -90,6 +90,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
             @Override
             public void collectM(int id, CollectListener listener){
+                String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(ONE);
                 }else {
@@ -110,6 +111,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
 
             @Override
             public void unCollectM(int id, CollectListener listener) {
+                String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(ONE);
                 }else {

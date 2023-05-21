@@ -1,5 +1,8 @@
 package com.hongyongfeng.wanandroid.module.knowledge.view.fragment;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,14 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -28,10 +28,12 @@ import com.hongyongfeng.wanandroid.module.knowledge.presenter.ArticlePresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.ViewPresenter> {
     @Override
     public ArticleInterface.ViewPresenter getContract() {
@@ -54,34 +56,28 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
 
             @Override
             public void collectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
-                            startActivity(intent);
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void unCollectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -98,7 +94,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
-                        if (articleLists.size() != 0){
+                        if (articleLists.size() != ZERO){
                             articleList.addAll(articleLists);
                             adapter.notifyDataSetChanged();
                         }else {
@@ -116,21 +112,14 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
     private final ArticleAdapter adapter=new ArticleAdapter(articleList);
     private RecyclerView recyclerView;
     private ProgressDialog dialog;
-    private int page=1;
+    private int page=ONE;
     private boolean loadMore = false;
-
-    private FragmentTransaction transaction;
     @Override
     protected void destroy() {
 
     }
     @Override
     protected void initView(View view) {
-//        recyclerView= fragmentActivity.findViewById(R.id.rv_article);
-//        if (count==0){
-//            SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
-//            count=1;
-//        }
     }
     protected boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) {
@@ -139,9 +128,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         if (recyclerView.computeVerticalScrollExtent()<recyclerView.computeVerticalScrollRange()){
             loadMore=true;
         }
-//        System.out.println("屏幕显示的区域高度"+recyclerView.computeVerticalScrollExtent());
-//        System.out.println("滑过的高度"+recyclerView.computeVerticalScrollOffset());
-//        System.out.println("控件的高度"+recyclerView.computeVerticalScrollRange());
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange();
     }
 
@@ -157,7 +143,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
 
     @Override
     protected <ERROR> void responseError(ERROR error, Throwable throwable) {
-
     }
 
     @Override
@@ -171,9 +156,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         super.onAttach(context);
         fragmentActivity = requireActivity();
         if (getArguments() != null) {
-            //articleBeanList = getArguments().getParcelableArrayList("list");
             id=getArguments().getInt("id");
-            //System.out.println("id"+id);
         }
     }
 
@@ -185,16 +168,23 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
-        dialog=ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
-        articleList.clear();
-        getContract().requestArticleVp(id,0);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (articleList.size()==ZERO){
+            dialog=ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+            getContract().requestArticleVp(id,ZERO);
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        loadMore=false;//视图销毁将变量置为false
+        loadMore=false;
+        //视图销毁将变量置为false
     }
 
     @Override
@@ -216,7 +206,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                         //有bug
                         dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
                         getContract().requestArticleVp(id,page);
-                        //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();
                         page++;
                     }
                 }
@@ -224,22 +213,16 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                 if (isSlideToBottom(recyclerView)) {
                     loadMore=true;
                 }
-
             }
         });
-
-        //System.out.println(recyclerView.canScrollVertically(-1));
-        //判断是否滑动到底部
-        //返回false表示不能往上滑动，即代表到底部了
         adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
-                int number2 = 2;
-                int number0 = 0;
+                int number0 = ZERO;
                 if (articleList.get(position).isCollect()){
-                    number0=1;
+                    number0=ONE;
                 }
-                if (count[0] % number2 == number0) {
+                if (count[ZERO] % TWO == number0) {
                     getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
@@ -260,7 +243,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                         }
                     });
                 }
-                count[0]++;
+                count[ZERO]++;
             }
 
             @Override

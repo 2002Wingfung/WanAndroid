@@ -20,11 +20,11 @@ public class QueryModel extends BaseModel<QueryPresenter, Query.Model> {
     public QueryModel(QueryPresenter mPresenter) {
         super(mPresenter);
     }
-    private final String cookies= GetCookies.get();
     @Override
     public Query.Model getContract() {
         return (key, page) -> {
             String query=DOMAIN_URL+QUERY_URL+page+JSON_URL;
+            String cookies= GetCookies.get();
             HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
                 @Override
                 public void onFinish(String response) {

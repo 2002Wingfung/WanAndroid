@@ -22,6 +22,11 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeViewHolder> 
     public List<Map<String,Object>> categoryList;
 
     public interface OnItemClickListener {
+        /**
+         * 知识文章点击事件
+         * @param view item视图
+         * @param position item索引
+         */
         void onCategoryClicked(View view, int position);
 
     }
@@ -54,11 +59,8 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull KnowledgeViewHolder holder, int position) {
         Map<String,Object> category=categoryList.get(position);
-
         holder.tvDetails.setText(nameList.get(position));
         holder.tvCategory.setText((String) category.get("name"));
-        //holder.tvDetails.setText(category.getDetailedCategory());
-
     }
 
     @Override
@@ -66,9 +68,6 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeViewHolder> 
         return categoryList.size();
     }
 
-    /**
-     *
-     */
     public KnowledgeAdapter(List<Map<String,Object>> categoryList,List<String> nameList) {
         this.categoryList = categoryList;
         this.nameList=nameList;

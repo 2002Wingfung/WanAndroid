@@ -46,7 +46,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
     public HomeFragmentModel(HomeFragmentPresenter mPresenter) {
         super(mPresenter);
     }
-    private final String cookies=GetCookies.get();
+
     /**
      * 将json字符串的数据解析出来，并存入实体类中
      * @param toString json字符串
@@ -143,6 +143,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             }
             @Override
             public void requestArticleM() {
+                String cookies=GetCookies.get();
                 //请求首页置顶文章的数据
                 HttpUtil.sendHttpRequest(ARTICLE_TOP_URL, new HttpCallbackListener() {
                     @Override
@@ -186,6 +187,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             @Override
             public void requestLoadMoreM(int page) {
                 String loadMore=DOMAIN_URL+ARTICLE_URL_1+page+JSON_URL;
+                String cookies=GetCookies.get();
                 HttpUtil.sendHttpRequest(loadMore, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
@@ -203,6 +205,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             }
             @Override
             public void collectM(int id, CollectListener listener) {
+                String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(ONE);
                 }else {
@@ -221,6 +224,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
             }
             @Override
             public void unCollectM(int id, CollectListener listener) {
+                String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(ONE);
                 }else {

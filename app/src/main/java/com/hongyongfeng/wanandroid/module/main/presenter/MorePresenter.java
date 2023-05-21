@@ -6,13 +6,12 @@ import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.main.activity.MoreActivity;
 import com.hongyongfeng.wanandroid.module.main.interfaces.MoreInterface;
 import com.hongyongfeng.wanandroid.module.main.model.MoreModel;
-import com.hongyongfeng.wanandroid.module.query.interfaces.Query;
-import com.hongyongfeng.wanandroid.module.query.model.QueryModel;
-import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
-
 import java.util.List;
 
-public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreInterface.VP> {
+/**
+ * @author Wingfung Hung
+ */
+public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreInterface.Vp> {
 
     @Override
     public MoreModel getModelInstance() {
@@ -20,9 +19,8 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
     }
 
     @Override
-    public MoreInterface.VP getContract() {
-        return new MoreInterface.VP() {
-
+    public MoreInterface.Vp getContract() {
+        return new MoreInterface.Vp() {
             @Override
             public void saveHistory(ArticleBean article) {
                 try {
@@ -33,7 +31,7 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             }
 
             @Override
-            public void collectVP(int id, CollectListener listener) {
+            public void collectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().collectM(id,listener);
                 } catch (Exception e) {
@@ -42,7 +40,7 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
+            public void unCollectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().unCollectM(id,listener);
                 } catch (Exception e) {
@@ -51,7 +49,7 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             }
 
             @Override
-            public void requestHistoryVP() {
+            public void requestHistoryVp() {
                 try {
                     mModel.getContract().requestHistoryM();
                 } catch (Exception e) {
@@ -60,12 +58,12 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             }
 
             @Override
-            public void responseHistoryVP(List<ArticleBean> article) {
-                mView.getContract().responseHistoryVP(article);
+            public void responseHistoryVp(List<ArticleBean> article) {
+                mView.getContract().responseHistoryVp(article);
             }
 
             @Override
-            public void requestCollectVP(int page) {
+            public void requestCollectVp(int page) {
                 try {
                     mModel.getContract().requestCollectM(page);
                 } catch (Exception e) {
@@ -74,8 +72,8 @@ public class MorePresenter extends BasePresenter<MoreModel, MoreActivity, MoreIn
             }
 
             @Override
-            public void responseCollectVP(List<ArticleBean> article) {
-                mView.getContract().responseCollectVP(article);
+            public void responseCollectVp(List<ArticleBean> article) {
+                mView.getContract().responseCollectVp(article);
             }
 
             @Override

@@ -5,24 +5,26 @@ import com.hongyongfeng.wanandroid.module.main.interfaces.MainInterface;
 import com.hongyongfeng.wanandroid.module.main.model.MainModel;
 import com.hongyongfeng.wanandroid.module.main.activity.MainActivity;
 
-public class MainPresenter extends BasePresenter<MainModel, MainActivity, MainInterface.VP> {
+/**
+ * @author Wingfung Hung
+ */
+public class MainPresenter extends BasePresenter<MainModel, MainActivity, MainInterface.Vp> {
     @Override
     public MainModel getModelInstance() {
         return new MainModel(this);
     }
 
     @Override
-    public MainInterface.VP getContract() {
-        return new MainInterface.VP() {
+    public MainInterface.Vp getContract() {
+        return new MainInterface.Vp() {
             @Override
-            public void requestVP() {
+            public void requestVp() {
                 try {
                     mModel.getContract().requestM();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
-
             @Override
             public void responseResult(String name) {
                 mView.getContract().responseResult(name);

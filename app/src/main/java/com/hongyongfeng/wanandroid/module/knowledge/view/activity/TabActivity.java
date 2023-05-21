@@ -1,5 +1,7 @@
 package com.hongyongfeng.wanandroid.module.knowledge.view.activity;
 
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,10 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Wingfung Hung
+ */
 public class TabActivity extends BaseActivity {
-    TextView tvTitle;
-    TextView tvBack;
-    private ProjectCategoryAdapter adapter;
+    private TextView tvTitle;
+    private TextView tvBack;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private List<Fragment> fragmentList;
@@ -38,40 +42,20 @@ public class TabActivity extends BaseActivity {
         if(intent != null){
             //获取intent中的参数
             Map<String,Object> childrenMap=(Map<String,Object>)intent.getSerializableExtra("map");
-
-//            categoryList.add("test1");
-//            KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
-//            Bundle bundle=new Bundle();
-//            bundle.putInt("id",(int)childrenMap.get("id0"));
-//            fragment.setArguments(bundle);
-//            fragmentList.add(fragment);
-
-//            categoryList.add("test2");
-//            KnowledgeArticleFragment fragment1=new KnowledgeArticleFragment();
-//            Bundle bundle1=new Bundle();
-//            bundle1.putInt("id",(int)childrenMap.get("id1"));
-//            fragment1.setArguments(bundle1);
-//            fragmentList.add(fragment1);
-
-            for (int i=0;i<childrenMap.size()/2;i++){
-
-                //System.out.println(childrenMap.get("id"+i));
+            for (int i=ZERO;i<childrenMap.size()/TWO;i++){
                 String name=(String) childrenMap.get("name"+i);
                 categoryList.add(name);
-                //fragmentList.add(VPFragment.newInstance(name,""));
-
                 KnowledgeArticleFragment fragment=new KnowledgeArticleFragment();
                 Bundle bundle=new Bundle();
                 bundle.putInt("id",(int)childrenMap.get("id"+i));
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             }
-
             String name=intent.getStringExtra("name");
             tvTitle.setText(name);
         }
-        adapter=new ProjectCategoryAdapter(getSupportFragmentManager(),
-                fragmentList,categoryList);
+        ProjectCategoryAdapter adapter = new ProjectCategoryAdapter(getSupportFragmentManager(),
+                fragmentList, categoryList);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -85,12 +69,10 @@ public class TabActivity extends BaseActivity {
     protected void initData() {
         fragmentList=new ArrayList<>();
         categoryList=new ArrayList<>();
-
     }
 
     @Override
     protected void destroy() {
-
     }
 
     @Override
@@ -113,7 +95,6 @@ public class TabActivity extends BaseActivity {
 
     @Override
     protected void responseError(Object o, Throwable throwable) {
-
     }
 
     @Override

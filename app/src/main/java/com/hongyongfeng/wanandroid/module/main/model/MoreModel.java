@@ -24,7 +24,10 @@ import com.hongyongfeng.wanandroid.util.HttpUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
+/**
+ * @author Wingfung Hung
+ */
+public class MoreModel extends BaseModel<MorePresenter, MoreInterface.Model> {
     public MoreModel(MorePresenter mPresenter) {
         super(mPresenter);
     }
@@ -32,9 +35,8 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
 
 
     @Override
-    public MoreInterface.M getContract() {
-        return new MoreInterface.M() {
-
+    public MoreInterface.Model getContract() {
+        return new MoreInterface.Model() {
 
             @Override
             public void requestHistoryM() throws Exception {
@@ -46,7 +48,7 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
                         articleBeanList.add(article);
                     }while (cursor.moveToNext());
                 }
-                mPresenter.getContract().responseHistoryVP(articleBeanList);
+                mPresenter.getContract().responseHistoryVp(articleBeanList);
             }
 
             @Override
@@ -61,7 +63,7 @@ public class MoreModel extends BaseModel<MorePresenter, MoreInterface.M> {
                         public void onFinish(String response) {
                             //System.out.println(response);
                             List<ArticleBean> articleBeanList =HttpUtil.parseJsonWithObject(response,ArticleBean.class);
-                            mPresenter.getContract().responseCollectVP(articleBeanList);
+                            mPresenter.getContract().responseCollectVp(articleBeanList);
                         }
 
                         @Override

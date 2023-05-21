@@ -1,6 +1,5 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
-import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.ARTICLE_URL;
 import static com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment.mHandler;
 import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
 import static com.hongyongfeng.wanandroid.util.Constant.ONE;
@@ -11,10 +10,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,7 +25,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -39,7 +33,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -47,10 +40,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
-import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.module.home.view.adapter.BannerAdapter;
 import com.hongyongfeng.wanandroid.module.home.view.fragment.HomeFragment;
 import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragment;
@@ -59,15 +50,9 @@ import com.hongyongfeng.wanandroid.module.main.presenter.MainPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 import com.hongyongfeng.wanandroid.module.query.view.QueryActivity;
-import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.service.LongRunningTimeService;
 import com.hongyongfeng.wanandroid.test.FragmentAdapter;
-import com.hongyongfeng.wanandroid.util.HttpUtil;
 import com.hongyongfeng.wanandroid.util.ThreadPools;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +63,7 @@ import java.util.Objects;
  * 主活动
  * @author Wingfung Hung
  */
-public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> {
+public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> {
     public static ThreadPools threadPools=new ThreadPools();
     private static final String WAN="玩安卓";
     private TextView tvQuery;
@@ -115,11 +100,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     }
 
     @Override
-    public MainInterface.VP getContract() {
-        return new MainInterface.VP() {
+    public MainInterface.Vp getContract() {
+        return new MainInterface.Vp() {
             @Override
-            public void requestVP() {
-                mPresenter.getContract().requestVP();
+            public void requestVp() {
+                mPresenter.getContract().requestVp();
             }
 
             @Override
@@ -364,7 +349,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.VP> 
     @Override
     protected void onStart() {
         super.onStart();
-        getContract().requestVP();
+        getContract().requestVp();
     }
 
     private void initEvent() {

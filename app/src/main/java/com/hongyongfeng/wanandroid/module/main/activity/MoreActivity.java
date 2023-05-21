@@ -1,7 +1,6 @@
 package com.hongyongfeng.wanandroid.module.main.activity;
 
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,7 +25,10 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
+/**
+ * @author Wingfung Hung
+ */
+public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
     TextView tvBack;
     TextView tvTitle;
     RecyclerView recyclerView;
@@ -37,31 +39,31 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
 
     private int page=0;
     @Override
-    public MoreInterface.VP getContract() {
-        return new MoreInterface.VP() {
+    public MoreInterface.Vp getContract() {
+        return new MoreInterface.Vp() {
             @Override
             public void saveHistory(ArticleBean article) {
                 mPresenter.getContract().saveHistory(article);
             }
 
             @Override
-            public void collectVP(int id, CollectListener listener) {
-                mPresenter.getContract().collectVP(id,listener);
+            public void collectVp(int id, CollectListener listener) {
+                mPresenter.getContract().collectVp(id,listener);
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
-                mPresenter.getContract().unCollectVP(id,listener);
+            public void unCollectVp(int id, CollectListener listener) {
+                mPresenter.getContract().unCollectVp(id,listener);
 
             }
 
             @Override
-            public void requestHistoryVP() {
-                mPresenter.getContract().requestHistoryVP();
+            public void requestHistoryVp() {
+                mPresenter.getContract().requestHistoryVp();
             }
 
             @Override
-            public void responseHistoryVP(List<ArticleBean> articleBeanList) {
+            public void responseHistoryVp(List<ArticleBean> articleBeanList) {
                 articleBeanLists.addAll(articleBeanList);
                 MoreActivity.this.runOnUiThread(new Runnable() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -74,12 +76,12 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
             }
 
             @Override
-            public void requestCollectVP(int page) {
-                mPresenter.getContract().requestCollectVP(page);
+            public void requestCollectVp(int page) {
+                mPresenter.getContract().requestCollectVp(page);
             }
 
             @Override
-            public void responseCollectVP(List<ArticleBean> articleList) {
+            public void responseCollectVp(List<ArticleBean> articleList) {
                 if (articleList!=null){
                     if (articleList.size()!=0){
                         for (ArticleBean article:articleList) {
@@ -174,7 +176,7 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
                         if (index == 0) {
                             page++;
                             dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
-                            getContract().requestCollectVP(page);
+                            getContract().requestCollectVp(page);
                         }
                     }
                 }
@@ -189,7 +191,7 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
 
                     number0=1;
                     if (count[0] % number2 == number0) {
-                        getContract().collectVP(articleBeanLists.get(position).getId(), new CollectListener() {
+                        getContract().collectVp(articleBeanLists.get(position).getId(), new CollectListener() {
                             @Override
                             public void onFinish() {
                                 likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
@@ -199,7 +201,7 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
                             }
                         });
                     } else {
-                        getContract().unCollectVP(articleBeanLists.get(position).getId(), new CollectListener() {
+                        getContract().unCollectVp(articleBeanLists.get(position).getId(), new CollectListener() {
                             @Override
                             public void onFinish() {
                                 likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
@@ -283,12 +285,12 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.VP>{
             switch (index){
                 case 0:
                     dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
-                    getContract().requestCollectVP(ZERO);
+                    getContract().requestCollectVp(ZERO);
                     count=0;
                     break;
                 case 1:
                     dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
-                    getContract().requestHistoryVP();
+                    getContract().requestHistoryVp();
                     count=1;
                     break;
                 default:

@@ -26,13 +26,13 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
     public LoadMoreModel(LoadMorePresenter mPresenter) {
         super(mPresenter);
     }
-    private final String cookies=GetCookies.get();
     @Override
     public LoadMoreInterface.Model getContract() {
         return new LoadMoreInterface.Model() {
             @Override
             public void requestLoadMoreM(String key,int page){
                 String query=DOMAIN_URL+QUERY_URL+page+JSON_URL;
+                String cookies=GetCookies.get();
                 HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
                     @Override
                     public void onFinish(String response) {
@@ -48,6 +48,7 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
 
             @Override
             public void collectM(int id, CollectListener listener) {
+                String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(ONE);
                 }else {
@@ -67,6 +68,7 @@ public class LoadMoreModel extends BaseFragmentModel<LoadMorePresenter, LoadMore
             }
             @Override
             public void unCollectM(int id, CollectListener listener){
+                String cookies=GetCookies.get();
                 if (cookies == null||"".equals(cookies)) {
                     mPresenter.getContract().collectResponse(ONE);
                 }else {
