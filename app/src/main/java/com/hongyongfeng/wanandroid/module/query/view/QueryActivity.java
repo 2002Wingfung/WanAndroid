@@ -1,5 +1,6 @@
 package com.hongyongfeng.wanandroid.module.query.view;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,13 +13,11 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -27,28 +26,27 @@ import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implements HeatedWordsFragment.CallBackListener {
-    FragmentManager fragmentManager;
-    FragmentTransaction transaction;
-    HeatedWordsFragment heatedWordsFragment=new HeatedWordsFragment();
-    LoadingFragment loadingFragment=new LoadingFragment();
-    ArticleFragment articleFragment=new ArticleFragment();
-
-    TextView tvBack;
-    TextView tvClear;
-    EditText edtKeyWords;
-    ArrayList<ArticleBean> articleBeanLists;
+    private FragmentTransaction transaction;
+    private FragmentManager fragmentManager;
+    private final HeatedWordsFragment heatedWordsFragment=new HeatedWordsFragment();
+    private final LoadingFragment loadingFragment=new LoadingFragment();
+    private final ArticleFragment articleFragment=new ArticleFragment();
+    private TextView tvBack;
+    private TextView tvClear;
+    private EditText edtKeyWords;
+    private ArrayList<ArticleBean> articleBeanLists;
     @Override
     public Query.Vp getContract() {
         return new Query.Vp() {
             @Override
             public void requestQueryVp(String key, int page) {
-                //System.out.println(key);
-
                 mPresenter.getContract().requestQueryVp(key,page);
             }
 
@@ -59,17 +57,8 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 //然后传入articleFragment
                 //直接把list数据传给Fragment
                 //然后直接showFragment，不用搞延迟了。
-                handler.sendEmptyMessageDelayed(0,500);
+                handler.sendEmptyMessage(ZERO);
                 articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
-                //System.out.println(articleBeanLists.get(0).getLink());
-//                QueryActivity.this.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
-//
-//                    }
-//                });
             }
         };
     }
@@ -77,14 +66,16 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            Bundle bundle=new Bundle();
-            bundle.putParcelableArrayList("list",  articleBeanLists);
-            if (!articleFragment.isAdded()){
-                articleFragment.setArguments(bundle);
-                transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
-            }else {
-                articleFragment.setArguments(bundle);
-                transaction.hide(loadingFragment).show(articleFragment).commit();
+            if (!heatedWordsFragment.isVisible()&&!fragmentManager.isDestroyed()){
+                Bundle bundle=new Bundle();
+                bundle.putParcelableArrayList("list",articleBeanLists);
+                if (!articleFragment.isAdded()){
+                    articleFragment.setArguments(bundle);
+                    transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+                }else {
+                    articleFragment.setArguments(bundle);
+                    transaction.hide(loadingFragment).show(articleFragment).commit();
+                }
             }
         }
     };
@@ -109,49 +100,34 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtKeyWords.getText().toString().length()>0){
+                if (edtKeyWords.getText().toString().length()>ZERO){
                     tvClear.setVisibility(View.VISIBLE);
                 }else {
                     tvClear.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        edtKeyWords.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    //Toast.makeText(QueryActivity.this, edtKeyWords.getText().toString(), Toast.LENGTH_SHORT).show();
-                    //System.out.println(edtKeyWords);
-                    loadFragment();
-                    if (!articleFragment.isAdded()){
-//                        transaction.hide(heatedWordsFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
-                    }
-
-                    if (!loadingFragment.isAdded()){
-                        transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
-                    }else {
-                        transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
-                    }
-                    getContract().requestQueryVp(edtKeyWords.getText().toString(),0);
-
-                    // 在这里写搜索的操作,一般都是网络请求数据
+        edtKeyWords.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                loadFragment();
+                if (!loadingFragment.isAdded()){
+                    transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                }else {
+                    transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
                 }
-                //点击搜索的时候隐藏软键盘
-                return false;
-
+                getContract().requestQueryVp(edtKeyWords.getText().toString(),0);
             }
+            //点击搜索的时候隐藏软键盘
+            return false;
         });
     }
 
     @Override
     public void initData() {
-
     }
 
     @Override
     public void destroy() {
-
     }
 
     @Override
@@ -171,14 +147,19 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && articleFragment.isVisible()) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && !heatedWordsFragment.isVisible()) {
             loadFragment();
-            transaction.hide(articleFragment).show(heatedWordsFragment).commit();
             edtKeyWords.setText("");
+            if (articleFragment.isVisible()){
+                transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+            }else if (loadingFragment.isVisible()){
+                transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
+            }
             //返回搜索热词页面
             return true;
         }
-        return super.onKeyDown(keyCode, event);//退出H5界面
+        //结束查询活动
+        return super.onKeyDown(keyCode, event);
     }
     @Override
     public void initView() {
@@ -187,12 +168,10 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
         edtKeyWords=findViewById(R.id.edt_keyword);
     }
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         replaceFragment(heatedWordsFragment);
-
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -204,6 +183,8 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 loadFragment();
                 if (articleFragment.isVisible()){
                     transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+                }else if (loadingFragment.isVisible()){
+                    transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
                 }
                 break;
             case R.id.tv_back:
@@ -219,8 +200,8 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
         transaction.commit();
     }
     private void loadFragment(){
-        fragmentManager=getSupportFragmentManager();
-        transaction=fragmentManager.beginTransaction();
+        fragmentManager = getSupportFragmentManager();
+        transaction= fragmentManager.beginTransaction();
     }
 
     @Override
@@ -231,6 +212,6 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
         }else {
             transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
         }
-        getContract().requestQueryVp(value,0);
+        getContract().requestQueryVp(value,ZERO);
     }
 }

@@ -3,25 +3,20 @@ package com.hongyongfeng.wanandroid.module.query.view.fragment;
 import static com.hongyongfeng.wanandroid.util.Constant.ONE;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO;
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
@@ -32,10 +27,8 @@ import com.hongyongfeng.wanandroid.module.query.presenter.LoadMorePresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.SignInUpActivity;
 import com.hongyongfeng.wanandroid.module.webview.view.WebViewActivity;
 import com.hongyongfeng.wanandroid.util.SetRecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInterface.Vp> {
     @Override
@@ -48,31 +41,24 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
             @Override
             public void responseLoadMoreVp(List<ArticleBean> articleLists) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (articleLists.size() != 0){
-                            articleList.addAll(articleLists);
-                            adapter.notifyItemInserted(articleList.size());
-                        }else {
-                            Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
+                fragmentActivity.runOnUiThread(() -> {
+                    if (articleLists.size() != ZERO){
+                        articleList.addAll(articleLists);
+                        adapter.notifyItemInserted(articleList.size());
+                    }else {
+                        Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                     }
+                    dialog.dismiss();
                 });
             }
 
             @Override
             public void error(Exception e) {
                 e.printStackTrace();
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
+                fragmentActivity.runOnUiThread(() -> {
+                    Toast.makeText(fragmentActivity, "网络请求错误", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 });
-
             }
 
             @Override
@@ -87,18 +73,15 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
             @Override
             public void collectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
-                            startActivity(intent);
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -106,16 +89,13 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
 
             @Override
             public void unCollectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -126,27 +106,26 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             }
         };
     }
-    public List<ArticleBean> articleList=new ArrayList<>();
+    private final List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
-    List<ArticleBean> articleBeanList = null;
+    private List<ArticleBean> articleBeanList = null;
 
-    ArticleAdapter adapter=new ArticleAdapter(articleList);
-    RecyclerView recyclerView;
+    private final ArticleAdapter adapter=new ArticleAdapter(articleList);
+    private RecyclerView recyclerView;
     static ProgressDialog dialog;
-    private int page=1;
-    EditText edtQuery;
-    private int count=0;
+    private int page=ONE;
+    private EditText edtQuery;
+    private int count=ZERO;
     @Override
     protected void destroy() {
 
     }
     @Override
     protected void initView(View view) {
-        Log.d("init","success");
         recyclerView= fragmentActivity.findViewById(R.id.rv_article);
-        if (count==0){
+        if (count==ZERO){
             SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
-            count=1;
+            count=ONE;
         }
         edtQuery=fragmentActivity.findViewById(R.id.edt_keyword);
     }
@@ -183,7 +162,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
                 if (articleList.get(position).isCollect()){
                     number0=ONE;
                 }
-                if (count[0] % TWO == number0) {
+                if (count[ZERO] % TWO == number0) {
                     getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {

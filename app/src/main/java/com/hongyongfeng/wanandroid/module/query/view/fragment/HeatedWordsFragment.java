@@ -28,39 +28,45 @@ import java.util.Map;
 public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, HeatedWords.Vp> {
     private void display(FlowLayout flowLayout, List<Map<String,Object>> heatedWordsListMap) {
         for (Map<String,Object> heatedWordsMap:heatedWordsListMap) {
-
+            //新建一个TextView控件
             TextView tv = new TextView(activity);
+            //将网络请求中返回的字段设置在TextView中
             tv.setText((String)heatedWordsMap.get("name"));
+            //设置字体的大小
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            //设置字体居中
             tv.setGravity(Gravity.CENTER);
-            int paddingY = DisplayUtils.dp2px( 7);
+            //设置偏离左右边界的长度
+            int paddingY = DisplayUtils.dp2px( 6);
             int paddingX = DisplayUtils.dp2px( 6);
             tv.setPadding(paddingX, paddingY, paddingX, paddingY);
             tv.setClickable(false);
-
+            //设置TextView为矩形
             int shape = GradientDrawable.RECTANGLE;
+            //设置圆角
             int radius = DisplayUtils.dp2px( 14);
+            //设置边界的宽度
             int strokeWeight = DisplayUtils.dp2px( 2);
+            //设置边界的颜色
             int stokeColor = getResources().getColor(R.color.green);
-
+            //设置默认(没按下时)的TextView样式
             GradientDrawable drawableDefault = new GradientDrawable();
             drawableDefault.setShape(shape);
             drawableDefault.setCornerRadius(radius);
             drawableDefault.setStroke(strokeWeight, stokeColor);
             drawableDefault.setColor(ContextCompat.getColor(activity,R.color.transparent1));
-
+            //设置按下时TextView的样式
             GradientDrawable drawableChecked = new GradientDrawable();
             drawableChecked.setShape(shape);
             drawableChecked.setCornerRadius(radius);
             drawableChecked.setColor(ContextCompat.getColor(activity,R.color.shallow_gray));
-
+            //设置selector
             StateListDrawable stateListDrawable = new StateListDrawable();
             stateListDrawable.addState(new int[]{android.R.attr.state_checked}, drawableChecked);
             stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, drawableChecked);
-
             stateListDrawable.addState(new int[]{}, drawableDefault);
-
             tv.setBackground(stateListDrawable);
+            //设置点击事件
             tv.setOnClickListener(v -> {
                 String key=tv.getText().toString();
                 edtKeyword.setText(key);
@@ -90,10 +96,7 @@ public class HeatedWordsFragment extends BaseFragment<HeatedWordsPresenter, Heat
 
             @Override
             public void responseHeatedWordsResult(List<Map<String,Object>> heatedWordsListMap) {
-                activity.runOnUiThread(() -> {
-                    //tvHeatedWords.setText(words.toString());
-                    display(flowLayout,heatedWordsListMap);
-                });
+                activity.runOnUiThread(() -> display(flowLayout,heatedWordsListMap));
             }
         };
     }

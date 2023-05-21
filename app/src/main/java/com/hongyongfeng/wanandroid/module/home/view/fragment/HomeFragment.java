@@ -54,15 +54,6 @@ import java.util.List;
  * @author Wingfung Hung
  */
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragmentInterface.ViewPresenter> {
-    public Handler dialogHandler = new Handler(Looper.myLooper()) {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 1) {
-                dialog.dismiss();
-            }
-        }
-    };
     public static byte[] getBytes(Bitmap bitmap){
         //实例化字节数组输出流
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -285,7 +276,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                     //滑动到底部
                     dialog= ProgressDialog.show(requireActivity(), "", "正在加载", false, false);;
-
                     //加载失败时
                     if (errorCode==1){
                         articleList.clear();

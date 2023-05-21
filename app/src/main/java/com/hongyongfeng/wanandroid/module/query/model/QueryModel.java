@@ -28,7 +28,6 @@ public class QueryModel extends BaseModel<QueryPresenter, Query.Model> {
             HttpUtil.postQueryRequest(query,key, new HttpCallbackListener() {
                 @Override
                 public void onFinish(String response) {
-                    System.out.println(response);
                     List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                     if (articleBeanList.size()!=ZERO){
                         mPresenter.getContract().responseQueryResult(articleBeanList);
