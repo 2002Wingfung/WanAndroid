@@ -2,6 +2,8 @@ package com.hongyongfeng.wanandroid.module.signinorup.register.model;
 
 import static com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginFragmentModel.COOKIE_PREF;
 import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,10 +29,10 @@ public class RegisterFragmentModel extends BaseFragmentModel<RegisterFragmentPre
         super(mPresenter);
     }
     private static final String REGISTER_URL =DOMAIN_URL+ Constant.REGISTER_URL;
-    private static final String LOGIN="login";
-    private static final String NULL="url is null.";
-    private static final String ERROR_MSG="errorMsg";
-    private static final String ERROR_CODE="errorCode";
+    public static final String LOGIN="login";
+    public static final String NULL="url is null.";
+    public static final String ERROR_MSG="errorMsg";
+    public static final String ERROR_CODE="errorCode";
 
 
     @Override
@@ -41,12 +43,12 @@ public class RegisterFragmentModel extends BaseFragmentModel<RegisterFragmentPre
                 StringBuilder builder = new StringBuilder();
                 if (!httpCookieList.isEmpty()){
                     //将返回的cookies拼接成键值对的形式
-                    for (int i = 0; i < httpCookieList.size(); i++) {
+                    for (int i = ZERO; i < httpCookieList.size(); i++) {
                         HttpCookie cookie = httpCookieList.get(i);
                         builder.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
                     }
                     int last = builder.lastIndexOf(";");
-                    if (builder.length() - 1 == last) {
+                    if (builder.length() - ONE == last) {
                         //删去cookies中的最后一个分号
                         builder.deleteCharAt(last);
                     }
@@ -66,7 +68,7 @@ public class RegisterFragmentModel extends BaseFragmentModel<RegisterFragmentPre
                     JSONObject object=new JSONObject(response);
                     String errorMsg=object.getString(ERROR_MSG);
                     int errorCode=object.getInt(ERROR_CODE);
-                    if (errorCode==0){
+                    if (errorCode==ZERO){
                         mPresenter.getContract().responseRegisterResult(true);
                     }else {
                         mPresenter.getContract().error(errorMsg);

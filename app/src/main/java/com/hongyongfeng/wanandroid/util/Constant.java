@@ -6,6 +6,7 @@ package com.hongyongfeng.wanandroid.util;
 public class Constant {
     public static final String DOMAIN_URL="https://www.wanandroid.com/";
     public static final String REGISTER_URL="user/register";
+    public static final String LOGIN_URL="user/login";
     public static final String COLLECT_URL="lg/collect/";
     public static final String ARTICLE_URL_1="article/list/";
     public static final String CANCEL_COLLECT_URL ="lg/uncollect_originId/";

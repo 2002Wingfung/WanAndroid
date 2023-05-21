@@ -22,7 +22,7 @@ import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginFragmentPresenter;
 @Deprecated
-public class BaseLogInUpFragment extends BaseFragment<LoginFragmentPresenter, ILogin.VP> {
+public class BaseLogInUpFragment extends BaseFragment<LoginFragmentPresenter, ILogin.Vp> {
     private Button btnLogin;
     private TextView tvVisibility;
     private EditText edtPwd;
@@ -40,11 +40,11 @@ public class BaseLogInUpFragment extends BaseFragment<LoginFragmentPresenter, IL
     }
 
     @Override
-    public ILogin.VP getContract() {
-        return new ILogin.VP() {
+    public ILogin.Vp getContract() {
+        return new ILogin.Vp() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
-                mPresenter.getContract().requestLoginVP(name,pwd);
+            public void requestLoginVp(String name, String pwd) {
+                mPresenter.getContract().requestLoginVp(name,pwd);
             }
 
             @Override
@@ -203,7 +203,7 @@ public class BaseLogInUpFragment extends BaseFragment<LoginFragmentPresenter, IL
                 System.out.println("name"+name);
                 System.out.println("pwd"+pwd);
                 //面向接口
-                getContract().requestLoginVP(name,pwd);
+                getContract().requestLoginVp(name,pwd);
             default:
                 break;
         }

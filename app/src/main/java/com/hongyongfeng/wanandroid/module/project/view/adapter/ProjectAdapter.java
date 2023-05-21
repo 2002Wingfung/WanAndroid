@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.project.view.viewholder.ProjectViewHolder;
+import com.hongyongfeng.wanandroid.util.ImageLoader;
 import com.hongyongfeng.wanandroid.util.MyApplication;
 import java.util.List;
 
@@ -21,11 +22,12 @@ import java.util.List;
  */
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 
-    public static final Resources resource= MyApplication.getContext().getResources();
+    //private ImageLoader imageLoader=ImageLoader.build(MyApplication.getContext());
+    private final Resources resource= MyApplication.getContext().getResources();
     /**
      * 存储DishesInformation对象的List集合
      */
-    public List<ProjectBean> articleList;
+    private final List<ProjectBean> articleList;
     List<Bitmap> bitmapLists;
     public interface OnItemClickListener {
         void onLikesClicked(View view, int position, TextView likes, int[] count);
@@ -84,7 +86,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         }
 
     }
-
     @Override
     public int getItemCount() {
         return articleList.size();

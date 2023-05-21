@@ -1,94 +1,86 @@
 package com.hongyongfeng.wanandroid.module.signinorup.login.model;
 
+import static com.hongyongfeng.wanandroid.module.signinorup.register.model.RegisterFragmentModel.ERROR_CODE;
+import static com.hongyongfeng.wanandroid.module.signinorup.register.model.RegisterFragmentModel.ERROR_MSG;
+import static com.hongyongfeng.wanandroid.module.signinorup.register.model.RegisterFragmentModel.LOGIN;
+import static com.hongyongfeng.wanandroid.module.signinorup.register.model.RegisterFragmentModel.NULL;
+import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-
-import com.hongyongfeng.wanandroid.base.BaseFragment;
 import com.hongyongfeng.wanandroid.base.BaseFragmentModel;
-import com.hongyongfeng.wanandroid.base.BaseModel;
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.HttpCookiesListener;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
 import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginFragmentPresenter;
-import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
-import com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment.LoginFragment;
+import com.hongyongfeng.wanandroid.util.Constant;
 import com.hongyongfeng.wanandroid.util.HttpUtil;
 import com.hongyongfeng.wanandroid.util.MyApplication;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.HttpCookie;
 import java.util.List;
 
-public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter, ILogin.M> {
+/**
+ * @author Wingfung Hung
+ */
+public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter, ILogin.Model> {
     public LoginFragmentModel(LoginFragmentPresenter mPresenter) {
         super(mPresenter);
     }
-    private static final String Login_URL="https://www.wanandroid.com/user/login";
+    private static final String LOGIN_URL =DOMAIN_URL+ Constant.LOGIN_URL;
     public static final String COOKIE_PREF = "cookies_prefs";
 
     @Override
-    public ILogin.M getContract() {
-        return new ILogin.M() {
-            @Override
-            public void requestLoginM(String name, String pwd) throws Exception {
-                //请求服务器登录接口，然后拿到
-
-                HttpUtil.postLoginRequest(new HttpCookiesListener() {
-                    @Override
-                    public void onFinish(List<HttpCookie> httpCookieList) {
-//                        System.out.println(httpCookieList);
-                        StringBuilder builder = new StringBuilder();
-                        if (!httpCookieList.isEmpty()){
-                            for (int i = 0; i < httpCookieList.size(); i++) {
-                                HttpCookie cookie = httpCookieList.get(i);
-                                builder.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
-                            }
-                            int last = builder.lastIndexOf(";");
-                            if (builder.length() - 1 == last) {
-                                builder.deleteCharAt(last);
-                            }
+    public ILogin.Model getContract() {
+        return (name, pwd) -> {
+            //请求服务器登录接口，然后拿到数据
+            HttpUtil.postLoginRequest(new HttpCookiesListener() {
+                @Override
+                public void onFinish(List<HttpCookie> httpCookieList) {
+                    StringBuilder builder = new StringBuilder();
+                    if (!httpCookieList.isEmpty()){
+                        //将返回的cookies拼接成键值对的形式
+                        for (int i = ZERO; i < httpCookieList.size(); i++) {
+                            HttpCookie cookie = httpCookieList.get(i);
+                            builder.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
                         }
-//                        System.out.println(builder);
-                        saveCookie("login",builder.toString());
-
-                        //最后将拼接后的字符串传回到view层，view层就可以根据这个字符类型的cookie进行使用了
-                        //mView.responseGettingCookie(builder.toString());
-                    }
-
-                    @Override
-                    public void error(Exception e) {
-
-                    }
-                },new HttpCallbackListener() {
-                    @Override
-                    public void onFinish(String response) {
-                        //System.out.println(response);
-                        try {
-                            JSONObject object=new JSONObject(response);
-                            String errorMsg=object.getString("errorMsg");
-                            int errorCode=object.getInt("errorCode");
-                            if (errorCode==0){
-                                mPresenter.getContract().responseLoginResult(true);
-                            }else {
-                                mPresenter.getContract().error(errorMsg);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        int last = builder.lastIndexOf(";");
+                        if (builder.length() - ONE == last) {
+                            //删去cookies中的最后一个分号
+                            builder.deleteCharAt(last);
                         }
-
                     }
+                    //保存cookies
+                    saveCookie(LOGIN,builder.toString());
+                }
 
-                    @Override
-                    public void onError(Exception e) {
-
+                @Override
+                public void error(Exception e) {
+                }
+            },new HttpCallbackListener() {
+                @Override
+                public void onFinish(String response) {
+                    try {
+                        JSONObject object=new JSONObject(response);
+                        String errorMsg=object.getString(ERROR_MSG);
+                        int errorCode=object.getInt(ERROR_CODE);
+                        if (errorCode==ZERO){
+                            mPresenter.getContract().responseLoginResult(true);
+                        }else {
+                            mPresenter.getContract().error(errorMsg);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                },Login_URL, name, pwd);
+                }
 
-                //mPresenter.getContract().responseLoginResult("wbc".equals(name) && "123".equals(pwd));
-            }
+                @Override
+                public void onError(Exception e) {
+                }
+            }, LOGIN_URL, name, pwd);
         };
     }
     /**
@@ -98,16 +90,11 @@ public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter
     private void saveCookie(String url, String cookies) {
         SharedPreferences sp = MyApplication.getContext().getSharedPreferences(COOKIE_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-
         if (TextUtils.isEmpty(url)) {
-            throw new NullPointerException("url is null.");
+            throw new NullPointerException(NULL);
         } else {
             editor.putString(url, cookies);
         }
-
-//        if (!TextUtils.isEmpty(domain)) {
-//            editor.putString(domain, cookies);
-//        }
         editor.apply();
     }
 
@@ -120,11 +107,4 @@ public class LoginFragmentModel extends BaseFragmentModel<LoginFragmentPresenter
         SharedPreferences sp = context.getSharedPreferences(COOKIE_PREF, Context.MODE_PRIVATE);
         sp.edit().clear().apply();
     }
-//    @Override
-//    public void requestLogin(String name, String pwd) throws Exception {
-//
-//        //请求服务器登录接口，然后拿到
-//        //...
-//        mPresenter.responseLoginResult("wbc".equals(name) && "123".equals(pwd));
-//    }
 }

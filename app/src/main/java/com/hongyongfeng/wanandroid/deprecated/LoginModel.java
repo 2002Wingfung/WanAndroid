@@ -1,17 +1,20 @@
-package com.hongyongfeng.wanandroid.module.signinorup.login.model;
+package com.hongyongfeng.wanandroid.deprecated;
 
 import com.hongyongfeng.wanandroid.base.BaseModel;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
 
-public class LoginModel extends BaseModel<LoginPresenter, ILogin.M>{
+/**
+ * @author Wingfung Hung
+ */
+@Deprecated
+public class LoginModel extends BaseModel<LoginPresenter, ILogin.Model>{
     public LoginModel(LoginPresenter mPresenter) {
         super(mPresenter);
     }
 
     @Override
-    public ILogin.M getContract() {
-        return new ILogin.M() {
+    public ILogin.Model getContract() {
+        return new ILogin.Model() {
             @Override
             public void requestLoginM(String name, String pwd) throws Exception {
                 //请求服务器登录接口，然后拿到

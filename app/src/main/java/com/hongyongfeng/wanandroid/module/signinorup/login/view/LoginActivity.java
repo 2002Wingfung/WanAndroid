@@ -18,16 +18,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
+import com.hongyongfeng.wanandroid.deprecated.LoginPresenter;
 
 @Deprecated
-public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
+public class LoginActivity extends BaseActivity<LoginPresenter, ILogin.Vp> {
     @Override
-    public ILogin.VP getContract() {
-        return new ILogin.VP() {
+    public ILogin.Vp getContract() {
+        return new ILogin.Vp() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
-                mPresenter.getContract().requestLoginVP(name,pwd);
+            public void requestLoginVp(String name, String pwd) {
+                mPresenter.getContract().requestLoginVp(name,pwd);
             }
 
             @Override
@@ -220,7 +220,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
                 System.out.println("name"+name);
                 System.out.println("pwd"+pwd);
                 //面向接口
-                getContract().requestLoginVP(name,pwd);
+                getContract().requestLoginVp(name,pwd);
             default:
                 break;
         }

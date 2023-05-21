@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseActivity;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginPresenter;
+import com.hongyongfeng.wanandroid.deprecated.LoginPresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment.LoginFragment;
 import com.hongyongfeng.wanandroid.module.signinorup.register.fragment.RegisterFragment;
 import com.hongyongfeng.wanandroid.test.FragmentAdapter;
@@ -22,9 +22,9 @@ import java.util.List;
 /**
  * @author Wingfung Hung
  */
-public class SignInUpActivity extends BaseActivity<LoginPresenter,ILogin.VP> {
+public class SignInUpActivity extends BaseActivity<LoginPresenter, ILogin.Vp> {
     @Override
-    public ILogin.VP getContract() {
+    public ILogin.Vp getContract() {
         return null;
     }
 

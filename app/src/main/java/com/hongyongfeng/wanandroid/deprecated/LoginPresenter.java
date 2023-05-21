@@ -1,22 +1,25 @@
-package com.hongyongfeng.wanandroid.module.signinorup.login.presenter;
+package com.hongyongfeng.wanandroid.deprecated;
 
 
 import com.hongyongfeng.wanandroid.base.BasePresenter;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.ILogin;
-import com.hongyongfeng.wanandroid.module.signinorup.login.model.LoginModel;
 import com.hongyongfeng.wanandroid.module.signinorup.login.view.LoginActivity;
 
-public class LoginPresenter extends BasePresenter<LoginModel, LoginActivity,ILogin.VP> {
+/**
+ * @author Wingfung Hung
+ */
+@Deprecated
+public class LoginPresenter extends BasePresenter<LoginModel, LoginActivity, ILogin.Vp> {
     @Override
     public LoginModel getModelInstance() {
         return new LoginModel(this);
     }
 
     @Override
-    public ILogin.VP getContract() {
-        return new ILogin.VP() {
+    public ILogin.Vp getContract() {
+        return new ILogin.Vp() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
+            public void requestLoginVp(String name, String pwd) {
                 //核验请求的信息，进行逻辑处理
                 //调用model层
                 try {

@@ -1,5 +1,11 @@
 package com.hongyongfeng.wanandroid.module.signinorup.login.view.fragment;
 
+import static com.hongyongfeng.wanandroid.module.signinorup.register.fragment.RegisterFragment.NAME;
+import static com.hongyongfeng.wanandroid.module.signinorup.register.fragment.RegisterFragment.NONE;
+import static com.hongyongfeng.wanandroid.module.signinorup.register.fragment.RegisterFragment.NULL;
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +15,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -26,16 +31,10 @@ import com.hongyongfeng.wanandroid.module.signinorup.login.presenter.LoginFragme
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
+ *
+ * @author Wingfung Hung
  */
-public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.VP> {
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.Vp> {
     private Button btnLogin;
     private TextView tvVisibility;
     private TextView tvSignUp;
@@ -43,72 +42,39 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     private EditText edtName;
     private TextView tvAccount;
     private TextView tvPwd;
-    private TextView tvWelcome;
-    private int name=0;
-    private int password=0;
+    private int name=ZERO;
+    private int password=ZERO;
     private FragmentActivity fragmentActivity;
-    final int[] count = {0};
+    final int[] count = {ZERO};
     private ViewPager viewPager;
 
     public LoginFragment() {
         // Required empty public constructor
-
-    }
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fragmentActivity=requireActivity();
-
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
-    public ILogin.VP getContract() {
-        return new ILogin.VP() {
+    public ILogin.Vp getContract() {
+        return new ILogin.Vp() {
             @Override
-            public void requestLoginVP(String name, String pwd) {
-                mPresenter.getContract().requestLoginVP(name,pwd);
+            public void requestLoginVp(String name, String pwd) {
+                mPresenter.getContract().requestLoginVp(name,pwd);
             }
 
             @Override
             public void responseLoginResult(boolean loginStatusResult) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(fragmentActivity, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
-                        if (loginStatusResult){
-                            Intent intent = new Intent();
-                            intent.putExtra("name",edtName.getText().toString());
-                            fragmentActivity.setResult(1, intent);
-                            fragmentActivity.finish();
-                        }
+                fragmentActivity.runOnUiThread(() -> {
+                    Toast.makeText(fragmentActivity, loginStatusResult?"登录成功":"登录失败", Toast.LENGTH_SHORT).show();
+                    if (loginStatusResult){
+                        Intent intent = new Intent();
+                        intent.putExtra(NAME,edtName.getText().toString());
+                        fragmentActivity.setResult(ONE, intent);
+                        fragmentActivity.finish();
                     }
                 });
 
@@ -116,12 +82,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
             @Override
             public void error(String error) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(fragmentActivity, error, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                fragmentActivity.runOnUiThread(() -> Toast.makeText(fragmentActivity, error, Toast.LENGTH_SHORT).show());
             }
         };
     }
@@ -157,8 +118,8 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().contains(" ")){
-                    String[] str = s.toString().split(" ");
+                if(s.toString().contains(NULL)){
+                    String[] str = s.toString().split(NULL);
                     StringBuilder content = new StringBuilder();
                     for (String value : str) {
                         content.append(value);
@@ -170,17 +131,17 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtPwd.getText().toString().length()>0){
+                if (edtPwd.getText().toString().length()>ZERO){
                     tvPwd.setVisibility(View.INVISIBLE);
-                    password=1;
-                    if (name==1){
+                    password=ONE;
+                    if (name==ONE){
                         btnLogin.setEnabled(true);
                         btnLogin.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.button_shape,null));
                     }
 
                 }else {
                     tvPwd.setVisibility(View.VISIBLE);
-                    password=0;
+                    password=ZERO;
                     btnLogin.setEnabled(false);
                     btnLogin.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.bg_btn_login,null));
                 }
@@ -194,8 +155,8 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().contains(" ")){
-                    String[] str = s.toString().split(" ");
+                if(s.toString().contains(NULL)){
+                    String[] str = s.toString().split(NULL);
                     StringBuilder content = new StringBuilder();
                     for (String value : str) {
                         content.append(value);
@@ -207,17 +168,17 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtName.getText().toString().length()>0){
+                if (edtName.getText().toString().length()>ZERO){
                     tvAccount.setVisibility(View.INVISIBLE);
-                    name=1;
-                    if (password==1){
+                    name=ONE;
+                    if (password==ONE){
                         btnLogin.setEnabled(true);
                         btnLogin.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.button_shape,null));
                     }
 
                 }else {
                     tvAccount.setVisibility(View.VISIBLE);
-                    name=0;
+                    name=ZERO;
                     btnLogin.setEnabled(false);
                     btnLogin.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.bg_btn_login,null));
                 }
@@ -249,11 +210,9 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        int num2 = 2;
-        int num0 = 0;
         switch (v.getId()){
             case R.id.password_visibility:
-                if (count[0] % num2 == num0){
+                if (count[ZERO] % TWO == ZERO){
                     tvVisibility.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_visible,null));
                     edtPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 
@@ -263,18 +222,16 @@ public class LoginFragment extends BaseFragment<LoginFragmentPresenter, ILogin.V
                     edtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
                 }
-                count[0]++;
+                count[ZERO]++;
                 break;
             case R.id.tv_sign_up:
-                viewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(ONE);
                 break;
             case R.id.login:
-                String name= edtName.getText().toString().replaceAll(" ","");
-                String pwd= edtPwd.getText().toString().replaceAll(" ","");
-                System.out.println("name"+name);
-                System.out.println("pwd"+pwd);
+                String name= edtName.getText().toString().replaceAll(NULL,NONE);
+                String pwd= edtPwd.getText().toString().replaceAll(NULL,NONE);
                 //面向接口
-                getContract().requestLoginVP(name,pwd);
+                getContract().requestLoginVp(name,pwd);
             default:
                 break;
         }

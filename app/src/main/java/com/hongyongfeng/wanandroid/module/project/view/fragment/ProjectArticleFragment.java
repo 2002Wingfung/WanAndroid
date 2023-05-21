@@ -160,7 +160,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         fragmentActivity=requireActivity();
 
         if (getArguments() != null) {
-
             id=getArguments().getInt("id");
         }
     }

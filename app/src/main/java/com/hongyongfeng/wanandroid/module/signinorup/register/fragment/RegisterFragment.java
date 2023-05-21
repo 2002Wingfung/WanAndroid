@@ -47,10 +47,9 @@ public class RegisterFragment extends BaseFragment<RegisterFragmentPresenter, Re
     final int[] count = {0,1};
     private ViewPager viewPager;
     private TextView tvRegister;
-    private static final String NAME="name";
-
-    private static final String NULL=" ";
-    private static final String NONE="";
+    public static final String NAME="name";
+    public static final String NULL=" ";
+    public static final String NONE="";
     public RegisterFragment() {
     }
 
