@@ -3,12 +3,9 @@ package com.hongyongfeng.wanandroid.module.project.view.viewholder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.hongyongfeng.wanandroid.R;
-import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
 import com.hongyongfeng.wanandroid.module.project.view.adapter.ProjectAdapter;
 
 /**
@@ -19,7 +16,6 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder{
      * 菜品item视图
      */
     public View articleView;
-
     public ImageView imageView;
 
     public TextView tvTitle;
@@ -27,7 +23,6 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder{
     public TextView tvLikes;
     public TextView tvAuthor;
     public TextView tvTime;
-
 
 
     public ProjectViewHolder(@NonNull View itemView, final ProjectAdapter.OnItemClickListener onClickListener) {

@@ -30,7 +30,20 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
     private final List<ProjectBean> articleList;
     List<Bitmap> bitmapLists;
     public interface OnItemClickListener {
+        /**
+         * 点赞按钮的监听
+         * @param view 点赞按钮的视图
+         * @param position item的索引
+         * @param likes 点赞控件
+         * @param count 用于判断是否点赞
+         */
         void onLikesClicked(View view, int position, TextView likes, int[] count);
+
+        /**
+         * 点击文章监听
+         * @param view item的视图
+         * @param position item的索引
+         */
         void onArticleClicked(View view, int position);
 
     }
@@ -91,18 +104,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         return articleList.size();
     }
 
-    /**
-     *
-     */
     public ProjectAdapter(List<ProjectBean> articleList,List<Bitmap> bitmapLists) {
         this.articleList = articleList;
         this.bitmapLists = bitmapLists;
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull ProjectViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        //System.out.println("1"+holder.getAdapterPosition());
-//        viewHolderMap.put(holder.getAdapterPosition(),holder.itemView);
     }
 }

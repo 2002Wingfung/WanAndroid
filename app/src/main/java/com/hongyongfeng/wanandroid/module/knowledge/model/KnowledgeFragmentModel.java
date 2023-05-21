@@ -9,7 +9,7 @@ import com.hongyongfeng.wanandroid.util.HttpUtil;
 import java.util.List;
 import java.util.Map;
 
-public class KnowledgeFragmentModel extends BaseFragmentModel<KnowledgeFragmentPresenter, KnowledgeFragmentInterface.M> {
+public class KnowledgeFragmentModel extends BaseFragmentModel<KnowledgeFragmentPresenter, KnowledgeFragmentInterface.Model> {
     public KnowledgeFragmentModel(KnowledgeFragmentPresenter mPresenter) {
         super(mPresenter);
     }
@@ -17,8 +17,8 @@ public class KnowledgeFragmentModel extends BaseFragmentModel<KnowledgeFragmentP
     List<Map<String,Object>> treeMapList;
 
     @Override
-    public KnowledgeFragmentInterface.M getContract() {
-        return new KnowledgeFragmentInterface.M() {
+    public KnowledgeFragmentInterface.Model getContract() {
+        return new KnowledgeFragmentInterface.Model() {
             @Override
             public void requestTitleM() throws Exception {
                 //请求服务器登录接口，然后拿到

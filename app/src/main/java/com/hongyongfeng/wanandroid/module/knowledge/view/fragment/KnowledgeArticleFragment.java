@@ -47,8 +47,8 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
-                mPresenter.getContract().unCollectVP(id,listener);
+            public void unCollectVp(int id, CollectListener listener) {
+                mPresenter.getContract().unCollectVp(id,listener);
 
             }
 
@@ -87,12 +87,12 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             }
 
             @Override
-            public void requestArticleVP(int id, int page) {
-                mPresenter.getContract().requestArticleVP(id,page);
+            public void requestArticleVp(int id, int page) {
+                mPresenter.getContract().requestArticleVp(id,page);
             }
 
             @Override
-            public void responseArticleVP(List<ArticleBean> articleLists) {
+            public void responseArticleVp(List<ArticleBean> articleLists) {
                 //System.out.println(articleLists);
                 requireActivity().runOnUiThread(new Runnable() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -187,7 +187,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
         mPresenter.bindView(this);
         dialog=ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
         articleList.clear();
-        getContract().requestArticleVP(id,0);
+        getContract().requestArticleVp(id,0);
         return view;
     }
 
@@ -215,7 +215,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                     if (loadMore){
                         //有bug
                         dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
-                        getContract().requestArticleVP(id,page);
+                        getContract().requestArticleVp(id,page);
                         //Toast.makeText(fragmentActivity, "正在加载", Toast.LENGTH_SHORT).show();
                         page++;
                     }
@@ -250,7 +250,7 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                         }
                     });
                 } else {
-                    getContract().unCollectVP(articleList.get(position).getId(), new CollectListener() {
+                    getContract().unCollectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));

@@ -35,7 +35,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                     @Override
                     public void onFinish(String response) {
                         List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        mPresenter.getContract().responseArticleVP(articleBeanList);
+                        mPresenter.getContract().responseArticleVp(articleBeanList);
                     }
 
 

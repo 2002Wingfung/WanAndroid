@@ -9,6 +9,7 @@ public class Constant {
     public static final String LOGIN_URL="user/login";
     public static final String COLLECT_URL="lg/collect/";
     public static final String ARTICLE_URL_1="article/list/";
+    public static final String PROJECT_URL="project/list/";
     public static final String QUERY_URL="article/query/";
     public static final String CANCEL_COLLECT_URL ="lg/uncollect_originId/";
     public static final String JSON_URL="/json";
@@ -28,7 +29,8 @@ public class Constant {
                     "top int,"+
                     "main_id INTEGER primary key autoincrement"+
                     ");";
-    public static final String DELETE_SQL="select id from article_bean where id=?";
+    public static final String SELECT_SQL ="select id from article_bean where id=?";
+    public static final String DELETE_SQL ="delete from article_bean where id=?";
     public static final int ZERO=0;
     public static final int ONE=1;
     public static final int TWO=2;

@@ -1,10 +1,8 @@
 package com.hongyongfeng.wanandroid.module.project.interfaces;
 
 import android.graphics.Bitmap;
-
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
-
 import java.util.List;
 
 /**
@@ -49,13 +47,47 @@ public interface ArticleInterface {
          * @param id 项目id
          * @param page 页码
          * */
-        void requestTitleVP(int id,int page);
+        void requestTitleVp(int id, int page);
+
+        /**
+         * 返回项目文章
+         * @param articleList ProjectBean实体类集合
+         */
         void responseTitleResult(List<ProjectBean> articleList);
+
+        /**
+         * 返回项目图片
+         * @param bitmap 项目图片
+         */
         void responseImageResult(Bitmap bitmap);
+        /**
+         * 保存项目文章到历史记录
+         * @param project 项目实体类
+         */
         void saveProject(ProjectBean project);
-        void collectVP(int id, CollectListener listener);
-        void unCollectVP(int id, CollectListener listener);
+        /**
+         * 收藏接口
+         * @param id 项目id
+         * @param listener 监听
+         */
+        void collectVp(int id, CollectListener listener);
+        /**
+         * 取消收藏接口
+         * @param id 文章id
+         * @param listener 取消收藏监听
+         */
+        void unCollectVp(int id, CollectListener listener);
+
+        /**
+         * 返回收藏结果接口
+         * @param code 收藏代码
+         */
         void collectResponse(int code);
+
+        /**
+         * 返回取消收藏结果接口
+         * @param code 收藏代码
+         */
         void unCollectResponse(int code);
     }
 }

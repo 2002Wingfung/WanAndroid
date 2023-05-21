@@ -1,5 +1,8 @@
 package com.hongyongfeng.wanandroid.module.project.view.fragment;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.base.BaseFragment;
@@ -29,13 +31,14 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.Vp> {
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
-
     private final List<ProjectBean> projectList =new ArrayList<>();
     private final List<Bitmap> bitmapLists =new ArrayList<>();
-
     private final ProjectAdapter adapter=new ProjectAdapter(projectList,bitmapLists);
     private RecyclerView recyclerView;
     private ProgressDialog dialog;
@@ -46,8 +49,8 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     public ArticleInterface.Vp getContract() {
         return new ArticleInterface.Vp() {
             @Override
-            public void requestTitleVP(int id,int page) {
-                mPresenter.getContract().requestTitleVP(id,page);
+            public void requestTitleVp(int id, int page) {
+                mPresenter.getContract().requestTitleVp(id,page);
             }
 
             @Override
@@ -63,7 +66,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
-                        //mHandler.sendEmptyMessageDelayed(0,500);
                     }
                 });
             }
@@ -75,24 +77,8 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     @Override
                     public void run() {
                         bitmapLists.add(bitmap);
-                        //adapter.notifyDataSetChanged();
-                        //System.out.println(bitmap);
-
-//                        RecyclerView.ViewHolder viewHolder = recyclerView.getAdapter().createViewHolder(recyclerView,recyclerView.getAdapter().getItemViewType(position));
-//                        recyclerView.getAdapter().onBindViewHolder(viewHolder,position);
-//                        viewHolder.itemView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth(),View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
-//                        View view=viewHolder.itemView;
-
-                        //System.out.println(position);
-//                        View view = Objects.requireNonNull(recyclerView.getLayoutManager()).findViewByPosition(position);
-//                        View view=adapter.viewHolderMap.get(position);
-//                        ImageView imageView = view.findViewById(R.id.iv_recycle_project_item);
-//                        System.out.println(view);
-//                        imageView.setImageBitmap(bitmap);
                         adapter.notifyItemChanged(position);
                         position++;
-
-//                        dialog.dismiss();
                     }
                 });
             }
@@ -103,29 +89,26 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
             }
 
             @Override
-            public void collectVP(int id, CollectListener listener) {
-                mPresenter.getContract().collectVP(id,listener);
+            public void collectVp(int id, CollectListener listener) {
+                mPresenter.getContract().collectVp(id,listener);
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
-                mPresenter.getContract().unCollectVP(id,listener);
+            public void unCollectVp(int id, CollectListener listener) {
+                mPresenter.getContract().unCollectVp(id,listener);
             }
 
             @Override
             public void collectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
-                            startActivity(intent);
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(fragmentActivity, "点赞成功", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(fragmentActivity, SignInUpActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -133,16 +116,13 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
 
             @Override
             public void unCollectResponse(int code) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (code==0){
-                            Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
-                        }else if (code==1){
-                            Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
-                        }
+                fragmentActivity.runOnUiThread(() -> {
+                    if (code==ZERO){
+                        Toast.makeText(fragmentActivity, "取消点赞", Toast.LENGTH_SHORT).show();
+                    }else if (code==ONE){
+                        Toast.makeText(fragmentActivity, "还没登录", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(fragmentActivity, "点赞失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -173,9 +153,9 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     @Override
     public void onResume() {
         super.onResume();
-        if (projectList.size() == 0){
+        if (projectList.size() == ZERO){
             dialog= ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
-            getContract().requestTitleVP(id,page);
+            getContract().requestTitleVp(id,page);
         }
     }
     @Override
@@ -192,13 +172,12 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         adapter.setOnItemClickListener(new ProjectAdapter.OnItemClickListener() {
             @Override
             public void onLikesClicked(View view, int position, TextView likes, int[] count) {
-                int number2=2;
-                int number0=0;
+                int number0=ZERO;
                 if (projectList.get(position).isCollect()){
-                    number0=1;
+                    number0=ONE;
                 }
-                if (count[0] % number2 == number0) {
-                    getContract().collectVP(projectList.get(position).getId(), new CollectListener() {
+                if (count[0] % TWO == number0) {
+                    getContract().collectVp(projectList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes, null));
@@ -208,7 +187,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                         }
                     });
                 } else {
-                    getContract().unCollectVP(projectList.get(position).getId(), new CollectListener() {
+                    getContract().unCollectVp(projectList.get(position).getId(), new CollectListener() {
                         @Override
                         public void onFinish() {
                             likes.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_likes_gray, null));
@@ -230,15 +209,12 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                 getContract().saveProject(project);
             }
         });
-        LinearLayoutManager layoutManager= (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState==0){
-                    //System.out.println(newState);
-//                    adapter.notifyItemChanged(0,bitmapLists.size());
+                if (newState==ZERO){
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -250,7 +226,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                     if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
                         dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
                         page++;
-                        getContract().requestTitleVP(id,page);
+                        getContract().requestTitleVp(id,page);
                     }
                 }
             }
@@ -258,7 +234,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     }
     @Override
     protected void initData() {
-
     }
 
     @Override
@@ -268,7 +243,6 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
 
     @Override
     protected <ERROR> void responseError(ERROR error, Throwable throwable) {
-
     }
 
     @Override
@@ -276,9 +250,7 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         return R.layout.fragment_project_article;
     }
 
-
     @Override
     public void onClick(View v) {
-
     }
 }

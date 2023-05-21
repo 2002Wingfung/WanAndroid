@@ -9,17 +9,17 @@ import com.hongyongfeng.wanandroid.module.knowledge.view.fragment.KnowledgeFragm
 import java.util.List;
 import java.util.Map;
 
-public class KnowledgeFragmentPresenter extends BaseFragmentPresenter<KnowledgeFragmentModel, KnowledgeFragment, KnowledgeFragmentInterface.VP> {
+public class KnowledgeFragmentPresenter extends BaseFragmentPresenter<KnowledgeFragmentModel, KnowledgeFragment, KnowledgeFragmentInterface.Vp> {
     @Override
     public KnowledgeFragmentModel getModelInstance() {
         return new KnowledgeFragmentModel(this);
     }
 
     @Override
-    public KnowledgeFragmentInterface.VP getContract() {
-        return new KnowledgeFragmentInterface.VP() {
+    public KnowledgeFragmentInterface.Vp getContract() {
+        return new KnowledgeFragmentInterface.Vp() {
             @Override
-            public void requestTitleVP() {
+            public void requestTitleVp() {
                 //核验请求的信息，进行逻辑处理
                 //调用model层
                 try {

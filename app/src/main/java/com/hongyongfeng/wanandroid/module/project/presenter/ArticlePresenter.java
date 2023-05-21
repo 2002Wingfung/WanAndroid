@@ -2,14 +2,12 @@ package com.hongyongfeng.wanandroid.module.project.presenter;
 
 
 import android.graphics.Bitmap;
-
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
 import com.hongyongfeng.wanandroid.module.project.model.ArticleModel;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectArticleFragment;
-
 import java.util.List;
 
 /**
@@ -25,25 +23,17 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
     public ArticleInterface.Vp getContract() {
         return new ArticleInterface.Vp() {
             @Override
-            public void requestTitleVP(int id,int page) {
-                //核验请求的信息，进行逻辑处理
+            public void requestTitleVp(int id, int page) {
                 //调用model层
                 try {
-//                    mModel.requestLogin(name,pwd);
                     mModel.getContract().requestTitleM(id,page);
-
                 } catch (Exception e) {
                     e.printStackTrace();
-                    //异常的处理
-                    //保存到日志
-                    //一系列的异常处理
-                    //...
                 }
             }
 
             @Override
             public void responseTitleResult(List<ProjectBean> projectList) {
-                //真实开发过程中，是要解析数据的
                 mView.getContract().responseTitleResult(projectList);
             }
 
@@ -62,7 +52,7 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
             }
 
             @Override
-            public void collectVP(int id, CollectListener listener) {
+            public void collectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().collectM(id,listener);
                 } catch (Exception e) {
@@ -71,7 +61,7 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Projec
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
+            public void unCollectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().unCollectM(id,listener);
                 } catch (Exception e) {

@@ -35,7 +35,7 @@ import java.util.Objects;
  * Use the {@link KnowledgeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, KnowledgeFragmentInterface.VP> {
+public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, KnowledgeFragmentInterface.Vp> {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -66,7 +66,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     public void onResume() {
         super.onResume();
         if (count==0){
-            getContract().requestTitleVP();
+            getContract().requestTitleVp();
             dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
             count=1;
         }
@@ -128,11 +128,11 @@ public class KnowledgeFragment extends BaseFragment<KnowledgeFragmentPresenter, 
     }
 
     @Override
-    public KnowledgeFragmentInterface.VP getContract() {
-        return new KnowledgeFragmentInterface.VP() {
+    public KnowledgeFragmentInterface.Vp getContract() {
+        return new KnowledgeFragmentInterface.Vp() {
             @Override
-            public void requestTitleVP() {
-                mPresenter.getContract().requestTitleVP();
+            public void requestTitleVp() {
+                mPresenter.getContract().requestTitleVp();
             }
 
             @SuppressLint("NotifyDataSetChanged")

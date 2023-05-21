@@ -40,7 +40,7 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
             }
 
             @Override
-            public void unCollectVP(int id, CollectListener listener) {
+            public void unCollectVp(int id, CollectListener listener) {
                 try {
                     mModel.getContract().unCollectM(id,listener);
                 } catch (Exception e) {
@@ -59,7 +59,7 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
             }
 
             @Override
-            public void requestArticleVP(int id, int page) {
+            public void requestArticleVp(int id, int page) {
                 try {
                     mModel.getContract().requestArticleM(id,page);
                 }catch (Exception e){
@@ -68,8 +68,8 @@ public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, Knowle
             }
 
             @Override
-            public void responseArticleVP(List<ArticleBean> articleList) {
-                mView.getContract().responseArticleVP(articleList);
+            public void responseArticleVp(List<ArticleBean> articleList) {
+                mView.getContract().responseArticleVp(articleList);
 
             }
         };
