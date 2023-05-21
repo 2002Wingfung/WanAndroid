@@ -29,7 +29,7 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.VP> {
+public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, ArticleInterface.Vp> {
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
 
@@ -43,8 +43,8 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     private int id;
     private int position=0;
     @Override
-    public ArticleInterface.VP getContract() {
-        return new ArticleInterface.VP() {
+    public ArticleInterface.Vp getContract() {
+        return new ArticleInterface.Vp() {
             @Override
             public void requestTitleVP(int id,int page) {
                 mPresenter.getContract().requestTitleVP(id,page);
@@ -167,16 +167,16 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
         SetRecyclerView.setRecyclerView(fragmentActivity,recyclerView,adapter);
         mPresenter=getPresenterInstance();
         mPresenter.bindView(this);
-        dialog= ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
-        projectList.clear();
-        getContract().requestTitleVP(id,page);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        if (projectList.size() == 0){
+            dialog= ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+            getContract().requestTitleVP(id,page);
+        }
     }
     @Override
     protected void destroy() {

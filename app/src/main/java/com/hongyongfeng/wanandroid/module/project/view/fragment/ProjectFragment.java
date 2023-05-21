@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, ProjectFragmentInterface.VP>{
+public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, ProjectFragmentInterface.Vp>{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -42,12 +42,12 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
         return fragment;
     }
     @Override
-    public ProjectFragmentInterface.VP getContract() {
-        return new ProjectFragmentInterface.VP() {
+    public ProjectFragmentInterface.Vp getContract() {
+        return new ProjectFragmentInterface.Vp() {
             @Override
-            public void requestTitleVP() {
+            public void requestTitleVp() {
 
-                mPresenter.getContract().requestTitleVP();
+                mPresenter.getContract().requestTitleVp();
             }
 
             @Override
@@ -66,7 +66,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
                         adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
                                 fragmentList,categoryList);
                         viewPager.setAdapter(adapter);
-                        viewPager.setOffscreenPageLimit(0);
+                        viewPager.setOffscreenPageLimit(2);
                         tabLayout.setupWithViewPager(viewPager);
                         dialog.dismiss();
                     }
@@ -86,7 +86,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     public void onResume() {
         super.onResume();
         if (count==0){
-            getContract().requestTitleVP();
+            getContract().requestTitleVp();
             dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
             count=1;
         }

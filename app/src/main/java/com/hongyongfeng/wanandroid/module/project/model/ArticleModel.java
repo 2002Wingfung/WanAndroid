@@ -30,15 +30,15 @@ import java.util.List;
 /**
  * @author Wingfung Hung
  */
-public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInterface.M> {
+public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInterface.Model> {
     public ArticleModel(ArticlePresenter mPresenter) {
         super(mPresenter);
     }
     private final List<Bitmap> bitmapList=new ArrayList<>();
 
     @Override
-    public ArticleInterface.M getContract() {
-        return new ArticleInterface.M() {
+    public ArticleInterface.Model getContract() {
+        return new ArticleInterface.Model() {
             @Override
             public void requestTitleM(int id,int page) throws Exception {
                 String url="https://www.wanandroid.com/project/list/"+page+"/json?cid="+id;

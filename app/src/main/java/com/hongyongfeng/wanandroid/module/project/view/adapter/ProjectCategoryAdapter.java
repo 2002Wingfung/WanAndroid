@@ -12,13 +12,12 @@ import java.util.List;
  * @author Wingfung Hung
  */
 public class ProjectCategoryAdapter extends FragmentPagerAdapter {
-    private List<Fragment> fragmentList;
-    private List<String> categoryList;
+    private final List<Fragment> fragmentList;
+    private final List<String> categoryList;
 
     public ProjectCategoryAdapter(@NonNull FragmentManager fm,
                                   List<Fragment> fragmentList,
                                   List<String> categoryList) {
-        //super(fm);
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         //懒加载
         this.fragmentList=fragmentList;
@@ -41,10 +40,7 @@ public class ProjectCategoryAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return categoryList==null?"":categoryList.get(position);
     }
-
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        //super.destroyItem(container, position, object);
-        //使得不能销毁碎片,避免了切换Fragment时重新加载的问题
-    }
+    /*
+     * 重写destroyItem方法，使得不能销毁碎片,避免了切换Fragment时重新加载的问题
+     */
 }

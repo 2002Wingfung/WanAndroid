@@ -4,23 +4,22 @@ package com.hongyongfeng.wanandroid.module.project.presenter;
 import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.model.ProjectFragmentModel;
-import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectArticleFragment;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 
 import java.util.List;
 import java.util.Map;
 
-public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragmentModel, ProjectFragment, ProjectFragmentInterface.VP> {
+public class ProjectFragmentPresenter extends BaseFragmentPresenter<ProjectFragmentModel, ProjectFragment, ProjectFragmentInterface.Vp> {
     @Override
     public ProjectFragmentModel getModelInstance() {
         return new ProjectFragmentModel(this);
     }
 
     @Override
-    public ProjectFragmentInterface.VP getContract() {
-        return new ProjectFragmentInterface.VP() {
+    public ProjectFragmentInterface.Vp getContract() {
+        return new ProjectFragmentInterface.Vp() {
             @Override
-            public void requestTitleVP() {
+            public void requestTitleVp() {
                 //核验请求的信息，进行逻辑处理
                 //调用model层
                 try {

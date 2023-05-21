@@ -58,7 +58,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         //实例化字节数组输出流
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         //压缩位图
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, ZERO, stream);
         return stream.toByteArray();
         //创建分配字节数组
     }
@@ -273,16 +273,16 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {   //scrollY是滑动的距离
-                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                if (scrollY == (v.getChildAt(ZERO).getMeasuredHeight() - v.getMeasuredHeight())) {
                     //滑动到底部
-                    dialog= ProgressDialog.show(requireActivity(), "", "正在加载", false, false);;
+                    dialog= ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
                     //加载失败时
-                    if (errorCode==1){
+                    if (errorCode==ONE){
                         articleList.clear();
                         adapter.notifyDataSetChanged();
                         //如果第一次请求网络失败则重新加载首页文章
                         getContract().requestArticleVp();
-                        errorCode=0;
+                        errorCode=ZERO;
                     }else {
                         page++;
                         getContract().requestLoadMoreVp(page);
@@ -297,7 +297,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                 if (articleList.get(position).isCollect()){
                     number0=ONE;
                 }
-                if (count[0] % TWO == number0) {
+                if (count[ZERO] % TWO == number0) {
                     //点赞
                     getContract().collectVp(articleList.get(position).getId(), new CollectListener() {
                         @Override
@@ -347,7 +347,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         mPresenter.bindView(this);
         fragmentActivity = requireActivity();
         file=new File(fragmentActivity.getCacheDir(),CACHE_BITMAP);
-        if (count == 0) {
+        if (count == ZERO) {
             //如果是第一次打开主页Fragment,则加载数据
             //setRetainInstance(true);
             loadFragment();
@@ -355,7 +355,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
             transaction.commit();
             //dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
             getContract().requestArticleVp();
-            count = 1;
+            count = ONE;
         }
         //获取Fragment的布局视图
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -370,8 +370,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
         viewList.add(view1);
         viewList.add(view2);
         viewList.add(view3);
-        if (count1==0){
-            count1=1;
+        if (count1==ZERO){
+            count1=ONE;
             //如果是第一次打开主页Fragment,则加载轮播图
             getContract().requestImageVp();
         }

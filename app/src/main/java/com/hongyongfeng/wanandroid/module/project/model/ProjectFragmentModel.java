@@ -10,15 +10,15 @@ import com.hongyongfeng.wanandroid.util.HttpUtil;
 import java.util.List;
 import java.util.Map;
 
-public class ProjectFragmentModel extends BaseFragmentModel<ProjectFragmentPresenter, ProjectFragmentInterface.M> {
+public class ProjectFragmentModel extends BaseFragmentModel<ProjectFragmentPresenter, ProjectFragmentInterface.Model> {
     public ProjectFragmentModel(ProjectFragmentPresenter mPresenter) {
         super(mPresenter);
     }
     private static final String TREE_URL="https://www.wanandroid.com/project/tree/json";
 
     @Override
-    public ProjectFragmentInterface.M getContract() {
-        return new ProjectFragmentInterface.M() {
+    public ProjectFragmentInterface.Model getContract() {
+        return new ProjectFragmentInterface.Model() {
             @Override
             public void requestTitleM() throws Exception {
                 HttpUtil.sendHttpRequest(TREE_URL, new HttpCallbackListener() {

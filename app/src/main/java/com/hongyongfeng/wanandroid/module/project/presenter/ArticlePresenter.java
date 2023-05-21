@@ -7,24 +7,23 @@ import com.hongyongfeng.wanandroid.base.BaseFragmentPresenter;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
 import com.hongyongfeng.wanandroid.module.home.interfaces.CollectListener;
 import com.hongyongfeng.wanandroid.module.project.interfaces.ArticleInterface;
-import com.hongyongfeng.wanandroid.module.project.interfaces.ProjectFragmentInterface;
 import com.hongyongfeng.wanandroid.module.project.model.ArticleModel;
-import com.hongyongfeng.wanandroid.module.project.model.ProjectFragmentModel;
 import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectArticleFragment;
-import com.hongyongfeng.wanandroid.module.project.view.fragment.ProjectFragment;
 
 import java.util.List;
-import java.util.Map;
 
-public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, ProjectArticleFragment, ArticleInterface.VP> {
+/**
+ * @author Wingfung Hung
+ */
+public class ArticlePresenter extends BaseFragmentPresenter<ArticleModel, ProjectArticleFragment, ArticleInterface.Vp> {
     @Override
     public ArticleModel getModelInstance() {
         return new ArticleModel(this);
     }
 
     @Override
-    public ArticleInterface.VP getContract() {
-        return new ArticleInterface.VP() {
+    public ArticleInterface.Vp getContract() {
+        return new ArticleInterface.Vp() {
             @Override
             public void requestTitleVP(int id,int page) {
                 //核验请求的信息，进行逻辑处理
