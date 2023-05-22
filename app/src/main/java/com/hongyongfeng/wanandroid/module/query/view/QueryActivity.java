@@ -57,7 +57,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 //然后传入articleFragment
                 //直接把list数据传给Fragment
                 //然后直接showFragment，不用搞延迟了。
-                handler.sendEmptyMessage(ZERO);
+                handler.sendEmptyMessageDelayed(ZERO,300);
                 articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
             }
         };

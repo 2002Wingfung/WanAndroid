@@ -246,14 +246,16 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     @Override
     public void onHiddenChanged(boolean hidden) {
         //hidden为true，则不在最前端显示 相当于调用了onPause();
-        super.onHiddenChanged(hidden);
+
         if (!hidden){
             // hidden为false,则在最前端显示，相当于调用了onResume();
             if (getArguments() != null) {
                 articleBeanList = getArguments().getParcelableArrayList("list");
+                System.out.println(articleBeanList);
             }
             loadData();
         }
+        super.onHiddenChanged(hidden);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -264,6 +266,7 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             articleList.clear();
             articleList.addAll(articleBeanList);
         }
+        articleBeanList.clear();
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(ZERO);
     }

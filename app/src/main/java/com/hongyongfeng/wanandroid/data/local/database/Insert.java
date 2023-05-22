@@ -31,6 +31,7 @@ public class Insert {
             int id=cursor.getInt(ZERO);
             db.execSQL(DELETE_SQL,new String[]{String.valueOf(id)});
         }
+        System.out.println(article.getId());
         //插入文章数据到数据库表
         db.execSQL(SQL_INSERT_ARTICLE,new String[]
                 {String.valueOf(article.getId()),article.getAuthor(),
