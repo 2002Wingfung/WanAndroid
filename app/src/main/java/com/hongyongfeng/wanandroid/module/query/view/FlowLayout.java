@@ -42,6 +42,7 @@ public class FlowLayout extends ViewGroup {
         mLines.clear();
         //用来记录当前已经添加到了哪一行
         Line mCurrentLine = null;
+        //获取父布局最大宽度
         int layoutWidth = MeasureSpec.getSize(widthMeasureSpec);
         // 获取行最大的宽度
         int maxLineWidth = layoutWidth - getPaddingLeft() - getPaddingRight();
@@ -184,8 +185,8 @@ public class FlowLayout extends ViewGroup {
         /**
          * 给孩子布局
          *
-         * @param offsetLeft 控件内部偏离左边界的距离
-         * @param offsetTop 控件内部偏离上边界的距离
+         * @param offsetLeft 控件左边界偏离父布局左边界的距离
+         * @param offsetTop 控件上边界偏离父布局上边界的距离
          */
         public void layout(int offsetLeft, int offsetTop) {
             // 给孩子布局
@@ -219,13 +220,16 @@ public class FlowLayout extends ViewGroup {
                 }
 
                 // 布局
+                //当前子控件在该行中的相对位置
                 int left = currentLeft;
                 int top = (int) (offsetTop + (mHeight - viewHeight) / 2 + 0.5f);
-                // int top = offsetTop;
                 int right = left + viewWidth;
                 int bottom = top + viewHeight;
+                //设置按钮的相对位置
                 view.layout(left, top, right, bottom);
 
+                //循环相加设置每个按钮的位置
+                //设置下一个按钮的左边界位置
                 currentLeft += viewWidth + mHorizontalSpace;
             }
         }

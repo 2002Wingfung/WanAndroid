@@ -251,7 +251,6 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             // hidden为false,则在最前端显示，相当于调用了onResume();
             if (getArguments() != null) {
                 articleBeanList = getArguments().getParcelableArrayList("list");
-                System.out.println(articleBeanList);
             }
             loadData();
         }

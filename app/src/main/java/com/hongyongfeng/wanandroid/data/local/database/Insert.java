@@ -8,12 +8,15 @@ import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.hongyongfeng.wanandroid.data.net.bean.ArticleBean;
+import com.hongyongfeng.wanandroid.util.MyApplication;
+import com.hongyongfeng.wanandroid.util.MyDatabaseHelper;
 
 /**
  * @author Wingfung Hung
  * 插入数据到数据库表中
  */
 public class Insert {
+    public static MyDatabaseHelper helper=new MyDatabaseHelper(MyApplication.getContext(),"HistoryArticle.db",null,1);
     /**
      * 获取SQLiteDatabase实例
      */
@@ -31,7 +34,6 @@ public class Insert {
             int id=cursor.getInt(ZERO);
             db.execSQL(DELETE_SQL,new String[]{String.valueOf(id)});
         }
-        System.out.println(article.getId());
         //插入文章数据到数据库表
         db.execSQL(SQL_INSERT_ARTICLE,new String[]
                 {String.valueOf(article.getId()),article.getAuthor(),

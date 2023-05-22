@@ -32,6 +32,7 @@ public class Constant {
     public static final String SELECT_SQL ="select id from article_bean where id=?";
     public static final String SELECT_HISTORY_SQL ="select * from article_bean order by main_id desc";
     public static final String DELETE_SQL ="delete from article_bean where id=?";
+    public static final int MODE=0x21;
     public static final int ZERO=0;
     public static final int ONE=1;
     public static final int TWO=2;

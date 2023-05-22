@@ -1,17 +1,13 @@
 package com.hongyongfeng.wanandroid.base;
 
-import android.app.UiModeManager;
-import android.content.Context;
+import static com.hongyongfeng.wanandroid.util.Constant.MODE;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.RelativeLayout;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.google.android.material.navigation.NavigationView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.util.KeyboardUtils;
@@ -24,17 +20,18 @@ public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends App
 
     public abstract CONTRACT getContract();
 
+    /**
+     * 点击空白处监听
+     * @param ev The touch screen event.
+     * @return 布尔值
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                //获取当前获得焦点的View
-                View view = getCurrentFocus();
-                //调用方法判断是否需要隐藏键盘
-                KeyboardUtils.hideKeyboard(ev, view, this);
-                break;
-            default:
-                break;
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            //获取当前获得焦点的View
+            View view = getCurrentFocus();
+            //调用方法判断是否需要隐藏键盘
+            KeyboardUtils.hideKeyboard(ev, view, this);
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -47,7 +44,7 @@ public abstract class BaseActivity<P extends BasePresenter,CONTRACT> extends App
         //判断是否处于深色模式
         //深色模式的值为:0x21
         //浅色模式的值为:0x11
-        if (this.getApplicationContext().getResources().getConfiguration().uiMode == 0x21) {
+        if (this.getApplicationContext().getResources().getConfiguration().uiMode == MODE) {
             StatusBarUtils.setWindowStatusBarColor(this, R.color.transparent);
             ConstraintLayout layout=findViewById(R.id.include);
             NavigationView navigationView=findViewById(R.id.nav_view);
