@@ -30,6 +30,9 @@ import com.hongyongfeng.wanandroid.util.SetRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Wingfung Hung
+ */
 public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInterface.Vp> {
     @Override
     public LoadMoreInterface.Vp getContract() {
@@ -109,7 +112,6 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     private final List<ArticleBean> articleList=new ArrayList<>();
     private FragmentActivity fragmentActivity;
     private List<ArticleBean> articleBeanList = null;
-
     private final ArticleAdapter adapter=new ArticleAdapter(articleList);
     private RecyclerView recyclerView;
     static ProgressDialog dialog;
@@ -223,6 +225,13 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -57,6 +57,7 @@ public class TabActivity extends BaseActivity {
         ProjectCategoryAdapter adapter = new ProjectCategoryAdapter(getSupportFragmentManager(),
                 fragmentList, categoryList);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(TWO);
         tabLayout.setupWithViewPager(viewPager);
     }
 

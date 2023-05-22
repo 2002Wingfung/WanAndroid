@@ -1,5 +1,9 @@
 package com.hongyongfeng.wanandroid.module.project.view.fragment;
 
+import static com.hongyongfeng.wanandroid.util.Constant.ONE;
+import static com.hongyongfeng.wanandroid.util.Constant.TWO;
+import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -29,7 +33,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     private List<String> categoryList;
     private FragmentActivity activity;
     private ProgressDialog dialog;
-    private int count=0;
+    private int count=ZERO;
     @Override
     public ProjectFragmentInterface.Vp getContract() {
         return new ProjectFragmentInterface.Vp() {
@@ -52,7 +56,7 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
                     adapter=new ProjectCategoryAdapter(getChildFragmentManager(),
                             fragmentList,categoryList);
                     viewPager.setAdapter(adapter);
-                    viewPager.setOffscreenPageLimit(2);
+                    viewPager.setOffscreenPageLimit(TWO);
                     tabLayout.setupWithViewPager(viewPager);
                     dialog.dismiss();
                 });
@@ -69,10 +73,10 @@ public class ProjectFragment extends BaseFragment<ProjectFragmentPresenter, Proj
     @Override
     public void onResume() {
         super.onResume();
-        if (count==0){
+        if (count==ZERO){
             getContract().requestTitleVp();
             dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
-            count=1;
+            count=ONE;
         }
     }
 
