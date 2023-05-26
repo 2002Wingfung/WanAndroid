@@ -3,6 +3,7 @@ package com.hongyongfeng.wanandroid.module.project.view.adapter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +23,12 @@ import java.util.List;
  */
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 
-    //private ImageLoader imageLoader=ImageLoader.build(MyApplication.getContext());
+    private ImageLoader imageLoader=ImageLoader.build(MyApplication.getContext());
     private final Resources resource= MyApplication.getContext().getResources();
     /**
      * 存储DishesInformation对象的List集合
      */
     private final List<ProjectBean> articleList;
-    List<Bitmap> bitmapLists;
     public interface OnItemClickListener {
         /**
          * 点赞按钮的监听
@@ -89,23 +89,25 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
         }else {
             holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes_gray, null));
         }
-        if (bitmapLists.size()>position){
-            Bitmap bitmap=bitmapLists.get(position);
-            if (bitmap==null){
-                holder.imageView.setImageResource(R.drawable.project_item_default_bg);
-            }else {
-                holder.imageView.setImageBitmap(bitmap);
-            }
-        }
-
+//        if (bitmapLists.size()>position){
+//            Bitmap bitmap=bitmapLists.get(position);
+//            if (bitmap==null){
+//                holder.imageView.setImageResource(R.drawable.project_item_default_bg);
+//            }else {
+//                //Log.d("adapter-bitmap",bitmap.toString());
+//                holder.imageView.setImageBitmap(bitmap);
+//            }
+//        }
+        //System.out.println(articleList.get(position).getEnvelopePic());
+        holder.imageView.setImageResource(R.drawable.project_item_default_bg);
+        imageLoader.bindBitmap(articleList.get(position).getEnvelopePic(),holder.imageView,900,1600);
     }
     @Override
     public int getItemCount() {
         return articleList.size();
     }
 
-    public ProjectAdapter(List<ProjectBean> articleList,List<Bitmap> bitmapLists) {
+    public ProjectAdapter(List<ProjectBean> articleList) {
         this.articleList = articleList;
-        this.bitmapLists = bitmapLists;
     }
 }

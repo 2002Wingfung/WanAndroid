@@ -2,7 +2,6 @@ package com.hongyongfeng.wanandroid.module.project.model;
 
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.SQL_INSERT_ARTICLE;
 import static com.hongyongfeng.wanandroid.module.home.model.HomeFragmentModel.helper;
-import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
 import static com.hongyongfeng.wanandroid.util.Constant.COLLECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.DELETE_SQL;
 import static com.hongyongfeng.wanandroid.util.Constant.DOMAIN_URL;
@@ -13,6 +12,8 @@ import static com.hongyongfeng.wanandroid.util.Constant.PROJECT_URL;
 import static com.hongyongfeng.wanandroid.util.Constant.SELECT_SQL;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO;
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
+import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -51,17 +52,17 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
                     public void onFinish(String response) {
                         List<ProjectBean> projectList=HttpUtil.parseJsonWithObject(response, ProjectBean.class);
                         mPresenter.getContract().responseTitleResult(projectList);
-                        responseImageBitmap(projectList, new ImageCallbackListener() {
-                            @Override
-                            public void onError(Exception e) {
-                                //加载项目文章错误回调，取消dialog的显示
-                            }
-
-                            @Override
-                            public void onBitmapFinish(Bitmap bitmap) {
-                                mPresenter.getContract().responseImageResult(bitmap);
-                            }
-                        });
+//                        responseImageBitmap(projectList, new ImageCallbackListener() {
+//                            @Override
+//                            public void onError(Exception e) {
+//                                //加载项目文章错误回调，取消dialog的显示
+//                            }
+//
+//                            @Override
+//                            public void onBitmapFinish(Bitmap bitmap) {
+//                                mPresenter.getContract().responseImageResult(bitmap);
+//                            }
+//                        });
                     }
 
                     @Override
@@ -133,7 +134,7 @@ public class ArticleModel extends BaseFragmentModel<ArticlePresenter, ArticleInt
     }
 
     public void responseImageBitmap(List<ProjectBean> beanList, final ImageCallbackListener listener) {
-        threadPools.es.execute(() -> {
+        es.execute(() -> {
             HttpURLConnection conn=null;
             InputStream is=null;
             try {

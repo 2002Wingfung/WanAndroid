@@ -41,8 +41,7 @@ public class FlowLayout extends ViewGroup {
         //清空
         mLines.clear();
         //用来记录当前已经添加到了哪一行
-        Line mCurrentLine = null;
-        //获取父布局最大宽度
+        Line mCurrentLine = null;//获取父布局最大宽度
         int layoutWidth = MeasureSpec.getSize(widthMeasureSpec);
         // 获取行最大的宽度
         int maxLineWidth = layoutWidth - getPaddingLeft() - getPaddingRight();

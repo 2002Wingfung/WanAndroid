@@ -1,11 +1,11 @@
 package com.hongyongfeng.wanandroid.module.home.model;
 
 import static com.hongyongfeng.wanandroid.data.local.database.Insert.insert;
-import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
 import static com.hongyongfeng.wanandroid.util.Constant.ARTICLE_URL_1;
 import static com.hongyongfeng.wanandroid.util.Constant.ONE;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO;
 import static com.hongyongfeng.wanandroid.util.Constant.ZERO;
+import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -248,7 +248,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
         mPresenter.getContract().responseImageResult(beanList,bitmapList);
     }
     public void requestImageBitmap(List<BannerBean> beanList,final ImageCallbackListener listener) {
-        threadPools.es.execute(() -> {
+        es.execute(() -> {
             HttpURLConnection conn=null;
             InputStream is=null;
             try {

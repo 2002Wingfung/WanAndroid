@@ -31,5 +31,6 @@ public interface Query {
          * @param queryResult ArticleBean实体类集合
          */
         void responseQueryResult(List<ArticleBean> queryResult);
+        void error(int code);
     }
 }

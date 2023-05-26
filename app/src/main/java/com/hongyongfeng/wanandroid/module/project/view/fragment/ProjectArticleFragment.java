@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,8 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
     @SuppressLint("StaticFieldLeak")
     private FragmentActivity fragmentActivity;
     private final List<ProjectBean> projectList =new ArrayList<>();
-    private final List<Bitmap> bitmapLists =new ArrayList<>();
-    private final ProjectAdapter adapter=new ProjectAdapter(projectList,bitmapLists);
+    //private final List<Bitmap> bitmapLists =new ArrayList<>();
+    private final ProjectAdapter adapter=new ProjectAdapter(projectList);
     private RecyclerView recyclerView;
     private ProgressDialog dialog;
     private int page=1;
@@ -72,15 +73,16 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
 
             @Override
             public void responseImageResult(Bitmap bitmap) {
-                fragmentActivity.runOnUiThread(new Runnable() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void run() {
-                        bitmapLists.add(bitmap);
-                        adapter.notifyItemChanged(position);
-                        position++;
-                    }
-                });
+                //Log.d("bitmap",bitmap.toString());
+//                fragmentActivity.runOnUiThread(new Runnable() {
+//                    @SuppressLint("NotifyDataSetChanged")
+//                    @Override
+//                    public void run() {
+//                        bitmapLists.add(bitmap);
+//                        adapter.notifyItemChanged(position);
+//                        position++;
+//                    }
+//                });
             }
 
             @Override

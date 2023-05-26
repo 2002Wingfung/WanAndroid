@@ -1,9 +1,10 @@
 package com.hongyongfeng.wanandroid.util;
 
-import static com.hongyongfeng.wanandroid.module.main.activity.MainActivity.threadPools;
 import static com.hongyongfeng.wanandroid.util.Constant.FOUR;
 import static com.hongyongfeng.wanandroid.util.Constant.THREE_THOUSAND;
 import static com.hongyongfeng.wanandroid.util.Constant.TWO_HUNDRED;
+import static com.hongyongfeng.wanandroid.util.ThreadPools.es;
+
 import com.hongyongfeng.wanandroid.base.HttpCallbackListener;
 import com.hongyongfeng.wanandroid.exception.HttpException;
 import com.hongyongfeng.wanandroid.module.signinorup.login.interfaces.HttpCookiesListener;
@@ -137,7 +138,7 @@ public class HttpUtil {
      * @param parameter cookies参数
      */
     public static void sendHttpRequest(final String address,final HttpCallbackListener listener,String parameter){
-        threadPools.es.execute(() -> {
+        es.execute(() -> {
             HttpURLConnection connection=null;
             BufferedReader reader=null;
             try {
@@ -193,7 +194,7 @@ public class HttpUtil {
      * @param strings 字符串参数数组
      */
     public static void postLoginRequest(final HttpCookiesListener cookiesListener, final HttpCallbackListener listener, String...strings){
-        threadPools.es.execute(() -> {
+        es.execute(() -> {
             HttpURLConnection connection=null;
             BufferedReader reader=null;
             try {
@@ -277,7 +278,7 @@ public class HttpUtil {
      * @param listener 回调接口
      */
     public static void postCollectRequest(final String address,String cookies, final HttpCallbackListener listener){
-        threadPools.es.execute(() -> {
+        es.execute(() -> {
             HttpURLConnection connection=null;
             BufferedReader reader=null;
             try {
@@ -342,7 +343,7 @@ public class HttpUtil {
      * @param listener 回调接口
      */
     public static void postQueryRequest(final String address,String key, final HttpCallbackListener listener,String cookies){
-        threadPools.es.execute(() -> {
+        es.execute(() -> {
             HttpURLConnection connection=null;
             BufferedReader reader=null;
             try {

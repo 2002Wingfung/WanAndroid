@@ -31,6 +31,8 @@ public class QueryModel extends BaseModel<QueryPresenter, Query.Model> {
                     List<ArticleBean> articleBeanList = HttpUtil.parseJsonWithObject(response, ArticleBean.class);
                     if (articleBeanList.size()!=ZERO){
                         mPresenter.getContract().responseQueryResult(articleBeanList);
+                    }else {
+                        mPresenter.getContract().error(1);
                     }
                 }
                 @Override

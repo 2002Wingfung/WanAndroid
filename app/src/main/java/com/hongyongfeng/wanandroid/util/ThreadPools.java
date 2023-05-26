@@ -13,7 +13,7 @@ public class ThreadPools {
     /**
      * 新建了线程池
      */
-    public ThreadPoolExecutor es =new ThreadPoolExecutor(10,10,30, TimeUnit.MINUTES,new ArrayBlockingQueue<>(10),
+    public static ThreadPoolExecutor es =new ThreadPoolExecutor(10,10,30, TimeUnit.MINUTES,new ArrayBlockingQueue<>(10),
             Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     //public static ExecutorService es = Executors.newFixedThreadPool(10);
 }

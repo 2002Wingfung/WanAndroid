@@ -33,6 +33,11 @@ public class QueryPresenter extends BasePresenter<QueryModel, QueryActivity, Que
             public void responseQueryResult(List<ArticleBean> queryResult) {
                 mView.getContract().responseQueryResult(queryResult);
             }
+
+            @Override
+            public void error(int code) {
+                mView.getContract().error(code);
+            }
         };
     }
 }

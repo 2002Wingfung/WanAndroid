@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,7 @@ import com.hongyongfeng.wanandroid.module.query.presenter.QueryPresenter;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.ArticleFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.HeatedWordsFragment;
 import com.hongyongfeng.wanandroid.module.query.view.fragment.LoadingFragment;
+import com.hongyongfeng.wanandroid.module.query.view.fragment.NoReturn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
     private FragmentManager fragmentManager;
     private final HeatedWordsFragment heatedWordsFragment=new HeatedWordsFragment();
     private final LoadingFragment loadingFragment=new LoadingFragment();
+    private final NoReturn noReturn=new NoReturn();
     private final ArticleFragment articleFragment=new ArticleFragment();
     private TextView tvBack;
     private TextView tvClear;
@@ -59,6 +62,19 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 //然后直接showFragment，不用搞延迟了。
                 handler.sendEmptyMessageDelayed(ZERO,300);
                 articleBeanLists=(ArrayList<ArticleBean>) articleBeanList;
+            }
+
+            @Override
+            public void error(int code) {
+                runOnUiThread(() -> {
+                    loadFragment();
+                    if (!noReturn.isAdded()){
+                        transaction.hide(loadingFragment).add(R.id.fragment_query,noReturn).show(noReturn).commit();
+                    }else {
+                        transaction.hide(loadingFragment).show(noReturn).commit();
+                    }
+                    Toast.makeText(QueryActivity.this, "无查询结果,请更换关键字喔~", Toast.LENGTH_SHORT).show();
+                });
             }
         };
     }
@@ -104,6 +120,14 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                     tvClear.setVisibility(View.VISIBLE);
                 }else {
                     tvClear.setVisibility(View.INVISIBLE);
+                    loadFragment();
+                    if (articleFragment.isVisible()){
+                        transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+                    }else if (loadingFragment.isVisible()){
+                        transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
+                    }else {
+                        transaction.hide(noReturn).show(heatedWordsFragment).commit();
+                    }
                 }
             }
         });
@@ -111,9 +135,9 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 loadFragment();
                 if (!loadingFragment.isAdded()){
-                    transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                    transaction.hide(heatedWordsFragment).hide(noReturn).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
                 }else {
-                    transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
+                    transaction.hide(heatedWordsFragment).hide(noReturn).show(loadingFragment).commit();
                 }
                 getContract().requestQueryVp(edtKeyWords.getText().toString(),0);
             }
@@ -148,12 +172,17 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && !heatedWordsFragment.isVisible()) {
-            loadFragment();
+            //loadFragment();
             edtKeyWords.setText("");
             if (articleFragment.isVisible()){
+                loadFragment();
                 transaction.hide(articleFragment).show(heatedWordsFragment).commit();
             }else if (loadingFragment.isVisible()){
+                loadFragment();
                 transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
+            }else {
+                loadFragment();
+                transaction.hide(noReturn).show(heatedWordsFragment).commit();
             }
             //返回搜索热词页面
             return true;
@@ -185,6 +214,8 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                     transaction.hide(articleFragment).show(heatedWordsFragment).commit();
                 }else if (loadingFragment.isVisible()){
                     transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
+                }else {
+                    transaction.hide(noReturn).show(heatedWordsFragment).commit();
                 }
                 break;
             case R.id.tv_back:

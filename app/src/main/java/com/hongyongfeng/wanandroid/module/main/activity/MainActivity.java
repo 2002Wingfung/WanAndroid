@@ -57,7 +57,7 @@ import java.util.Objects;
  * @author Wingfung Hung
  */
 public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> {
-    public static ThreadPools threadPools=new ThreadPools();
+    //public static ThreadPools threadPools=new ThreadPools();
     private static final String WAN="玩安卓";
     private TextView tvQuery;
     private TextView tvTitle;
