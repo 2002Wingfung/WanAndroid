@@ -90,7 +90,6 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
 
             @Override
             public void responseArticleVp(List<ArticleBean> articleLists) {
-                //System.out.println(articleLists);
                 requireActivity().runOnUiThread(new Runnable() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
@@ -100,6 +99,13 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
                             adapter.notifyDataSetChanged();
                         }else {
                             Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
+                            View view=recyclerView.getChildAt(recyclerView.getChildCount()-1);
+                            if (view!=null){
+                                ProgressBar bar=view.findViewById(R.id.progressBar);
+                                bar.setVisibility(View.INVISIBLE);
+                                TextView tv=view.findViewById(R.id.tv);
+                                tv.setVisibility(View.VISIBLE);
+                            }
                         }
                         dialog.dismiss();
                     }

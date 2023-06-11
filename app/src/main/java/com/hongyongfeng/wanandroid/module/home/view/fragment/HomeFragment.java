@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -194,6 +195,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter, HomeFragme
                         adapter.notifyItemInserted(articleList.size());
                     }else {
                         Toast.makeText(fragmentActivity, "已加载全部内容", Toast.LENGTH_SHORT).show();
+                        View view=recyclerView.getChildAt(recyclerView.getChildCount()-1);
+                        if (view!=null){
+                            ProgressBar bar=view.findViewById(R.id.progressBar);
+                            bar.setVisibility(View.INVISIBLE);
+                            TextView tv=view.findViewById(R.id.tv);
+                            tv.setVisibility(View.VISIBLE);
+                        }
                     }
                     dialog.dismiss();
                 });
