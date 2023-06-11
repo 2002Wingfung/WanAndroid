@@ -22,7 +22,7 @@ import java.util.List;
  * 文章适配器
  * @author Wingfung Hung
  */
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
+public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     /**
      * 用于搜索页面的html代码解析
      */
@@ -66,6 +66,18 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
     public void setOnItemClickListener(OnItemClickListener clickListener) {
         this.mOnItemClickListener = clickListener;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (articleList.size()==0){
+            return super.getItemViewType(position);
+        }
+        if (position<articleList.size()){
+            return super.getItemViewType(position);
+        } else {
+            return -1;
+        }
+    }
     /**
      * 绑定顾客主页的item
      * @param parent   The ViewGroup into which the new View will be added after it is bound to
@@ -75,9 +87,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
      */
     @NonNull
     @Override
-    public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_article,parent,false);
-        return new ArticleViewHolder(view,mOnItemClickListener);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType==-1){
+            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_article_loading,parent,false);
+            return new ArticleViewHolder.LoadingHolder(view);
+        }else {
+            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_article,parent,false);
+            return new ArticleViewHolder(view,mOnItemClickListener);
+        }
     }
 
     /**
@@ -87,61 +104,70 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder>  {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
-        ArticleBean article=articleList.get(position);
-        String title=article.getTitle();
-        StringBuilder tvTitle=new StringBuilder(title);
-        int first=title.indexOf(HIGH_LIGHT_START);
-        //如果标题中没有html代码,则first默认为-1
-        while (first!=-ONE){
-            //在关键字的html代码前加上设为红色的代码
-            tvTitle.insert(first,"<font color='red'>");
-            first=tvTitle.indexOf(HIGH_LIGHT_START,first+1+HIGH_LIGHT_START.length());
-        }
-        int last=tvTitle.indexOf(HIGH_LIGHT_END);
-        while (last!=-ONE){
-            last+=5;
-            tvTitle.insert(last,"</font>");
-            last=tvTitle.indexOf(HIGH_LIGHT_END,last+1+HIGH_LIGHT_END.length());
-        }
-        //解析html代码，并将字符串显示在TextView中
-        holder.tvTitle.setText(Html.fromHtml(tvTitle.toString()));
-        try{
-            String superChapterName=article.getSuperChapterName();
-            String chapterName=article.getChapterName();
-            //如果类别为空，那么设置该类别为项目
-            if (superChapterName==null&&chapterName==null){
-                holder.tvCategory.setText("项目");
-            }else {
-                if (superChapterName!=null){
-                    //如果父类别不为空，则用-将父类别和子类别拼接到一起，并显示在TextView中
-                    StringBuilder category=new StringBuilder(superChapterName);
-                    category.append("-").append(chapterName);
-                    holder.tvCategory.setText(category);
-                }else {
-                    holder.tvCategory.setText(chapterName);
-                }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        if (position<articleList.size()){
+            ArticleViewHolder holder1=(ArticleViewHolder)holder;
+            ArticleBean article=articleList.get(position);
+            String title=article.getTitle();
+            StringBuilder tvTitle=new StringBuilder(title);
+            int first=title.indexOf(HIGH_LIGHT_START);
+            //如果标题中没有html代码,则first默认为-1
+            while (first!=-ONE){
+                //在关键字的html代码前加上设为红色的代码
+                tvTitle.insert(first,"<font color='red'>");
+                first=tvTitle.indexOf(HIGH_LIGHT_START,first+1+HIGH_LIGHT_START.length());
             }
-        }catch (Exception e){
-            Log.e("StringBuilder",e.toString());
+            int last=tvTitle.indexOf(HIGH_LIGHT_END);
+            while (last!=-ONE){
+                last+=5;
+                tvTitle.insert(last,"</font>");
+                last=tvTitle.indexOf(HIGH_LIGHT_END,last+1+HIGH_LIGHT_END.length());
+            }
+            //解析html代码，并将字符串显示在TextView中
+            holder1.tvTitle.setText(Html.fromHtml(tvTitle.toString()));
+            try{
+                String superChapterName=article.getSuperChapterName();
+                String chapterName=article.getChapterName();
+                //如果类别为空，那么设置该类别为项目
+                if (superChapterName==null&&chapterName==null){
+                    holder1.tvCategory.setText("项目");
+                }else {
+                    if (superChapterName!=null){
+                        //如果父类别不为空，则用-将父类别和子类别拼接到一起，并显示在TextView中
+                        StringBuilder category=new StringBuilder(superChapterName);
+                        category.append("-").append(chapterName);
+                        holder1.tvCategory.setText(category);
+                    }else {
+                        holder1.tvCategory.setText(chapterName);
+                    }
+                }
+            }catch (Exception e){
+                Log.e("StringBuilder",e.toString());
+            }
+            holder1.tvTime.setText(article.getNiceDate());
+            holder1.tvAuthor.setText(article.getAuthor());
+            //判断是否显示置顶标识
+            if (article.getTop()==-1){
+                holder1.tvTop.setVisibility(View.VISIBLE);
+                holder1.tvTop.setText("置顶");
+            }else {
+                holder1.tvTop.setVisibility(View.GONE);
+            }
+            if (article.isCollect()){
+                holder1.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes, null));
+            }
         }
-        holder.tvTime.setText(article.getNiceDate());
-        holder.tvAuthor.setText(article.getAuthor());
-        //判断是否显示置顶标识
-        if (article.getTop()==-1){
-            holder.tvTop.setVisibility(View.VISIBLE);
-            holder.tvTop.setText("置顶");
-        }else {
-            holder.tvTop.setVisibility(View.GONE);
-        }
-        if (article.isCollect()){
-            holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes, null));
-        }
+
     }
 
     @Override
     public int getItemCount() {
-        return articleList.size();
+        if (articleList.size()==0){
+            return 0;
+        }else {
+            return articleList.size()+1;
+        }
     }
 
     public ArticleAdapter(List<ArticleBean> articleList) {

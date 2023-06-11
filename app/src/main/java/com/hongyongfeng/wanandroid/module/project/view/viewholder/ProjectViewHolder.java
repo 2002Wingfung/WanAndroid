@@ -24,7 +24,11 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder{
     public TextView tvAuthor;
     public TextView tvTime;
 
-
+    public static class LoadingHolder extends RecyclerView.ViewHolder{
+        public LoadingHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
     public ProjectViewHolder(@NonNull View itemView, final ProjectAdapter.OnItemClickListener onClickListener) {
         super(itemView);
         articleView=itemView;

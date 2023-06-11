@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -229,6 +230,14 @@ public class ProjectArticleFragment extends BaseFragment<ArticlePresenter, Artic
                         dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
                         page++;
                         getContract().requestTitleVp(id,page);
+                    }
+                }else {
+                    View view=recyclerView.getChildAt(projectList.size());
+                    if (view!=null){
+                        ProgressBar bar=view.findViewById(R.id.progressBar);
+                        bar.setVisibility(View.GONE);
+                        TextView tv=view.findViewById(R.id.tv);
+                        tv.setVisibility(View.VISIBLE);
                     }
                 }
             }

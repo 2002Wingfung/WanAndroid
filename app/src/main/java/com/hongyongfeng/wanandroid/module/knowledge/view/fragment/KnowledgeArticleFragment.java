@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -201,17 +202,20 @@ public class KnowledgeArticleFragment extends BaseFragment<ArticlePresenter, Art
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (isSlideToBottom(recyclerView)){
-                    if (loadMore){
-                        //有bug
+                if (recyclerView.computeVerticalScrollExtent()!=recyclerView.computeVerticalScrollRange()){
+                    if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
                         dialog = ProgressDialog.show(requireActivity(), "", "正在加载", false, false);
                         getContract().requestArticleVp(id,page);
                         page++;
                     }
-                }
-
-                if (isSlideToBottom(recyclerView)) {
-                    loadMore=true;
+                }else {
+                    View view=recyclerView.getChildAt(articleList.size());
+                    if (view!=null){
+                        ProgressBar bar=view.findViewById(R.id.progressBar);
+                        bar.setVisibility(View.GONE);
+                        TextView tv=view.findViewById(R.id.tv);
+                        tv.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

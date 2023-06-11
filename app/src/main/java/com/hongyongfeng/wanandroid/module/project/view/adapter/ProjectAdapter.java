@@ -13,6 +13,8 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hongyongfeng.wanandroid.R;
 import com.hongyongfeng.wanandroid.data.net.bean.ProjectBean;
+import com.hongyongfeng.wanandroid.module.home.view.adapter.ArticleAdapter;
+import com.hongyongfeng.wanandroid.module.home.view.viewholder.ArticleViewHolder;
 import com.hongyongfeng.wanandroid.module.project.view.viewholder.ProjectViewHolder;
 import com.hongyongfeng.wanandroid.util.ImageLoader;
 import com.hongyongfeng.wanandroid.util.MyApplication;
@@ -21,7 +23,7 @@ import java.util.List;
 /**
  * @author Wingfung Hung
  */
-public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
+public class ProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     private ImageLoader imageLoader=ImageLoader.build(MyApplication.getContext());
     private final Resources resource= MyApplication.getContext().getResources();
@@ -45,13 +47,22 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
          * @param position item的索引
          */
         void onArticleClicked(View view, int position);
-
     }
     private OnItemClickListener mOnItemClickListener;
     public ArrayMap<Integer,View> viewHolderMap=new ArrayMap<>();
-
     public void setOnItemClickListener(OnItemClickListener clickListener) {
         this.mOnItemClickListener = clickListener;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        if (articleList.size()==0){
+            return super.getItemViewType(position);
+        }
+        if (position<articleList.size()){
+            return super.getItemViewType(position);
+        } else {
+            return -1;
+        }
     }
         /**
      * 绑定顾客主页的item
@@ -62,11 +73,15 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
      */
     @NonNull
     @Override
-    public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project_article,parent,false);
-        return new ProjectViewHolder(view,mOnItemClickListener);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType==-1){
+            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_article_loading,parent,false);
+            return new ArticleViewHolder.LoadingHolder(view);
+        }else {
+            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project_article,parent,false);
+            return new ProjectViewHolder(view,mOnItemClickListener);
+        }
     }
-
 
 
     /**
@@ -76,19 +91,21 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
-        //在merchantInfoList集合中获取Merchant对象
-        ProjectBean project=articleList.get(position);
-        holder.tvTitle.setText(project.getTitle());
-        holder.tvDetails.setText(project.getDesc());
-        holder.tvTime.setText(project.getNiceDate());
-        holder.tvAuthor.setText(project.getAuthor());
-        viewHolderMap.put(position,holder.itemView);
-        if (project.isCollect()){
-            holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes, null));
-        }else {
-            holder.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes_gray, null));
-        }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (position<articleList.size()) {
+            ProjectViewHolder holder1=(ProjectViewHolder)holder;
+            //在merchantInfoList集合中获取Merchant对象
+            ProjectBean project = articleList.get(position);
+            holder1.tvTitle.setText(project.getTitle());
+            holder1.tvDetails.setText(project.getDesc());
+            holder1.tvTime.setText(project.getNiceDate());
+            holder1.tvAuthor.setText(project.getAuthor());
+            viewHolderMap.put(position, holder.itemView);
+            if (project.isCollect()) {
+                holder1.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes, null));
+            } else {
+                holder1.tvLikes.setBackground(ResourcesCompat.getDrawable(resource, R.drawable.ic_likes_gray, null));
+            }
 //        if (bitmapLists.size()>position){
 //            Bitmap bitmap=bitmapLists.get(position);
 //            if (bitmap==null){
@@ -98,14 +115,18 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectViewHolder>  {
 //                holder.imageView.setImageBitmap(bitmap);
 //            }
 //        }
-        //System.out.println(articleList.get(position).getEnvelopePic());
-        holder.imageView.setImageResource(R.drawable.project_item_default_bg);
-        imageLoader.bindBitmap(articleList.get(position).getEnvelopePic(),holder.imageView,900,1600);
+            //System.out.println(articleList.get(position).getEnvelopePic());
+            holder1.imageView.setImageResource(R.drawable.project_item_default_bg);
+            imageLoader.bindBitmap(articleList.get(position).getEnvelopePic(), holder1.imageView, 900, 1600);
+        }
     }
     @Override
     public int getItemCount() {
-        return articleList.size();
-    }
+        if (articleList.size()==0){
+            return 0;
+        }else {
+            return articleList.size()+1;
+        }    }
 
     public ProjectAdapter(List<ProjectBean> articleList) {
         this.articleList = articleList;

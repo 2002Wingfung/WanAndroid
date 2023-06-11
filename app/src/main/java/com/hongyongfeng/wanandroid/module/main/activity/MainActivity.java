@@ -396,6 +396,17 @@ public class MainActivity extends BaseActivity<MainPresenter, MainInterface.Vp> 
                 break;
         }
     }
+    private long mBackPressed;
+    @Override
+    public void onBackPressed(){
+        if(mBackPressed+500>System.currentTimeMillis()){
+            super.onBackPressed();
+            finish();
+        }else{
+            Toast.makeText(this,"再点击一次返回退出程序",Toast.LENGTH_SHORT).show();
+            mBackPressed=System.currentTimeMillis();
+        }
+    }
     private void requestNotificationPermission() {
         List<String> needRequestList = checkPermission(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.ACCESS_NOTIFICATION_POLICY,

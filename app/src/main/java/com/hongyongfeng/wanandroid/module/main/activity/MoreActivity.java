@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -173,6 +174,14 @@ public class MoreActivity extends BaseActivity<MorePresenter, MoreInterface.Vp>{
                             dialog = ProgressDialog.show(MoreActivity.this, "", "正在加载", false, false);
                             getContract().requestCollectVp(page);
                         }
+                    }
+                }else {
+                    View view=recyclerView.getChildAt(articleBeanLists.size());
+                    if (view!=null){
+                        ProgressBar bar=view.findViewById(R.id.progressBar);
+                        bar.setVisibility(View.GONE);
+                        TextView tv=view.findViewById(R.id.tv);
+                        tv.setVisibility(View.VISIBLE);
                     }
                 }
             }

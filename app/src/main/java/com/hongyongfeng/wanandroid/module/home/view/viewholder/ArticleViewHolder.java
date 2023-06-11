@@ -1,6 +1,7 @@
 package com.hongyongfeng.wanandroid.module.home.view.viewholder;
 
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,13 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
      * 文章作者
      */
     public TextView tvAuthor;
+    public static class LoadingHolder extends RecyclerView.ViewHolder{
+        ProgressBar progressBar;
+        public LoadingHolder(@NonNull View itemView) {
+            super(itemView);
+            progressBar=itemView.findViewById(R.id.progressBar);
+        }
+    }
 
     public ArticleViewHolder(@NonNull View itemView, final ArticleAdapter.OnItemClickListener onClickListener) {
         super(itemView);

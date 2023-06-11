@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -149,10 +150,20 @@ public class ArticleFragment extends BaseFragment<LoadMorePresenter, LoadMoreInt
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (isSlideToBottom(recyclerView)) {
-                    dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
-                    getContract().requestLoadMoreVp(edtQuery.getText().toString(),page);
-                    page++;
+                if (recyclerView.computeVerticalScrollExtent()!=recyclerView.computeVerticalScrollRange()){
+                    if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
+                        dialog = ProgressDialog.show(fragmentActivity, "", "正在加载", false, false);
+                        getContract().requestLoadMoreVp(edtQuery.getText().toString(),page);
+                        page++;
+                    }
+                }else {
+                    View view=recyclerView.getChildAt(articleList.size());
+                    if (view!=null){
+                        ProgressBar bar=view.findViewById(R.id.progressBar);
+                        bar.setVisibility(View.GONE);
+                        TextView tv=view.findViewById(R.id.tv);
+                        tv.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
