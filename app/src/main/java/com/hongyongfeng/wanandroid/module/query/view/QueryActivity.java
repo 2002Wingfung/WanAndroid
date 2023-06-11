@@ -135,9 +135,17 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 loadFragment();
                 if (!loadingFragment.isAdded()){
-                    transaction.hide(heatedWordsFragment).hide(noReturn).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                    if (articleFragment.isVisible()){
+                        transaction.hide(heatedWordsFragment).hide(noReturn).hide(articleFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                    }else{
+                        transaction.hide(heatedWordsFragment).hide(noReturn).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                    }
                 }else {
-                    transaction.hide(heatedWordsFragment).hide(noReturn).show(loadingFragment).commit();
+                    if (articleFragment.isVisible()) {
+                        transaction.hide(heatedWordsFragment).hide(noReturn).hide(articleFragment).show(loadingFragment).commit();
+                    }else{
+                        transaction.hide(heatedWordsFragment).hide(noReturn).show(loadingFragment).commit();
+                    }
                 }
                 getContract().requestQueryVp(edtKeyWords.getText().toString(),0);
             }
