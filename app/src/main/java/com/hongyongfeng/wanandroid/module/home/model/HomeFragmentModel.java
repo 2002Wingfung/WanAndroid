@@ -149,7 +149,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         articleTopList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        if (articleBeanList.size()!=ZERO){
+                        if (!articleBeanList.isEmpty()){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
                         }
                     }
@@ -162,7 +162,7 @@ public class HomeFragmentModel extends BaseFragmentModel<HomeFragmentPresenter, 
                     @Override
                     public void onFinish(String response) {
                         articleBeanList=HttpUtil.parseJsonWithObject(response, ArticleBean.class);
-                        if (articleTopList!=null&&articleTopList.size()!=ZERO){
+                        if (articleTopList!=null){
                             mPresenter.getContract().responseArticleResult(articleBeanList,articleTopList);
                         }
                     }
