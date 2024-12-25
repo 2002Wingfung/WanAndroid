@@ -69,9 +69,9 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 runOnUiThread(() -> {
                     loadFragment();
                     if (!noReturn.isAdded()){
-                        transaction.hide(loadingFragment).add(R.id.fragment_query,noReturn).show(noReturn).commit();
+                        getTransaction().hide(loadingFragment).add(R.id.fragment_query,noReturn).show(noReturn).commit();
                     }else {
-                        transaction.hide(loadingFragment).show(noReturn).commit();
+                        getTransaction().hide(loadingFragment).show(noReturn).commit();
                     }
                     Toast.makeText(QueryActivity.this, "无查询结果,请更换关键字喔~", Toast.LENGTH_SHORT).show();
                 });
@@ -87,10 +87,10 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 bundle.putParcelableArrayList("list",articleBeanLists);
                 if (!articleFragment.isAdded()){
                     articleFragment.setArguments(bundle);
-                    transaction.hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
+                    getTransaction().hide(loadingFragment).add(R.id.fragment_query,articleFragment).show(articleFragment).commit();
                 }else {
                     articleFragment.setArguments(bundle);
-                    transaction.hide(loadingFragment).show(articleFragment).commit();
+                    getTransaction().hide(loadingFragment).show(articleFragment).commit();
                 }
             }
         }
@@ -122,11 +122,11 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                     tvClear.setVisibility(View.INVISIBLE);
                     loadFragment();
                     if (articleFragment.isVisible()){
-                        transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+                        getTransaction().hide(articleFragment).show(heatedWordsFragment).commit();
                     }else if (loadingFragment.isVisible()){
-                        transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
+                        getTransaction().hide(loadingFragment).show(heatedWordsFragment).commit();
                     }else {
-                        transaction.hide(noReturn).show(heatedWordsFragment).commit();
+                        getTransaction().hide(noReturn).show(heatedWordsFragment).commit();
                     }
                 }
             }
@@ -136,15 +136,15 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 loadFragment();
                 if (!loadingFragment.isAdded()){
                     if (articleFragment.isVisible()){
-                        transaction.hide(heatedWordsFragment).hide(noReturn).hide(articleFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                        getTransaction().hide(heatedWordsFragment).hide(noReturn).hide(articleFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
                     }else{
-                        transaction.hide(heatedWordsFragment).hide(noReturn).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+                        getTransaction().hide(heatedWordsFragment).hide(noReturn).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
                     }
                 }else {
                     if (articleFragment.isVisible()) {
-                        transaction.hide(heatedWordsFragment).hide(noReturn).hide(articleFragment).show(loadingFragment).commit();
+                        getTransaction().hide(heatedWordsFragment).hide(noReturn).hide(articleFragment).show(loadingFragment).commit();
                     }else{
-                        transaction.hide(heatedWordsFragment).hide(noReturn).show(loadingFragment).commit();
+                        getTransaction().hide(heatedWordsFragment).hide(noReturn).show(loadingFragment).commit();
                     }
                 }
                 getContract().requestQueryVp(edtKeyWords.getText().toString(),0);
@@ -184,13 +184,13 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
             edtKeyWords.setText("");
             if (articleFragment.isVisible()){
                 loadFragment();
-                transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+                getTransaction().hide(articleFragment).show(heatedWordsFragment).commit();
             }else if (loadingFragment.isVisible()){
                 loadFragment();
-                transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
+                getTransaction().hide(loadingFragment).show(heatedWordsFragment).commit();
             }else {
                 loadFragment();
-                transaction.hide(noReturn).show(heatedWordsFragment).commit();
+                getTransaction().hide(noReturn).show(heatedWordsFragment).commit();
             }
             //返回搜索热词页面
             return true;
@@ -219,11 +219,11 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
                 edtKeyWords.setText("");
                 loadFragment();
                 if (articleFragment.isVisible()){
-                    transaction.hide(articleFragment).show(heatedWordsFragment).commit();
+                    getTransaction().hide(articleFragment).show(heatedWordsFragment).commit();
                 }else if (loadingFragment.isVisible()){
-                    transaction.hide(loadingFragment).show(heatedWordsFragment).commit();
+                    getTransaction().hide(loadingFragment).show(heatedWordsFragment).commit();
                 }else {
-                    transaction.hide(noReturn).show(heatedWordsFragment).commit();
+                    getTransaction().hide(noReturn).show(heatedWordsFragment).commit();
                 }
                 break;
             case R.id.tv_back:
@@ -235,22 +235,25 @@ public class QueryActivity extends BaseActivity<QueryPresenter, Query.Vp> implem
     }
     private void replaceFragment(Fragment fragment){
         loadFragment();
-        transaction.add(R.id.fragment_query,fragment).show(fragment);
-        transaction.commit();
+        getTransaction().add(R.id.fragment_query,fragment).show(fragment).commit();
     }
     private void loadFragment(){
         fragmentManager = getSupportFragmentManager();
-        transaction= fragmentManager.beginTransaction();
+        //transaction= fragmentManager.beginTransaction();
     }
 
     @Override
     public void sendValue(String value) {
         loadFragment();
         if (!loadingFragment.isAdded()){
-            transaction.hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
+            getTransaction().hide(heatedWordsFragment).add(R.id.fragment_query,loadingFragment).show(loadingFragment).commit();
         }else {
-            transaction.hide(heatedWordsFragment).show(loadingFragment).commit();
+            getTransaction().hide(heatedWordsFragment).show(loadingFragment).commit();
         }
         getContract().requestQueryVp(value,ZERO);
+    }
+
+    private FragmentTransaction getTransaction(){
+        return fragmentManager.beginTransaction();
     }
 }
